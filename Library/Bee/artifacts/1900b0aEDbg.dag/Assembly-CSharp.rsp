@@ -354,6 +354,9 @@
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEngine.UI.ref.dll"
 "Assets/Scripts/Camino.cs"
 "Assets/Scripts/Observador.cs"
+"Assets/Scripts/Particula.cs"
+"Assets/Scripts/Persona.cs"
+"Assets/Scripts/Player.cs"
 -langversion:9.0
 
 /deterministic
