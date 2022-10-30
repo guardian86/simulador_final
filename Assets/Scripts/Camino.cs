@@ -15,7 +15,8 @@ public class Camino : MonoBehaviour
         int salidaEscogida = Random.Range(0, listaSalidas.Length);
 
         Vector3 v = listaSalidas[salidaEscogida].transform.position;
-        this.GetComponent<NavMeshAgent>().SetDestination(v);
+        bool v1 = this.GetComponent<NavMeshAgent>().SetDestination(v);
+        //_ = v1;
     }
 
     // Update is called once per frame
