@@ -6,6 +6,7 @@ public class Persona : MonoBehaviour
 {
     //private bool tieneCovid = false;
     public GameObject persona;
+    public GameObject puntoInicio;
     //public GameObject particula;
     //private float quitarPersonas = 3.0f;
 
@@ -20,7 +21,7 @@ public class Persona : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Instantiate(persona, transform.position, Quaternion.identity);
+//            Instantiate(persona, puntoInicio.transform);
             //realizar el random para generar la persona con covid o sin covid 
             //switch (Random.Range(0, 4))
             //{

@@ -58,11 +58,11 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Particula.cs" />
     <Compile Include="Assets\Scripts\Observador.cs" />
+    <Compile Include="Assets\Scripts\CambioCamaras.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\Persona.cs" />
     <Compile Include="Assets\Scripts\Camino.cs" />
     <Compile Include="Assets\Scripts\EliminarPersonas.cs" />
-    <Compile Include="Assets\Scripts\CambioCamaras.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
