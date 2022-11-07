@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\Persona.cs" />
     <Compile Include="Assets\Scripts\Camino.cs" />
     <Compile Include="Assets\Scripts\EliminarPersonas.cs" />
+    <Compile Include="Assets\Scripts\Salida.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -449,7 +449,7 @@ GameObject:
   - component: {fileID: 168170694}
   - component: {fileID: 168170693}
   m_Layer: 0
-  m_Name: objetivo (2)
+  m_Name: salida_2
   m_TagString: salida_cc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -468,7 +468,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1962574997}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!208 &168170693
 NavMeshObstacle:
@@ -1757,7 +1757,7 @@ GameObject:
   - component: {fileID: 356348201}
   - component: {fileID: 356348200}
   m_Layer: 0
-  m_Name: objetivo (1)
+  m_Name: salida_3
   m_TagString: salida_cc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1776,7 +1776,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1962574997}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!208 &356348200
 NavMeshObstacle:
@@ -1870,6 +1870,11 @@ GameObject:
   - component: {fileID: 377647665}
   - component: {fileID: 377647664}
   - component: {fileID: 377647663}
+  - component: {fileID: 377647670}
+  - component: {fileID: 377647669}
+  - component: {fileID: 377647668}
+  - component: {fileID: 377647671}
+  - component: {fileID: 377647672}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: tagPersonas
@@ -1979,6 +1984,72 @@ Transform:
   m_Father: {fileID: 1015456375}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &377647668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377647661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfc3f848fac6a8f4eb25095d794246e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  personasEliminar: {fileID: 1015456374}
+--- !u!114 &377647669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377647661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f6ae1b0c3f458949836488786756ea5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  escenario: {fileID: 1015456374}
+  particulas: {fileID: 1357268961}
+--- !u!114 &377647670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377647661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cadbe260d8aba2d45bd59f06dd264cd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  salidas: {fileID: 1553030199}
+--- !u!135 &377647671
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377647661}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &377647672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377647661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b80635909b6bf448b1272ef1f04f702, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  COVID19: {fileID: 1357268958}
 --- !u!1 &585004879
 GameObject:
   m_ObjectHideFlags: 0
@@ -2330,7 +2401,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686645687}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -3528,9 +3599,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1015456375}
-  - component: {fileID: 1015456378}
-  - component: {fileID: 1015456377}
-  - component: {fileID: 1015456376}
   m_Layer: 0
   m_Name: Personaje
   m_TagString: Untagged
@@ -3554,44 +3622,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1015456376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1015456374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f6ae1b0c3f458949836488786756ea5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1015456377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1015456374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfc3f848fac6a8f4eb25095d794246e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  personasEliminar: {fileID: 1015456374}
---- !u!114 &1015456378
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1015456374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cadbe260d8aba2d45bd59f06dd264cd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  salidas: {fileID: 1553030199}
 --- !u!1 &1034935940
 GameObject:
   m_ObjectHideFlags: 0
@@ -10464,7 +10494,7 @@ GameObject:
   - component: {fileID: 1696970371}
   - component: {fileID: 1696970370}
   m_Layer: 0
-  m_Name: objetivo
+  m_Name: salida_1
   m_TagString: salida_cc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10907,6 +10937,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persona: {fileID: 1015456374}
   puntoInicio: {fileID: 686645687}
+  AforoMaximo: 10
 --- !u!4 &1816586676
 Transform:
   m_ObjectHideFlags: 0
@@ -11248,8 +11279,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1696970374}
-  - {fileID: 356348199}
   - {fileID: 168170692}
+  - {fileID: 356348199}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

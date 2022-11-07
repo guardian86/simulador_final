@@ -359,6 +359,7 @@
 "Assets/Scripts/Particula.cs"
 "Assets/Scripts/Persona.cs"
 "Assets/Scripts/Player.cs"
+"Assets/Scripts/Salida.cs"
 -langversion:9.0
 
 /deterministic

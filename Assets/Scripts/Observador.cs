@@ -6,6 +6,7 @@ public class Observador : MonoBehaviour
 {
     public GameObject persona;
     public GameObject puntoInicio;
+    public int AforoMaximo;
     
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,10 @@ public class Observador : MonoBehaviour
 
     void CrearAgente()
     {
-        Instantiate(persona, puntoInicio.transform);
+        for (int i = 0; i < AforoMaximo; i++)
+        {
+            Instantiate(persona, puntoInicio.transform);
+        }
         Invoke("CrearAgente", 2.0f);
     }
 

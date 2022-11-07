@@ -8,6 +8,7 @@ public class Camino : MonoBehaviour
 {
     public GameObject salidas;
     //int localesIngresados = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,30 +27,23 @@ public class Camino : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
-            //Invoke("Salir", 10.0f);
-            Salir();
-        }
-    }
+            this.GetComponent<NavMeshAgent>().speed = Random.Range(0, 8);
+            GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("salida_cc");
+            int salidaEscogida = Random.Range(0, listaSalidas.Length);
 
-    void Salir()
-    {
-        this.GetComponent<NavMeshAgent>().speed = Random.Range(0, 8);
-        GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("salida_cc");
-        int salidaEscogida = Random.Range(0, listaSalidas.Length);
+            Vector3 v = listaSalidas[salidaEscogida].transform.position;
+            bool v1 = this.GetComponent<NavMeshAgent>().SetDestination(v);
 
-        Vector3 v = listaSalidas[salidaEscogida].transform.position;
-        bool v1 = this.GetComponent<NavMeshAgent>().SetDestination(v);
-
-        var clones = GameObject.FindGameObjectsWithTag("salida_cc");
-        if (clones.Any())
-        {
-            foreach (var clone in clones)
+            var clones = GameObject.FindGameObjectsWithTag("salida_cc");
+            if (clones.Any())
             {
-                Destroy(clone);
+                foreach (var clone in clones)
+                {
+                    Destroy(clone);
+                }
             }
         }
-
-
     }
+
 
 }

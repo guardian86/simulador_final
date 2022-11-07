@@ -5,46 +5,30 @@ using UnityEngine;
 public class Persona : MonoBehaviour
 {
     
-    public GameObject persona;
-    public GameObject puntoInicio;
-    //public GameObject particula;
-    //private float quitarPersonas = 3.0f;
+    public GameObject COVID19;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        COVID19.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-//            Instantiate(persona, puntoInicio.transform);
-            //realizar el random para generar la persona con covid o sin covid 
-            //switch (Random.Range(0, 4))
-            //{
-            //    case 0:
-            //        Instantiate(persona, transform.position, Quaternion.identity);
-            //        break;
-            //    case 1:
-            //        Instantiate(persona, transform.position, Quaternion.identity);
-            //        break;
-            //    case 2:
-            //        Instantiate(persona, transform.position, Quaternion.identity);
-            //        break;
-            //    case 3:
-            //        Instantiate(persona, transform.position, Quaternion.identity);
-            //        break;
-            //    case 4:
-            //        Instantiate(persona, transform.position, Quaternion.identity);
-            //        break;
-            //    default:
-            //        break;
-            //}
+     
+    }
 
-        }
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Agente contagiado de Covid");
+        COVID19.SetActive(true);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("Agente sin Covid");
+        COVID19.SetActive(false);
     }
 
 

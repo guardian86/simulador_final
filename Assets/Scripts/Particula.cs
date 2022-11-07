@@ -6,34 +6,37 @@ public class Particula : MonoBehaviour
 {
     private bool aTieneCovid = false;
     int salidaParticulas = 1;
-    public List<ParticleCollisionEvent> collisionEvents;
+    public GameObject escenario;
+    public ParticleSystem particulas;
+    private System.DateTime tVidaParti;
 
     // Start is called before the first frame update
     void Start()
     {
-        collisionEvents = new List<ParticleCollisionEvent>();
+        var probCovid = Random.Range(0, 100);
 
+        if (probCovid > 80)
+        {
+            aTieneCovid = true;
+            particulas.Play(aTieneCovid);
+        }
+        else
+        {
+            particulas.Play(aTieneCovid);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        var probCovid = Random.Range(0, 100);
-        if (probCovid > 80)
-        {
-            aTieneCovid = true;
-            this.GetComponent<ParticleSystem>().Play(aTieneCovid);
-        }
-        else
-        {
-            this.GetComponent<ParticleSystem>().Play(aTieneCovid);
-        }
+        //OnParticleCollision(escenario);
     }
 
     public void OnParticleCollision(GameObject other)
     {
+        tVidaParti = System.DateTime.Now;
         salidaParticulas += 1;
-        Debug.Log("Particula en Colision " + salidaParticulas);
+        Debug.Log("Particula en Colision " + salidaParticulas + tVidaParti );
 
         //int numCollisionEvents = particula.GetCollisionEvents(other, collisionEvents);
 
