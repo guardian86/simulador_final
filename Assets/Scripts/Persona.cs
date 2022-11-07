@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Persona : MonoBehaviour
 {
-    //private bool tieneCovid = false;
+    
     public GameObject persona;
     public GameObject puntoInicio;
     //public GameObject particula;

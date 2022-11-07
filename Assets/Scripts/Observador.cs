@@ -6,6 +6,7 @@ public class Observador : MonoBehaviour
 {
     public GameObject persona;
     public GameObject puntoInicio;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -17,14 +18,18 @@ public class Observador : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            crear();
+            CrearAgente();
         }
 
     }
 
-    void crear()
+    void CrearAgente()
     {
         Instantiate(persona, puntoInicio.transform);
-        Invoke("crear", 2.0f);
+        Invoke("CrearAgente", 2.0f);
     }
+
+
+
+
 }

@@ -1871,7 +1871,6 @@ GameObject:
   - component: {fileID: 377647664}
   - component: {fileID: 377647663}
   - component: {fileID: 377647662}
-  - component: {fileID: 377647668}
   - component: {fileID: 377647669}
   m_Layer: 0
   m_Name: Capsule
@@ -1995,20 +1994,6 @@ Transform:
   m_Father: {fileID: 1015456375}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &377647668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377647661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b80635909b6bf448b1272ef1f04f702, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  persona: {fileID: 1015456374}
-  puntoInicio: {fileID: 686645687}
 --- !u!114 &377647669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2118,7 +2103,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &640453280
 GameObject:
@@ -2373,7 +2358,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686645687}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2424,12 +2409,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686645687}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.7900004, y: 3.568342, z: -22.81}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -4.34, y: 0.45000005, z: -4.43}
+  m_LocalScale: {x: 0.5, y: 1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 1828810065}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &687166576
 GameObject:
@@ -3017,7 +3002,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &886282396
 GameObject:
@@ -3592,7 +3577,7 @@ Transform:
   m_Children:
   - {fileID: 377647667}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1034935940
 GameObject:
@@ -8244,7 +8229,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
     type: 0
     collisionMode: 0
@@ -8421,11 +8406,11 @@ ParticleSystem:
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
-    collisionMessages: 0
+    collisionMessages: 1
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 2
     inside: 1
     outside: 0
@@ -10907,7 +10892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c34d38463d1d544d94f44089f1e6920, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  persona: {fileID: 377647661}
+  persona: {fileID: 1015456374}
   puntoInicio: {fileID: 686645687}
 --- !u!4 &1816586676
 Transform:
@@ -10922,7 +10907,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1828810061
 GameObject:
@@ -11018,9 +11003,10 @@ Transform:
   m_LocalPosition: {x: 1.89, y: 3.118342, z: -0.66}
   m_LocalScale: {x: 2, y: 1, z: 5}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 686645690}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1870605297
 GameObject:
@@ -11252,7 +11238,7 @@ Transform:
   - {fileID: 356348199}
   - {fileID: 168170692}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2031386557
 GameObject:

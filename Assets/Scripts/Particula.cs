@@ -1,20 +1,18 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 
 public class Particula : MonoBehaviour
 {
+    private bool aTieneCovid = false;
     int salidaParticulas = 1;
     public GameObject objeto;
-    public ParticleSystem particula;
+    //public ParticleSystem particula;
     public List<ParticleCollisionEvent> collisionEvents;
 
     // Start is called before the first frame update
     void Start()
     {
-        particula = GetComponent<ParticleSystem>();
         collisionEvents = new List<ParticleCollisionEvent>();
 
     }
@@ -22,20 +20,23 @@ public class Particula : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        OnParticleCollision(objeto);
+        var probCovid = Random.Range(0, 100);
+        if (probCovid > 80)
+        {
+            aTieneCovid = true;
+            this.GetComponent<ParticleSystem>().Play(aTieneCovid);
+        }
     }
 
     public void OnParticleCollision(GameObject other)
     {
         salidaParticulas += 1;
-        Debug.Log(salidaParticulas);
+        Debug.Log("Particula en Colision " + salidaParticulas);
 
         //int numCollisionEvents = particula.GetCollisionEvents(other, collisionEvents);
 
         //Rigidbody rb = other.GetComponent<Rigidbody>();
         //int i = 0;
-
-        //Debug.Log("Colision de la particula contra un objeto ");
 
         //while (i < numCollisionEvents)
         //{

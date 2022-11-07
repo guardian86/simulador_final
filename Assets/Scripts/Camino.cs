@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class Camino : MonoBehaviour
 {
     public GameObject salidas;
-    int localesIngresados = 0;
+    //int localesIngresados = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,10 +17,8 @@ public class Camino : MonoBehaviour
         int salidaEscogida = Random.Range(0, listaSalidas.Length);
 
         Vector3 v = listaSalidas[salidaEscogida].transform.position;
-        bool v1 = this.GetComponent<NavMeshAgent>().SetDestination(v);
+        this.GetComponent<NavMeshAgent>().SetDestination(v);
 
-       
-      
     }
 
     // Update is called once per frame
@@ -28,8 +26,8 @@ public class Camino : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
-            Invoke("Salir", 10.0f);
-            
+            //Invoke("Salir", 10.0f);
+            Salir();
         }
     }
 
