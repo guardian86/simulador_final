@@ -6,8 +6,6 @@ public class Particula : MonoBehaviour
 {
     private bool aTieneCovid = false;
     int salidaParticulas = 1;
-    public GameObject objeto;
-    //public ParticleSystem particula;
     public List<ParticleCollisionEvent> collisionEvents;
 
     // Start is called before the first frame update
@@ -24,6 +22,10 @@ public class Particula : MonoBehaviour
         if (probCovid > 80)
         {
             aTieneCovid = true;
+            this.GetComponent<ParticleSystem>().Play(aTieneCovid);
+        }
+        else
+        {
             this.GetComponent<ParticleSystem>().Play(aTieneCovid);
         }
     }
