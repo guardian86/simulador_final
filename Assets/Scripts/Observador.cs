@@ -7,6 +7,7 @@ public class Observador : MonoBehaviour
     public GameObject persona;
     public GameObject puntoInicio;
     public int AforoMaximo;
+    int contadorAgentes = 0;
     
     // Start is called before the first frame update
     void Start()
@@ -17,7 +18,7 @@ public class Observador : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space))
         {
             CrearAgente();
         }
@@ -26,11 +27,14 @@ public class Observador : MonoBehaviour
 
     void CrearAgente()
     {
-        for (int i = 0; i < AforoMaximo; i++)
+
+        if (contadorAgentes <= AforoMaximo)
         {
             Instantiate(persona, puntoInicio.transform);
+            contadorAgentes++;
+            Invoke("CrearAgente", 2.0f);
         }
-        Invoke("CrearAgente", 2.0f);
+        
     }
 
 

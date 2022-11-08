@@ -1874,7 +1874,6 @@ GameObject:
   - component: {fileID: 377647669}
   - component: {fileID: 377647668}
   - component: {fileID: 377647671}
-  - component: {fileID: 377647672}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: tagPersonas
@@ -2037,19 +2036,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &377647672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377647661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b80635909b6bf448b1272ef1f04f702, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  COVID19: {fileID: 1357268958}
 --- !u!1 &585004879
 GameObject:
   m_ObjectHideFlags: 0
@@ -2401,7 +2387,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686645687}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -10937,7 +10923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persona: {fileID: 1015456374}
   puntoInicio: {fileID: 686645687}
-  AforoMaximo: 10
+  AforoMaximo: 2
 --- !u!4 &1816586676
 Transform:
   m_ObjectHideFlags: 0

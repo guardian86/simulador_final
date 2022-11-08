@@ -29,6 +29,17 @@ public class Particula : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        var probCovid = Random.Range(0, 100);
+
+        if (probCovid > 80)
+        {
+            aTieneCovid = true;
+            particulas.Play(aTieneCovid);
+        }
+        else
+        {
+            particulas.Play(aTieneCovid);
+        }
         //OnParticleCollision(escenario);
     }
 
