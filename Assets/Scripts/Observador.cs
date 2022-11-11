@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,33 +9,38 @@ public class Observador : MonoBehaviour
     public GameObject puntoInicio;
     public int AforoMaximo;
     int contadorAgentes = 0;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+
 
     // Update is called once per frame
+    private void Start()
+    {
+        Invoke("CrearAgente", 2.0f);
+    }
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Space))
+        /*if (Input.GetKeyUp(KeyCode.Space))
         {
             CrearAgente();
-        }
+        }*/
+        
 
     }
 
     void CrearAgente()
     {
 
-        if (contadorAgentes <= AforoMaximo)
+        if (contadorAgentes < AforoMaximo)
         {
-            Instantiate(persona, puntoInicio.transform);
+            GameObject clon = Instantiate(persona, puntoInicio.transform.position, puntoInicio.transform.rotation);
+            clon.GetComponentInChildren<Camino>().enabled = true;
+            clon.GetComponentInChildren<Salir>().enabled = true;
+            Debug.Log("CrearAgente " + contadorAgentes);
             contadorAgentes++;
             Invoke("CrearAgente", 2.0f);
         }
+
         
+
     }
 
 

@@ -352,14 +352,10 @@
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/Unity.VSCode.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEngine.UI.ref.dll"
-"Assets/Scripts/CambioCamaras.cs"
+"Assets/Scripts/Agente.cs"
 "Assets/Scripts/Camino.cs"
-"Assets/Scripts/EliminarPersonas.cs"
 "Assets/Scripts/Observador.cs"
-"Assets/Scripts/Particula.cs"
-"Assets/Scripts/Persona.cs"
-"Assets/Scripts/Player.cs"
-"Assets/Scripts/Salida.cs"
+"Assets/Scripts/Salir.cs"
 -langversion:9.0
 
 /deterministic
