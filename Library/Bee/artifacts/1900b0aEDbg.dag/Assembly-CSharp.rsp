@@ -355,7 +355,6 @@
 "Assets/Scripts/Agente.cs"
 "Assets/Scripts/Camino.cs"
 "Assets/Scripts/Observador.cs"
-"Assets/Scripts/Salir.cs"
 -langversion:9.0
 
 /deterministic

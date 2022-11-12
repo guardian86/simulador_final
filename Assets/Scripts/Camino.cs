@@ -7,11 +7,13 @@ using static UnityEditor.Progress;
 
 public class Camino : MonoBehaviour
 {
+    int velocidadInit = 4;
+    public int veloMax;
     // Start is called before the first frame update
     void Start()
     {
 
-        this.GetComponent<NavMeshAgent>().speed = 8; //Random.Range(0, 8);
+        this.GetComponent<NavMeshAgent>().speed = Random.Range(velocidadInit, velocidadInit + veloMax);
         GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("meta");
         int salidaEscogida = Random.Range(0, listaSalidas.Length);
 
@@ -29,17 +31,12 @@ public class Camino : MonoBehaviour
 
     void SalirCentroComercial()
     {
-        this.GetComponent<NavMeshAgent>().speed = 8; //Random.Range(0, 8);
+        this.GetComponent<NavMeshAgent>().speed = Random.Range(velocidadInit, velocidadInit + veloMax);
         GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("salida_cc");
         int salidaEscogida = Random.Range(0, listaSalidas.Length);
 
         Vector3 v = listaSalidas[salidaEscogida].transform.position;
         this.GetComponent<NavMeshAgent>().SetDestination(v);
-
-
-
-        //DestroyNearest(listaSalidas.);
-
     }
 
 
@@ -53,33 +50,8 @@ public class Camino : MonoBehaviour
         if (other.gameObject.tag.Equals("meta"))
         {
             Debug.Log(other.gameObject);
-            Invoke("SalirCentroComercial", Random.Range(5f,10f));
+            Invoke("SalirCentroComercial", Random.Range(7f,15f));
         }
     }
-
-
-    //public void DestroyNearest(List<Item> items)
-    //{
-    //    // Find nearest item.
-    //    Item nearest = null;
-    //    float distance = 0;
-
-    //    for (int i = 0; i < items.Count; i++)
-    //    {
-    //        float tempDistance = Vector3.Distance(transform.position, items[i].position);
-    //        if (nearest == null || tempDistance < distance)
-    //        {
-    //            nearest = items[i];
-    //            distance = tempDistance;
-    //        }
-    //    }
-
-    //    // Remove from list.
-    //    items.Remove(nearest);
-
-    //    // Destroy object.
-    //    Destroy(nearest.gameObject);
-    //}
-
 
 }

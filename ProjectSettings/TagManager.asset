@@ -7,6 +7,7 @@ TagManager:
   - meta
   - tagPersonas
   - salida_cc
+  - initParticula
   layers:
   - Default
   - TransparentFX

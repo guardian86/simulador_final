@@ -59,7 +59,6 @@
     <Compile Include="Assets\Scripts\Agente.cs" />
     <Compile Include="Assets\Scripts\Observador.cs" />
     <Compile Include="Assets\Scripts\Camino.cs" />
-    <Compile Include="Assets\Scripts\Salir.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
