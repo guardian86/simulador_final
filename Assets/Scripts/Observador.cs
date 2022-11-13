@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Observador : MonoBehaviour
 {
-    private bool aTieneCovid = false;
     public GameObject persona;
     public GameObject puntoInicio;
     public int AforoMaximo;
@@ -19,12 +18,7 @@ public class Observador : MonoBehaviour
     }
     void Update()
     {
-        /*if (Input.GetKeyUp(KeyCode.Space))
-        {
-            CrearAgente();
-        }*/
-        
-
+       
     }
 
     void CrearAgente()
@@ -35,18 +29,14 @@ public class Observador : MonoBehaviour
             {
                 GameObject clon = Instantiate(persona, puntoInicio.transform.position, puntoInicio.transform.rotation);
                 clon.GetComponentInChildren<Camino>().enabled = true;
-                //clon.GetComponentInChildren<ParticleSystem>().Play();
 
                 var probCovid = Random.Range(0, 100);
                 if (probCovid > 80)
                 {
-                    aTieneCovid = true;
-                    //clon.gameObject.SetActive(aTieneCovid);
                     clon.GetComponentInChildren<ParticleSystem>().Play(true);
                 }
                 else
                 {
-                    //clon.gameObject.SetActive(aTieneCovid);
                     clon.GetComponentInChildren<ParticleSystem>().Stop(true);
                 }
                 Debug.Log("CrearAgente " + contadorAgentes);
@@ -56,7 +46,6 @@ public class Observador : MonoBehaviour
         }
         catch (System.Exception ex)
         {
-
             Debug.Log(ex.Message);
         }
     }
