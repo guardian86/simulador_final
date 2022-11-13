@@ -8,6 +8,7 @@ TagManager:
   - tagPersonas
   - salida_cc
   - initParticula
+  - muros
   layers:
   - Default
   - TransparentFX

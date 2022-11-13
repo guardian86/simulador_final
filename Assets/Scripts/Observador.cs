@@ -29,18 +29,14 @@ public class Observador : MonoBehaviour
             {
                 GameObject clon = Instantiate(persona, puntoInicio.transform.position, puntoInicio.transform.rotation);
                 clon.GetComponentInChildren<Camino>().enabled = true;
-                clon.GetComponentInChildren<Agente>().enabled = true;
+                clon.GetComponentInChildren<Particula>().enabled = true;
                 clon.gameObject.SetActive(true);
-
-                var probCovid = Random.Range(0, 100);
-                if (probCovid > 80)
-                {
-                    clon.GetComponentInChildren<ParticleSystem>().Play(true);
-                }
-                else
-                {
-                    clon.GetComponentInChildren<ParticleSystem>().Stop(true);
-                }
+                clon.GetComponentInChildren<ParticleSystem>().Play(true);
+                //var probCovid = Random.Range(0, 100);
+                //if (probCovid > 80)
+                //    clon.GetComponentInChildren<ParticleSystem>().Play(true);
+                //else
+                //    clon.GetComponentInChildren<ParticleSystem>().Stop(true);
                 Debug.Log("CrearAgente " + contadorAgentes);
                 contadorAgentes++;
                 Invoke("CrearAgente", 2.0f);
@@ -48,7 +44,7 @@ public class Observador : MonoBehaviour
         }
         catch (System.Exception ex)
         {
-            Debug.Log(ex.Message);
+            Debug.Log(ex.Message.ToString());
         }
     }
 
