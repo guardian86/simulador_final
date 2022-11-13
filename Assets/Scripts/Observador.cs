@@ -29,6 +29,8 @@ public class Observador : MonoBehaviour
             {
                 GameObject clon = Instantiate(persona, puntoInicio.transform.position, puntoInicio.transform.rotation);
                 clon.GetComponentInChildren<Camino>().enabled = true;
+                clon.GetComponentInChildren<Agente>().enabled = true;
+                clon.gameObject.SetActive(true);
 
                 var probCovid = Random.Range(0, 100);
                 if (probCovid > 80)
@@ -50,14 +52,7 @@ public class Observador : MonoBehaviour
         }
     }
 
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag.Equals("initParticula"))
-        {
-            Debug.Log(other.gameObject + "Particula en el ambiente ");
-        }
-     
-    }
+
 
 
 }
