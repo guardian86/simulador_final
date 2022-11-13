@@ -57,7 +57,7 @@ public class Observador : MonoBehaviour
         catch (System.Exception ex)
         {
 
-            Debug.Log(ex);
+            Debug.Log(ex.Message);
         }
     }
 
