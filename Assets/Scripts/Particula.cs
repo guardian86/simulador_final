@@ -30,13 +30,13 @@ public class Particula : MonoBehaviour
         //Debug.Log("YYYYY");
         if (other.gameObject.tag.Equals("muros"))
         {
-            Debug.Log("Particula choca con Muros  " + secuencia + other.gameObject.name);
+            Debug.Log("Particula choca con Muros  " + secuencia + " " + other.gameObject.name);
             secuencia++;
         }
 
         if (other.gameObject.tag.Equals("tagPersonas"))
         {
-            Debug.Log("Particula choca con Agente " + secuencia + other.gameObject.name);
+            Debug.Log("Particula choca con Agente " + secuencia + " " + other.gameObject.name);
             secuencia++;
         }
     }
