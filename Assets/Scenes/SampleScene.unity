@@ -1995,7 +1995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cadbe260d8aba2d45bd59f06dd264cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  veloMax: 4
+  veloMax: 6
 --- !u!54 &377647676
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3416,7 +3416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cadbe260d8aba2d45bd59f06dd264cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  veloMax: 4
+  veloMax: 6
 --- !u!195 &954292963
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -15915,7 +15915,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persona: {fileID: 492449762}
   puntoInicio: {fileID: 1015456374}
-  AforoMaximo: 1
+  AforoMaximo: 3
 --- !u!4 &1816586676
 Transform:
   m_ObjectHideFlags: 0

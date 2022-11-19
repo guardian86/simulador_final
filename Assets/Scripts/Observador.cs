@@ -31,12 +31,12 @@ public class Observador : MonoBehaviour
                 clon.GetComponentInChildren<Camino>().enabled = true;
                 clon.GetComponentInChildren<Particula>().enabled = true;
                 clon.gameObject.SetActive(true);
-                clon.GetComponentInChildren<ParticleSystem>().Play(true);
-                //var probCovid = Random.Range(0, 100);
-                //if (probCovid > 80)
-                //    clon.GetComponentInChildren<ParticleSystem>().Play(true);
-                //else
-                //    clon.GetComponentInChildren<ParticleSystem>().Stop(true);
+                //clon.GetComponentInChildren<ParticleSystem>().Play(true);
+                var probCovid = Random.Range(0, 100);
+
+                if (probCovid > 80) clon.GetComponentInChildren<ParticleSystem>().Play(true);
+                else clon.GetComponentInChildren<ParticleSystem>().Stop(true);
+                
                 Debug.Log("CrearAgente " + contadorAgentes);
                 contadorAgentes++;
                 Invoke("CrearAgente", 2.0f);

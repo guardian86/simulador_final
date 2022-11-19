@@ -31,7 +31,12 @@ public class Camino : MonoBehaviour
 
     void SalirCentroComercial()
     {
+        bool irNuevoLocal = false; 
         this.GetComponent<NavMeshAgent>().speed = Random.Range(velocidadInit, velocidadInit + veloMax);
+        
+        irNuevoLocal = Random.Range(0, 3) > 1 ? true : false;
+        if (irNuevoLocal) Invoke("Start", 1f);
+        
         GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("salida_cc");
         int salidaEscogida = Random.Range(0, listaSalidas.Length);
 
@@ -49,9 +54,18 @@ public class Camino : MonoBehaviour
         }
         if (other.gameObject.tag.Equals("meta"))
         {
+
+
+
             Debug.Log(other.gameObject);
             Invoke("SalirCentroComercial", Random.Range(7f,15f));
         }
+    }
+
+
+    public void tomarNuevoCamino()
+    {
+
     }
 
 }
