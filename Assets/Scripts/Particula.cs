@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class Particula : MonoBehaviour
 {
     //public ParticleSystem particle;
+    
     int secuencia = 0;
+
     private void Start()
     {
-        
+       
     }
 
     private void Update()
     {
+
+        //Invoke("ActivarDispararParticula", 7f);
+        
         //OnCollisionEnter(particle);
         //OnParticleCollision(particle);
     }
@@ -40,6 +46,8 @@ public class Particula : MonoBehaviour
             secuencia++;
         }
     }
+
+ 
 
     //private void OnCollisionEnter(Collision collision)
     //{

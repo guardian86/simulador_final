@@ -9,6 +9,8 @@ public class Camino : MonoBehaviour
 {
     int velocidadInit = 4;
     public int veloMax;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,22 +52,18 @@ public class Camino : MonoBehaviour
         if (other.gameObject.tag.Equals("salida_cc"))
         {
             Debug.Log(other.gameObject);
-            Destroy(this.transform.parent.gameObject);
+            if (other.gameObject)
+            {
+                Destroy(this.transform.parent.gameObject);
+            }
         }
         if (other.gameObject.tag.Equals("meta"))
         {
-
-
 
             Debug.Log(other.gameObject);
             Invoke("SalirCentroComercial", Random.Range(7f,15f));
         }
     }
 
-
-    public void tomarNuevoCamino()
-    {
-
-    }
 
 }
