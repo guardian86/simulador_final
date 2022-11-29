@@ -9,6 +9,7 @@ TagManager:
   - salida_cc
   - initParticula
   - muros
+  - Agentes
   layers:
   - Default
   - TransparentFX
