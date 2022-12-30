@@ -1870,9 +1870,10 @@ GameObject:
   - component: {fileID: 377647665}
   - component: {fileID: 377647664}
   - component: {fileID: 377647663}
-  - component: {fileID: 377647674}
   - component: {fileID: 377647676}
   - component: {fileID: 377647678}
+  - component: {fileID: 377647674}
+  - component: {fileID: 377647680}
   - component: {fileID: 377647679}
   m_Layer: 0
   m_Name: Capsule
@@ -2037,6 +2038,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33534f2cc246d25439586a4d8fa5c618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &377647680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377647661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b87cdf4fd375b9a42803486d8744f02c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &492449762
 GameObject:
   m_ObjectHideFlags: 0
@@ -2176,7 +2189,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 588696467}
-  - component: {fileID: 588696468}
   m_Layer: 0
   m_Name: Agente
   m_TagString: Untagged
@@ -2199,21 +2211,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &588696468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 588696465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b87cdf4fd375b9a42803486d8744f02c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  persona: {fileID: 492449762}
-  puntoInicio: {fileID: 1015456374}
-  AforoMaximo: 2
 --- !u!1 &640453280
 GameObject:
   m_ObjectHideFlags: 0
@@ -16076,6 +16073,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c34d38463d1d544d94f44089f1e6920, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  persona: {fileID: 492449762}
+  puntoInicio: {fileID: 1015456374}
+  AforoMaximo: 4
 --- !u!4 &1816586676
 Transform:
   m_ObjectHideFlags: 0
