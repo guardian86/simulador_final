@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.ParticleSystem;
@@ -14,18 +16,58 @@ public class Agente : MonoBehaviour
     
     
     List<AgentesContagiados> agenteCovid19;
-    int contadorCovid = 1;
+    int contadorCovid = 0;
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
-        GameObject[] listaAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
-        int salidaEscogida = Random.Range(0, listaAgentes.Length);
+        Invoke("ObtenerEstadoInicialAgentes", 12);
+    }
 
+    public void ObtenerEstadoInicialAgentes()
+    {
+        GameObject[] listaAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
+        agenteCovid19 = new List<AgentesContagiados>();
+
+        foreach (var agente in listaAgentes)
+        {
+            var estadoParticulaAgente = agente.GetComponentInChildren<ParticleSystem>().isEmitting;
+            agenteCovid19.Add(new AgentesContagiados() 
+            { 
+                cantidadContagiados = contadorCovid, 
+                tieneCovid = estadoParticulaAgente 
+            });
+
+            contadorCovid++;
+            if (estadoParticulaAgente)
+            {
+                agente.GetComponentInChildren<ParticleSystem>().Stop(true);
+            }
+        }
+        
+        contadorCovid = 0;
+        Invoke("ReactivaParticulaAgentes", Random.Range(0, 8));
+
+        //Invoke("ObtenerEstadoIncialAgentes", 5);
         //Vector3 v = listaAgentes[salidaEscogida].transform.position;
         //this.GetComponent<NavMeshAgent>().SetDestination(v);
         //Invoke("CrearAgente", 2f);
+    }
+
+    //GameObject[] listaAgentes, List<AgentesContagiados> agentes
+    public void ReactivaParticulaAgentes()
+    {
+        GameObject[] listaAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
+        //System.Threading.Thread.Sleep(10000);
+        foreach (var item in agenteCovid19)
+        {
+            if (item.tieneCovid)
+            {
+                listaAgentes[item.cantidadContagiados].GetComponentInChildren<ParticleSystem>().Play(true);
+            }
+        }
+        Invoke("ObtenerEstadoInicialAgentes", Random.Range(0,8));
     }
 
     // Update is called once per frame
