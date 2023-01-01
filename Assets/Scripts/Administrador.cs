@@ -30,6 +30,8 @@ public class Administrador : MonoBehaviour
 
     EmissionModule emision;
     private string json;
+    ReporteAgentes reporteAgentes;
+    GameObject[] listAgentes;
     #endregion
 
 
@@ -64,7 +66,7 @@ public class Administrador : MonoBehaviour
                 else clon.GetComponentInChildren<ParticleSystem>().Stop(true);
 
 
-                Debug.Log("CrearAgente " + contadorAgentes);
+                //Debug.Log("CrearAgente " + contadorAgentes);
                 contadorAgentes++;
                 Invoke("CrearAgente", 2f);
             }
@@ -76,9 +78,15 @@ public class Administrador : MonoBehaviour
     }
 
 
-    private void ObtenerAgentes()
+    private void ObtenerReporteAgentes()
     {
-        GameObject[] listAgentes = GameObject.FindGameObjectsWithTag("Agentes");
+        listAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
+        contAgentesCovid = listAgentes.Count();
+
+        if (contAgentesCovid > 0)
+        {
+
+        }
         foreach (GameObject agente in listAgentes)
         {
             //agente.SetActive(true);
@@ -126,6 +134,17 @@ public class Administrador : MonoBehaviour
         return JsonUtility.FromJson<Administrador>(jsonString);
     }
 
+
+    [Serializable]
+    public class ReporteAgentes
+    {
+        public bool agenteContagiadoCovid { get; set; }
+        public float cantidadAgenteSimulacion { get; set; }
+        public float promedioContagiados { get; set; }
+        public float cantidadSimulaciones { get; set; }
+
+
+    }
 
 
 }

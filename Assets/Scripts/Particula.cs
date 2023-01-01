@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.ParticleSystem;
 
 public class Particula : MonoBehaviour
 {
     //public ParticleSystem particle;
-    
-    int secuencia = 0;
+    private GameObject[] listAgentes;
+    int contadorMuros = 0;
+    int contadorPersonas = 0;
 
     private void Start()
     {
@@ -26,25 +29,33 @@ public class Particula : MonoBehaviour
 
     private void OnParticleCollision(GameObject other)
     {
-        Debug.Log("XXXXX");
+        //Debug.Log("XXXXX");
         //initParticula
    
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("YYYYY");
+        listAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
+        
         if (other.gameObject.tag.Equals("muros"))
         {
-            Debug.Log("Particula choca con Muros  " + secuencia + " " + other.gameObject.name);
-            secuencia++;
+            contadorMuros = listAgentes.Count() - 1;
+            if (listAgentes[contadorMuros].GetComponentInChildren<ParticleSystem>().isEmitting)
+            {
+                Debug.Log("Particula choca con Muro  " + contadorMuros + " " + other.gameObject.name);
+            }
         }
 
         if (other.gameObject.tag.Equals("tagPersonas"))
         {
-            Debug.Log("Particula choca con Agente " + secuencia + " " + other.gameObject.name);
-            secuencia++;
+            contadorPersonas = listAgentes.Count() - 1;
+            if (listAgentes[contadorPersonas].GetComponentInChildren<ParticleSystem>().isEmitting)
+            {
+                Debug.Log("Particula choca con Agente " + contadorPersonas + " " + other.gameObject.name);
+            }
         }
+
     }
 
  

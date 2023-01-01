@@ -51,7 +51,7 @@ public class Camino : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("salida_cc"))
         {
-            Debug.Log(other.gameObject);
+            //Debug.Log(other.gameObject);
             if (other.gameObject)
             {
                 Destroy(this.transform.parent.gameObject);
@@ -60,7 +60,7 @@ public class Camino : MonoBehaviour
         if (other.gameObject.tag.Equals("meta"))
         {
 
-            Debug.Log(other.gameObject);
+            //Debug.Log(other.gameObject);
             Invoke("SalirCentroComercial", Random.Range(7f,15f));
         }
     }
