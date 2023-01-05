@@ -6,6 +6,7 @@ using UnityEngine;
 public static class Constantes
 {
 
-    public const string path = @"C:\ReporteAgentes\RptAgentes";  //{}
+    public const string path = @"C:\ReporteAgentes\RptAgentes"; 
+    public const string folderPath = @"C:\ReporteAgentes";
 
 }

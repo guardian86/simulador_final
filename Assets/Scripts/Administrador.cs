@@ -82,29 +82,35 @@ public class Administrador : MonoBehaviour
 
     internal void ObtenerReporteAgentes()
     {
-        float contadorAgentReport = 0f;
-        reporteAgentes = new List<ReporteAgentes>();
-        listAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
-        contAgentesCovid = listAgentes.Count();
-
-
-        foreach (var agenteRpt in listAgentes)
+        try
         {
-            reporteAgentes.Add(new ReporteAgentes()
-            {
-                agenteContagiadoCovid = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting,
-                cantidadSimulaciones = contadorAgentReport += 1,
-                cantidadAgenteSimulacion = contadorAgentReport,
-                promedioContagiados = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (1f * contAgentesCovid) / 100f : 0f,
-                promedioTotalContagio = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (contadorAgentReport += 1 * contAgentesCovid) : 0f,
-            }); ; ;
+            float contadorAgentReport = 0f;
+            reporteAgentes = new List<ReporteAgentes>();
+            listAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
+            contAgentesCovid = listAgentes.Count();
 
+
+            foreach (var agenteRpt in listAgentes)
+            {
+                reporteAgentes.Add(new ReporteAgentes()
+                {
+                    agenteContagiadoCovid = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting,
+                    cantidadSimulaciones = contadorAgentReport += 1,
+                    cantidadAgenteSimulacion = contadorAgentReport,
+                    promedioContagiados = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (1f * contAgentesCovid) / 100f : 0f,
+                    promedioTotalContagio = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (contadorAgentReport += 1 * contAgentesCovid) : 0f,
+                }); ; ;
+
+            }
+
+            SaveToString(reporteAgentes);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogException(ex);
         }
 
-        //reporteAgentes.Sum(x => x.promedioContagiados);
-        SaveToString(reporteAgentes);
-
-        //string json = JsonUtility.ToJson(reporteAgentes);
+        
 
     }
 
@@ -120,8 +126,11 @@ public class Administrador : MonoBehaviour
     {
         try
         {
-
+            
             var json = JsonConvert.SerializeObject(rptAgent);
+            if (!Directory.Exists(Constantes.folderPath))
+                Directory.CreateDirectory(Constantes.folderPath);
+            
             File.WriteAllText(String.Concat(Constantes.path, $"-{DateTime.Now.ToString("ddMMyyyyhhmmss")}.json"), json);
 
         }
@@ -130,7 +139,7 @@ public class Administrador : MonoBehaviour
 
             throw new Exception(ex.Message.ToString());
         }
-        //JsonUtility.ToJson(rptAgent);
+        
 
     }
 
