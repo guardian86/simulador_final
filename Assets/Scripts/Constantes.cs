@@ -6,6 +6,6 @@ using UnityEngine;
 public static class Constantes
 {
 
-    public const string path = @"C:\Windows\Temp\RptAgentes.json";  //{}
+    public const string path = @"C:\ReporteAgentes\RptAgentes";  //{}
 
 }

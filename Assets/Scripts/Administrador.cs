@@ -122,7 +122,7 @@ public class Administrador : MonoBehaviour
         {
 
             var json = JsonConvert.SerializeObject(rptAgent);
-            File.WriteAllText(@$"C:\Windows\Temp\RptAgentes-{DateTime.Now.ToString("ddMMyyyyhhmmss")}.json", json);
+            File.WriteAllText(String.Concat(Constantes.path, $"-{DateTime.Now.ToString("ddMMyyyyhhmmss")}.json"), json);
 
         }
         catch (Exception ex)

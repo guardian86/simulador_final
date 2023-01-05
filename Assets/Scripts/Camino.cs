@@ -10,7 +10,7 @@ public class Camino : MonoBehaviour
     int velocidadInit = 4;
     public int veloMax;
     Administrador administrador;
-    bool generarRpe = true;
+    //bool generarRpe = true;
 
 
     // Start is called before the first frame update
@@ -29,11 +29,11 @@ public class Camino : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (generarRpe)
-        {
-            Invoke("InvocarRptAgentes", 5f);
-            generarRpe= false;
-        }
+        //if (generarRpe)
+        //{
+        //    Invoke("InvocarRptAgentes", 5f);
+        //    generarRpe= false;
+        //}
     }
 
     private void InvocarRptAgentes()
@@ -45,17 +45,25 @@ public class Camino : MonoBehaviour
     void SalirCentroComercial()
     {
 
-        bool irNuevoLocal = false; 
+        bool irNuevoLocal = false;
         this.GetComponent<NavMeshAgent>().speed = Random.Range(velocidadInit, velocidadInit + veloMax);
-        
+
         irNuevoLocal = Random.Range(0, 3) > 1 ? true : false;
         if (irNuevoLocal) Invoke("Start", 1f);
-        
+
         GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("salida_cc");
         int salidaEscogida = Random.Range(0, listaSalidas.Length);
 
         Vector3 v = listaSalidas[salidaEscogida].transform.position;
         this.GetComponent<NavMeshAgent>().SetDestination(v);
+
+        if (Globales.generaRpt)
+        {
+            GameObject[] listaAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
+            InvocarRptAgentes();
+            Globales.generaRpt = false;
+        }
+
 
         //administrador.ObtenerReporteAgentes();
 
@@ -76,7 +84,7 @@ public class Camino : MonoBehaviour
         {
 
             //Debug.Log(other.gameObject);
-            Invoke("SalirCentroComercial", Random.Range(7f,15f));
+            Invoke("SalirCentroComercial", Random.Range(7f, 15f));
         }
     }
 
