@@ -1,7 +1,10 @@
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using static Administrador;
 using static UnityEngine.ParticleSystem;
 
 
@@ -27,10 +30,9 @@ public class Administrador : MonoBehaviour
     int contadorAgentes = 0;
     private GameObject clon;
     int contAgentesCovid = 0;
-
     EmissionModule emision;
     private string json;
-    ReporteAgentes reporteAgentes;
+    List<ReporteAgentes> reporteAgentes;
     GameObject[] listAgentes;
     #endregion
 
@@ -51,7 +53,7 @@ public class Administrador : MonoBehaviour
     {
         try
         {
-            if (contadorAgentes < AforoMaximo )
+            if (contadorAgentes < AforoMaximo)
             {
 
                 clon = Instantiate(persona, puntoInicio.transform.position, puntoInicio.transform.rotation);
@@ -78,41 +80,32 @@ public class Administrador : MonoBehaviour
     }
 
 
-    private void ObtenerReporteAgentes()
+    internal void ObtenerReporteAgentes()
     {
+        float contadorAgentReport = 0f;
+        reporteAgentes = new List<ReporteAgentes>();
         listAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
         contAgentesCovid = listAgentes.Count();
 
-        if (contAgentesCovid > 0)
-        {
 
-        }
-        foreach (GameObject agente in listAgentes)
+        foreach (var agenteRpt in listAgentes)
         {
-            //agente.SetActive(true);
-            emision = agente.gameObject.GetComponent<ParticleSystem>().emission;
-            if (emision.enabled)
+            reporteAgentes.Add(new ReporteAgentes()
             {
-                contAgentesCovid++;
-            }
+                agenteContagiadoCovid = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting,
+                cantidadSimulaciones = contadorAgentReport += 1,
+                cantidadAgenteSimulacion = contadorAgentReport,
+                promedioContagiados = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (1f * contAgentesCovid) / 100f : 0f,
+                promedioTotalContagio = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (contadorAgentReport += 1 * contAgentesCovid) : 0f,
+            }); ; ;
+
         }
-        //var x = listAgentes[listAgentes.Length - 1].transform.gameObject.active;
-        //ParticleSystem[] y = emision = ParticleSystem.FindObjectsOfType<ParticleSystem>();
 
-        //emision = GetComponent<List<ParticleSystem>>().Count();
+        //reporteAgentes.Sum(x => x.promedioContagiados);
+        SaveToString(reporteAgentes);
 
-        if (listAgentes.Any())
-        {
-            using (StreamReader r = new StreamReader("Assets/JSON/ReporteAgentes.json"))
-            {
-                json = r.ReadToEnd();
-                Debug.Log(json);
-                Administrador x = CreateFromJSON(json);
+        //string json = JsonUtility.ToJson(reporteAgentes);
 
-                //Debug.Log(x[""][""]);
-            }
-        }
-        
     }
 
 
@@ -123,9 +116,22 @@ public class Administrador : MonoBehaviour
 
 
     //generar el json a exportar 
-    public string SaveToString()
+    public void SaveToString(List<ReporteAgentes> rptAgent)
     {
-        return JsonUtility.ToJson(this);
+        try
+        {
+
+            var json = JsonConvert.SerializeObject(rptAgent);
+            File.WriteAllText(@$"C:\Windows\Temp\RptAgentes-{DateTime.Now.ToString("ddMMyyyyhhmmss")}.json", json);
+
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message.ToString());
+        }
+        //JsonUtility.ToJson(rptAgent);
+
     }
 
 
@@ -135,6 +141,8 @@ public class Administrador : MonoBehaviour
     }
 
 
+
+
     [Serializable]
     public class ReporteAgentes
     {
@@ -142,7 +150,7 @@ public class Administrador : MonoBehaviour
         public float cantidadAgenteSimulacion { get; set; }
         public float promedioContagiados { get; set; }
         public float cantidadSimulaciones { get; set; }
-
+        public float promedioTotalContagio { get; set; }
 
     }
 

@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Agente.cs" />
     <Compile Include="Assets\Scripts\Particula.cs" />
+    <Compile Include="Assets\Scripts\Constantes.cs" />
     <Compile Include="Assets\Scripts\Administrador.cs" />
     <Compile Include="Assets\Scripts\Camino.cs" />
   </ItemGroup>

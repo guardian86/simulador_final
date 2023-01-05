@@ -355,6 +355,7 @@
 "Assets/Scripts/Administrador.cs"
 "Assets/Scripts/Agente.cs"
 "Assets/Scripts/Camino.cs"
+"Assets/Scripts/Constantes.cs"
 "Assets/Scripts/Particula.cs"
 -langversion:9.0
 

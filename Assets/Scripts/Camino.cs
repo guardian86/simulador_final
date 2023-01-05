@@ -9,6 +9,8 @@ public class Camino : MonoBehaviour
 {
     int velocidadInit = 4;
     public int veloMax;
+    Administrador administrador;
+    bool generarRpe = true;
 
 
     // Start is called before the first frame update
@@ -27,12 +29,22 @@ public class Camino : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (generarRpe)
+        {
+            Invoke("InvocarRptAgentes", 5f);
+            generarRpe= false;
+        }
     }
 
-  
+    private void InvocarRptAgentes()
+    {
+        administrador = new Administrador();
+        administrador.ObtenerReporteAgentes();
+    }
 
     void SalirCentroComercial()
     {
+
         bool irNuevoLocal = false; 
         this.GetComponent<NavMeshAgent>().speed = Random.Range(velocidadInit, velocidadInit + veloMax);
         
@@ -44,6 +56,9 @@ public class Camino : MonoBehaviour
 
         Vector3 v = listaSalidas[salidaEscogida].transform.position;
         this.GetComponent<NavMeshAgent>().SetDestination(v);
+
+        //administrador.ObtenerReporteAgentes();
+
     }
 
 
