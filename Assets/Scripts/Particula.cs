@@ -29,7 +29,7 @@ public class Particula : MonoBehaviour
 
     private void OnParticleCollision(GameObject other)
     {
-        //Debug.Log("XXXXX");
+        Debug.Log("XXXXX");
         //initParticula
    
     }

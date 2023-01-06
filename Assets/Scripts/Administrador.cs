@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Administrador;
 using static UnityEngine.ParticleSystem;
@@ -61,11 +62,11 @@ public class Administrador : MonoBehaviour
                 clon.GetComponentInChildren<Particula>().enabled = true;
                 clon.gameObject.SetActive(true);
 
-                //clon.GetComponentInChildren<ParticleSystem>().Play(true);
-                var probCovid = UnityEngine.Random.Range(0, 100);
+                clon.GetComponentInChildren<ParticleSystem>().Play(true);
+                //var probCovid = UnityEngine.Random.Range(0, 100);
 
-                if (probCovid > 80) clon.GetComponentInChildren<ParticleSystem>().Play(true);
-                else clon.GetComponentInChildren<ParticleSystem>().Stop(true);
+                //if (probCovid > 80) clon.GetComponentInChildren<ParticleSystem>().Play(true);
+                //else clon.GetComponentInChildren<ParticleSystem>().Stop(true);
 
 
                 //Debug.Log("CrearAgente " + contadorAgentes);
@@ -98,10 +99,15 @@ public class Administrador : MonoBehaviour
                     cantidadSimulaciones = contadorAgentReport += 1,
                     cantidadAgenteSimulacion = contadorAgentReport,
                     promedioContagiados = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (1f * contAgentesCovid) / 100f : 0f,
-                    promedioTotalContagio = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (contadorAgentReport += 1 * contAgentesCovid) : 0f,
-                }); ; ;
+                    //promedioTotalContagio = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (1f * contAgentesCovid) / 100f : 0f,
+                }); 
 
             }
+
+            //reporteAgentes.ForEach(x=>x.promedioTotalContagio).su;
+            //reporteAgentes.ForEach(a => { a.promedioTotalContagio.sum});
+            reporteAgentes.Sum(x => x.promedioTotalContagio);
+            //var v = reporteAgentes.AddRange(new ReporteAgentes() { promedioTotalContagio = 1f, }) ; //reporteAgentes.Max<ReporteAgentes>().promedioTotalContagio.ToString().Sum(x => x.)
 
             SaveToString(reporteAgentes);
         }
