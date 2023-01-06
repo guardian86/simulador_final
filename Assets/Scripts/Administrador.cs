@@ -101,18 +101,12 @@ public class Administrador : MonoBehaviour
                     cantidadSimulaciones = contadorAgentReport += 1,
                     cantidadAgenteSimulacion = contadorAgentReport,
                     promedioContagiados = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (1f * contAgentesCovid) / 100f : 0f,
-                    //promedioTotalContagio = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (1f * contAgentesCovid) / 100f : 0f,
                 });
                 promediotoal += agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (1f * contAgentesCovid) / 100f : 0f;
             }
             estadisticaContagioCovi.promedioTotalContagio = promediotoal;
-            //estadisticaContagioCovi.reporteAgentes.Add(repotesagente);
-            //reporteAgentes.ForEach(x=>x.promedioTotalContagio).su;
-            //reporteAgentes.ForEach(a => { a.promedioTotalContagio.sum});
-            //reporteAgentes.Sum(x => x.promedioTotalContagio);
-            //var v = reporteAgentes.AddRange(new ReporteAgentes() { promedioTotalContagio = 1f, }) ; //reporteAgentes.Max<ReporteAgentes>().promedioTotalContagio.ToString().Sum(x => x.)
 
-            SaveToString(estadisticaContagioCovi);
+            SaveRptJson(estadisticaContagioCovi);
         }
         catch (Exception ex)
         {
@@ -131,7 +125,7 @@ public class Administrador : MonoBehaviour
 
 
     //generar el json a exportar 
-    public void SaveToString(estadisticacontagiocovid rptAgent)
+    public void SaveRptJson(estadisticacontagiocovid rptAgent)
     {
         try
         {
