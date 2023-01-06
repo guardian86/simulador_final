@@ -33,7 +33,8 @@ public class Administrador : MonoBehaviour
     int contAgentesCovid = 0;
     EmissionModule emision;
     private string json;
-    List<ReporteAgentes> reporteAgentes;
+    //List<ReporteAgentes> reporteAgentes;
+    List<estadisticacontagiocovid> estadisticaContagioCovid;
     GameObject[] listAgentes;
     #endregion
 
@@ -62,11 +63,11 @@ public class Administrador : MonoBehaviour
                 clon.GetComponentInChildren<Particula>().enabled = true;
                 clon.gameObject.SetActive(true);
 
-                clon.GetComponentInChildren<ParticleSystem>().Play(true);
-                //var probCovid = UnityEngine.Random.Range(0, 100);
+                //clon.GetComponentInChildren<ParticleSystem>().Play(true);
+                var probCovid = UnityEngine.Random.Range(0, 100);
 
-                //if (probCovid > 80) clon.GetComponentInChildren<ParticleSystem>().Play(true);
-                //else clon.GetComponentInChildren<ParticleSystem>().Stop(true);
+                if (probCovid > 80) clon.GetComponentInChildren<ParticleSystem>().Play(true);
+                else clon.GetComponentInChildren<ParticleSystem>().Stop(true);
 
 
                 //Debug.Log("CrearAgente " + contadorAgentes);
@@ -86,30 +87,32 @@ public class Administrador : MonoBehaviour
         try
         {
             float contadorAgentReport = 0f;
-            reporteAgentes = new List<ReporteAgentes>();
+            var estadisticaContagioCovi = new estadisticacontagiocovid();
+            var repotesagente = new ReporteAgentes();
             listAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
             contAgentesCovid = listAgentes.Count();
-
-
+            float promediotoal = 0;
+            estadisticaContagioCovi.reporteAgentes = new List<ReporteAgentes>();
             foreach (var agenteRpt in listAgentes)
             {
-                reporteAgentes.Add(new ReporteAgentes()
+                estadisticaContagioCovi.reporteAgentes.Add(new ReporteAgentes()
                 {
                     agenteContagiadoCovid = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting,
                     cantidadSimulaciones = contadorAgentReport += 1,
                     cantidadAgenteSimulacion = contadorAgentReport,
                     promedioContagiados = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (1f * contAgentesCovid) / 100f : 0f,
                     //promedioTotalContagio = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (1f * contAgentesCovid) / 100f : 0f,
-                }); 
-
+                });
+                promediotoal += agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (1f * contAgentesCovid) / 100f : 0f;
             }
-
+            estadisticaContagioCovi.promedioTotalContagio = promediotoal;
+            //estadisticaContagioCovi.reporteAgentes.Add(repotesagente);
             //reporteAgentes.ForEach(x=>x.promedioTotalContagio).su;
             //reporteAgentes.ForEach(a => { a.promedioTotalContagio.sum});
-            reporteAgentes.Sum(x => x.promedioTotalContagio);
+            //reporteAgentes.Sum(x => x.promedioTotalContagio);
             //var v = reporteAgentes.AddRange(new ReporteAgentes() { promedioTotalContagio = 1f, }) ; //reporteAgentes.Max<ReporteAgentes>().promedioTotalContagio.ToString().Sum(x => x.)
 
-            SaveToString(reporteAgentes);
+            SaveToString(estadisticaContagioCovi);
         }
         catch (Exception ex)
         {
@@ -128,7 +131,7 @@ public class Administrador : MonoBehaviour
 
 
     //generar el json a exportar 
-    public void SaveToString(List<ReporteAgentes> rptAgent)
+    public void SaveToString(estadisticacontagiocovid rptAgent)
     {
         try
         {
@@ -165,9 +168,13 @@ public class Administrador : MonoBehaviour
         public float cantidadAgenteSimulacion { get; set; }
         public float promedioContagiados { get; set; }
         public float cantidadSimulaciones { get; set; }
-        public float promedioTotalContagio { get; set; }
-
     }
 
+    [Serializable]
+    public class estadisticacontagiocovid
+    {
+        public List<ReporteAgentes> reporteAgentes { get; set; }
+        public float promedioTotalContagio { get; set; }
+    }
 
 }
