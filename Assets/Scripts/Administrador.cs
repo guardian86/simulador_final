@@ -62,7 +62,7 @@ public class Administrador : MonoBehaviour
                 clon.GetComponentInChildren<Camino>().enabled = true;
                 clon.GetComponentInChildren<Particula>().enabled = true;
                 clon.gameObject.SetActive(true);
-
+                
                 //clon.GetComponentInChildren<ParticleSystem>().Play(true);
                 var probCovid = UnityEngine.Random.Range(0, 100);
 
@@ -87,26 +87,26 @@ public class Administrador : MonoBehaviour
         try
         {
             float contadorAgentReport = 0f;
-            var estadisticaContagioCovi = new estadisticacontagiocovid();
-            var repotesagente = new ReporteAgentes();
+            var estadisticasContagioCovid = new estadisticacontagiocovid();
+            var reportesAgente = new ReporteAgentes();
             listAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
             contAgentesCovid = listAgentes.Count();
             float promediotoal = 0;
-            estadisticaContagioCovi.reporteAgentes = new List<ReporteAgentes>();
-            foreach (var agenteRpt in listAgentes)
+            estadisticasContagioCovid.reporteAgentes = new List<ReporteAgentes>();
+            foreach (var agenteRpt in Globales.agenteCovid19)
             {
-                estadisticaContagioCovi.reporteAgentes.Add(new ReporteAgentes()
+                estadisticasContagioCovid.reporteAgentes.Add(new ReporteAgentes()
                 {
-                    agenteContagiadoCovid = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting,
+                    agenteContagiadoCovid = agenteRpt.tieneCovid,
                     cantidadSimulaciones = contadorAgentReport += 1,
                     cantidadAgenteSimulacion = contadorAgentReport,
-                    promedioContagiados = agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (1f * contAgentesCovid) / 100f : 0f,
+                    promedioContagiados = agenteRpt.tieneCovid ? (1f * contAgentesCovid) / 100f : 0f,
                 });
-                promediotoal += agenteRpt.GetComponentInChildren<ParticleSystem>().isEmitting ? (1f * contAgentesCovid) / 100f : 0f;
+                promediotoal += agenteRpt.tieneCovid ? (1f * contAgentesCovid) / 100f : 0f;
             }
-            estadisticaContagioCovi.promedioTotalContagio = promediotoal;
+            estadisticasContagioCovid.promedioTotalContagio = promediotoal;
 
-            SaveRptJson(estadisticaContagioCovi);
+            SaveRptJson(estadisticasContagioCovid);
         }
         catch (Exception ex)
         {

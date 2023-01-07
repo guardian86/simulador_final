@@ -12,11 +12,9 @@ public class Agente : MonoBehaviour
 
     #region "Variables de Entorno"
     private EmissionModule AgenteEmisor;
-    
-    
-    
-    List<AgentesContagiados> agenteCovid19;
+
     int contadorCovid = 0;
+    int contadorCovidF = 0;
     #endregion
 
     // Start is called before the first frame update
@@ -28,12 +26,12 @@ public class Agente : MonoBehaviour
     public void ObtenerEstadoInicialAgentes()
     {
         GameObject[] listaAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
-        agenteCovid19 = new List<AgentesContagiados>();
+        
 
         foreach (var agente in listaAgentes)
         {
             var estadoParticulaAgente = agente.GetComponentInChildren<ParticleSystem>().isEmitting;
-            agenteCovid19.Add(new AgentesContagiados() 
+            Globales.agenteCovid19.Add(new AgentesContagiados() 
             { 
                 cantidadContagiados = contadorCovid, 
                 tieneCovid = estadoParticulaAgente 
@@ -60,7 +58,7 @@ public class Agente : MonoBehaviour
     {
         GameObject[] listaAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
         //System.Threading.Thread.Sleep(10000);
-        foreach (var item in agenteCovid19)
+        foreach (var item in Globales.agenteCovid19)
         {
             if (item.tieneCovid)
             {
@@ -80,7 +78,7 @@ public class Agente : MonoBehaviour
   
     private void ActivarDispararParticula()
     {
-        if (!AgenteEmisor.enabled && agenteCovid19.Any())
+        if (!AgenteEmisor.enabled && Globales.agenteCovid19.Any())
             AgenteEmisor.enabled = true;
         //else if (agenteCovid19.Any())
         //    AgenteEmisor.enabled = true;
@@ -99,15 +97,14 @@ public class Agente : MonoBehaviour
 
         try
         {
-            agenteCovid19 = new List<AgentesContagiados>();
             //if (contadorAgentes > 1)
             //{
                 
                 //AgenteEmisor = clon.GetComponentInChildren<ParticleSystem>().emission;
                 if (AgenteEmisor.enabled) //IsUnityNull() AgenteEmisor.ToString().Count() > 0
                 {
-                    agenteCovid19.Add(new AgentesContagiados() { cantidadContagiados = contadorCovid, tieneCovid = true });
-                    contadorCovid++;
+                    Globales.agenteCovid19.Add(new AgentesContagiados() { cantidadContagiados = contadorCovidF, tieneCovid = true });
+                    contadorCovidF++;
 
                     //ActivarDispararParticula();
                     AgenteEmisor.enabled = false;
@@ -115,7 +112,7 @@ public class Agente : MonoBehaviour
                 }
                 else
                 {
-                    agenteCovid19.Add(new AgentesContagiados() { cantidadContagiados = 0, tieneCovid = false });
+                    Globales.agenteCovid19.Add(new AgentesContagiados() { cantidadContagiados = 0, tieneCovid = false });
                 }
             //}
         }

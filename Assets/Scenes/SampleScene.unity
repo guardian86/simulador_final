@@ -16075,7 +16075,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persona: {fileID: 492449762}
   puntoInicio: {fileID: 1015456374}
-  AforoMaximo: 3
+  AforoMaximo: 5
 --- !u!4 &1816586676
 Transform:
   m_ObjectHideFlags: 0
