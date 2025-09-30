@@ -21,7 +21,10 @@ public class Administrador : MonoBehaviour
     #region "Variables de Publicas"
     public GameObject persona;
     public GameObject puntoInicio;
-    public int AforoMaximo;
+    public int AforoMaximo = 30;
+    [Tooltip("Segundos entre spawns")] public float intervaloSpawn = 2f;
+    [Tooltip("Si está activo, el administrador seguirá creando agentes hasta el aforo máximo")] public bool autoSpawn = true;
+    [Range(0f,1f)] public float probContagioDefault = 0.25f;
     #endregion
 
     #region "Variables Privadas"
@@ -33,7 +36,8 @@ public class Administrador : MonoBehaviour
     // Update is called once per frame
     private void Start()
     {
-        Invoke("CrearAgente", 2f);
+        if (autoSpawn)
+            Invoke(nameof(CrearAgente), Mathf.Max(0.1f, intervaloSpawn));
     }
 
     void Update() { }
@@ -44,10 +48,18 @@ public class Administrador : MonoBehaviour
         {
             if (contadorAgentes < AforoMaximo)
             {
+                if (persona == null)
+                {
+                    persona = CrearAgentePorDefecto();
+                }
 
-                clon = Instantiate(persona, puntoInicio.transform.position, puntoInicio.transform.rotation);
+                var pos = puntoInicio != null ? puntoInicio.transform.position : Vector3.zero;
+                var rot = puntoInicio != null ? puntoInicio.transform.rotation : Quaternion.identity;
+                clon = Instantiate(persona, pos, rot);
                 clon.GetComponentInChildren<Camino>().enabled = true;
                 clon.GetComponentInChildren<Particula>().enabled = true;
+                var p = clon.GetComponentInChildren<Particula>();
+                if (p != null) p.probContagio = probContagioDefault;
                 clon.gameObject.SetActive(true);
                 
                 var probCovid = UnityEngine.Random.Range(0, 100);
@@ -56,9 +68,9 @@ public class Administrador : MonoBehaviour
                 else clon.GetComponentInChildren<ParticleSystem>().Stop(true);
 
 
-                //Debug.Log("CrearAgente " + contadorAgentes);
                 contadorAgentes++;
-                Invoke("CrearAgente", 2f);
+                if (autoSpawn)
+                    Invoke(nameof(CrearAgente), Mathf.Max(0.1f, intervaloSpawn));
             }
         }
         catch (System.Exception ex)
@@ -158,6 +170,84 @@ public class Administrador : MonoBehaviour
     {
         public List<ReporteAgentes> reporteAgentes { get; set; }
         public float promedioTotalContagio { get; set; }
+    }
+
+    // Reinicia la simulación: elimina agentes y resetea contadores/estado
+    public void ResetSimulacion()
+    {
+        CancelInvoke(nameof(CrearAgente));
+        var agentes = GameObject.FindGameObjectsWithTag("tagPersonas");
+        foreach (var a in agentes)
+        {
+            Destroy(a);
+        }
+        contadorAgentes = 0;
+        Globales.agenteCovid19.Clear();
+        if (autoSpawn)
+            Invoke(nameof(CrearAgente), Mathf.Max(0.1f, intervaloSpawn));
+    }
+
+    public void IniciarSpawn()
+    {
+        autoSpawn = true;
+        CancelInvoke(nameof(CrearAgente));
+        Invoke(nameof(CrearAgente), Mathf.Max(0.1f, intervaloSpawn));
+    }
+
+    public void DetenerSpawn()
+    {
+        autoSpawn = false;
+        CancelInvoke(nameof(CrearAgente));
+    }
+
+    // Crea un GameObject de agente por defecto si no se asignó un prefab
+    private GameObject CrearAgentePorDefecto()
+    {
+        var go = new GameObject("AgenteAuto");
+        try { go.tag = "tagPersonas"; } catch { /* el tag debe existir */ }
+
+        // Cuerpo visual (capsule)
+        var body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+        body.transform.SetParent(go.transform);
+        body.transform.localPosition = Vector3.zero;
+        var bodyCollider = body.GetComponent<Collider>();
+        if (bodyCollider != null) bodyCollider.isTrigger = false;
+
+        // Aura de proximidad (trigger)
+        var aura = new GameObject("AuraProximidad");
+        aura.transform.SetParent(go.transform);
+        aura.transform.localPosition = Vector3.zero;
+        var col = aura.AddComponent<SphereCollider>();
+        col.isTrigger = true;
+        col.radius = 1.2f;
+
+        // Física mínima
+        var rb = go.AddComponent<Rigidbody>();
+        rb.isKinematic = true;
+
+        // Navegación
+        var nma = go.AddComponent<UnityEngine.AI.NavMeshAgent>();
+        nma.angularSpeed = 120f;
+        nma.acceleration = 8f;
+        nma.stoppingDistance = 0.1f;
+
+        // Scripts de lógica
+        go.AddComponent<Agente>();
+        var camino = go.AddComponent<Camino>();
+        camino.veloMax = 4;
+
+        var particulaGO = new GameObject("Emisor");
+        particulaGO.transform.SetParent(go.transform);
+        particulaGO.transform.localPosition = new Vector3(0, 1.2f, 0);
+        var ps = particulaGO.AddComponent<ParticleSystem>();
+        var main = ps.main; main.startLifetime = 0.75f; main.startSpeed = 0.5f; main.startSize = 0.1f; main.simulationSpace = ParticleSystemSimulationSpace.World;
+        var emission = ps.emission; emission.rateOverTime = 25f; emission.enabled = false; // se activa al contagiar
+        var shape = ps.shape; shape.enabled = true; shape.shapeType = ParticleSystemShapeType.Cone; shape.angle = 25f; shape.radius = 0.1f;
+
+        var p = particulaGO.AddComponent<Particula>();
+        p.probContagio = probContagioDefault;
+
+        return go;
     }
 
 }

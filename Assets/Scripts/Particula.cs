@@ -25,7 +25,7 @@ public class Particula : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Colisión con muros (para depurar)
-        if (other.CompareTag("muros"))
+        if (other.gameObject.tag == "muros")
         {
             if (EstaInfectadoPropio())
                 Debug.Log($"Partícula de {raizPropia.name} choca con muro {other.gameObject.name}");
@@ -33,7 +33,7 @@ public class Particula : MonoBehaviour
         }
 
         // Intento de contagio por proximidad entre personas
-        if (!other.CompareTag("tagPersonas")) return;
+    if (other.gameObject.tag != "tagPersonas") return;
 
         // Evitar auto-colisión del mismo agente
         if (other.transform.root == raizPropia) return;
