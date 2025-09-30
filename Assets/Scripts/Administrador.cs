@@ -3,10 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Administrador;
-using static UnityEngine.ParticleSystem;
 
 
 
@@ -30,12 +27,6 @@ public class Administrador : MonoBehaviour
     #region "Variables Privadas"
     int contadorAgentes = 0;
     private GameObject clon;
-    int contAgentesCovid = 0;
-    EmissionModule emision;
-    private string json;
-    //List<ReporteAgentes> reporteAgentes;
-    List<estadisticacontagiocovid> estadisticaContagioCovid;
-    GameObject[] listAgentes;
     #endregion
 
 
@@ -45,11 +36,7 @@ public class Administrador : MonoBehaviour
         Invoke("CrearAgente", 2f);
     }
 
-    void Update()
-    {
-
-
-    }
+    void Update() { }
 
     void CrearAgente()
     {
@@ -63,7 +50,6 @@ public class Administrador : MonoBehaviour
                 clon.GetComponentInChildren<Particula>().enabled = true;
                 clon.gameObject.SetActive(true);
                 
-                //clon.GetComponentInChildren<ParticleSystem>().Play(true);
                 var probCovid = UnityEngine.Random.Range(0, 100);
 
                 if (probCovid > 80) clon.GetComponentInChildren<ParticleSystem>().Play(true);
@@ -82,31 +68,34 @@ public class Administrador : MonoBehaviour
     }
 
 
-    internal void ObtenerReporteAgentes()
+    public void ObtenerReporteAgentes()
     {
         try
         {
-            float contadorAgentReport = 0f;
-            var estadisticasContagioCovid = new estadisticacontagiocovid();
-            var reportesAgente = new ReporteAgentes();
-            listAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
-            contAgentesCovid = listAgentes.Count();
-            float promediotoal = 0;
-            estadisticasContagioCovid.reporteAgentes = new List<ReporteAgentes>();
-            foreach (var agenteRpt in Globales.agenteCovid19)
-            {
-                estadisticasContagioCovid.reporteAgentes.Add(new ReporteAgentes()
-                {
-                    agenteContagiadoCovid = agenteRpt.tieneCovid,
-                    cantidadSimulaciones = contadorAgentReport += 1,
-                    cantidadAgenteSimulacion = contadorAgentReport,
-                    promedioContagiados = agenteRpt.tieneCovid ? (1f * contAgentesCovid) / 100f : 0f,
-                });
-                promediotoal += agenteRpt.tieneCovid ? (1f * contAgentesCovid) / 100f : 0f;
-            }
-            estadisticasContagioCovid.promedioTotalContagio = promediotoal;
+            var listaAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
+            var estadisticas = new estadisticacontagiocovid { reporteAgentes = new List<ReporteAgentes>() };
 
-            SaveRptJson(estadisticasContagioCovid);
+            int total = listaAgentes.Length;
+            int infectados = 0;
+            int idx = 1;
+            foreach (var go in listaAgentes)
+            {
+                var ps = go.GetComponentInChildren<ParticleSystem>();
+                bool tiene = ps != null && ps.isEmitting;
+                if (tiene) infectados++;
+                estadisticas.reporteAgentes.Add(new ReporteAgentes
+                {
+                    agenteContagiadoCovid = tiene,
+                    cantidadAgenteSimulacion = idx,
+                    cantidadSimulaciones = idx,
+                    promedioContagiados = 0f // se calcula al final de forma global
+                });
+                idx++;
+            }
+            // promedio global de infectados en porcentaje (0..100)
+            estadisticas.promedioTotalContagio = total > 0 ? (infectados * 100f) / total : 0f;
+
+            SaveRptJson(estadisticas);
         }
         catch (Exception ex)
         {
@@ -130,7 +119,7 @@ public class Administrador : MonoBehaviour
         try
         {
             
-            var json = JsonConvert.SerializeObject(rptAgent);
+            var json = JsonConvert.SerializeObject(rptAgent, Formatting.Indented);
             if (!Directory.Exists(Constantes.folderPath))
                 Directory.CreateDirectory(Constantes.folderPath);
             

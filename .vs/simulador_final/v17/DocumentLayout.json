@@ -1,0 +1,149 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\ProjectsUnity\\simulador_final\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|d:\\projectsunity\\simulador_final\\assets\\scripts\\camino.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\camino.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|D:\\ProjectsUnity\\simulador_final\\assets\\scripts\\particula.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\particula.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|D:\\ProjectsUnity\\simulador_final\\assets\\scripts\\agente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\agente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|D:\\ProjectsUnity\\simulador_final\\assets\\scripts\\administrador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\administrador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|D:\\ProjectsUnity\\simulador_final\\assets\\scripts\\constantes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\constantes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|D:\\ProjectsUnity\\simulador_final\\assets\\scripts\\globales.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\globales.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 13,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e506b91c-c606-466a-90a9-123d1d1e12b3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{c93a910a-0fa6-4307-93a4-f2bd61ec7828}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Globales.cs",
+              "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Globales.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Globales.cs",
+              "ToolTip": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Globales.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Globales.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALNSURBVDhP7ZNNSBRhGMf/7zuz66gzuequXwgKm\u002BtHkIibdEgEDe1QCCEEKaKXhE75QXnIUjwJ5uIhkAiDEDvkQVTELQ8aHlTm4iorrhqLlrq6m7vtau7OzE6nERU8RTd/pwee//Pjgfd9gCv\u002BFUYrVjwrfMWjimRdsU6QbkuCsdwo5N/PF0pqSvTOcecfAPD7/Yl8GZ/ouu7SB2YC4ba2NtNWwdY15aaCg9mDCABQTRg5jjSBgSjrZZGlrChHZZFQIrIMa9MyChQbS1mRYzlbKBQyhqPhKR10YpgJN2kZAgAOt6PDvmGvW9pZsnAMh4LUAvAxPOSojLAcnmgsbqxXoNj65/rvzW7OproP3R6O5RxFmUWl6wfr3OHxoYsSOrTxaqObAsD8j/lbbp/boqoqqixVocKMwjdFGUVdOcacrjQ\u002B7VNCQoIUVaPL6UJ6wMSbQAgJxOnjHHmmPEmIEQCCHQCb2paoeV8z9vjDY7VrossTDAY/\u002Bv3\u002BpNPmGXy/fWM9X3pUc7d5fD\u002B0n\u002B4L\u002BH42DDWo5m5zp5ahALDmXYOe1cMQZ1gUBKHeYDD8OitSVZUGg8EUb8jLHUWOABXcwNxAiifoYSJKBASEz3ydmXQqlBUZAMBS9qznFO0B\u002Br71lY44RiBFpTuD84P22uFao7gtQokqTziWs0ETZidm40Q\u002BgWPPcdEFAIiPjw9AxYvqG9WOMnMZWMouW0yW5\u002B3l7YFcUy4ooROEkLcAwAJAZV4lnHtOuPZdlubPzZ2VeZXg9Ty8IS92g7suSukwgK8\u002Bv8\u002B4tLOUS0Fd9qf2Ma/fa5pcnRRAMLP\u002Bcn0R2rdZ\u002BL7QMeWcqlvxrFiS4pKQn5KPWF0spKiEiByZaLnb8uDC0pdCtGJ6dbrV7XO3ji6PYjuwDYYyMCebkZWYNd37sLf\u002B/NjlnF4KB\u002B4dACuVqZUSalVV1cqojFWRlGfnR6743/wF2Ocp0aqGDqUAAAAASUVORK5CYII=",
+              "WhenOpened": "2023-01-05T17:58:22.664Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Constantes.cs",
+              "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Constantes.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Constantes.cs",
+              "ToolTip": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Constantes.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Constantes.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALNSURBVDhP7ZNNSBRhGMf/7zuz66gzuequXwgKm\u002BtHkIibdEgEDe1QCCEEKaKXhE75QXnIUjwJ5uIhkAiDEDvkQVTELQ8aHlTm4iorrhqLlrq6m7vtau7OzE6nERU8RTd/pwee//Pjgfd9gCv\u002BFUYrVjwrfMWjimRdsU6QbkuCsdwo5N/PF0pqSvTOcecfAPD7/Yl8GZ/ouu7SB2YC4ba2NtNWwdY15aaCg9mDCABQTRg5jjSBgSjrZZGlrChHZZFQIrIMa9MyChQbS1mRYzlbKBQyhqPhKR10YpgJN2kZAgAOt6PDvmGvW9pZsnAMh4LUAvAxPOSojLAcnmgsbqxXoNj65/rvzW7OproP3R6O5RxFmUWl6wfr3OHxoYsSOrTxaqObAsD8j/lbbp/boqoqqixVocKMwjdFGUVdOcacrjQ\u002B7VNCQoIUVaPL6UJ6wMSbQAgJxOnjHHmmPEmIEQCCHQCb2paoeV8z9vjDY7VrossTDAY/\u002Bv3\u002BpNPmGXy/fWM9X3pUc7d5fD\u002B0n\u002B4L\u002BH42DDWo5m5zp5ahALDmXYOe1cMQZ1gUBKHeYDD8OitSVZUGg8EUb8jLHUWOABXcwNxAiifoYSJKBASEz3ydmXQqlBUZAMBS9qznFO0B\u002Br71lY44RiBFpTuD84P22uFao7gtQokqTziWs0ETZidm40Q\u002BgWPPcdEFAIiPjw9AxYvqG9WOMnMZWMouW0yW5\u002B3l7YFcUy4ooROEkLcAwAJAZV4lnHtOuPZdlubPzZ2VeZXg9Ty8IS92g7suSukwgK8\u002Bv8\u002B4tLOUS0Fd9qf2Ma/fa5pcnRRAMLP\u002Bcn0R2rdZ\u002BL7QMeWcqlvxrFiS4pKQn5KPWF0spKiEiByZaLnb8uDC0pdCtGJ6dbrV7XO3ji6PYjuwDYYyMCebkZWYNd37sLf\u002B/NjlnF4KB\u002B4dACuVqZUSalVV1cqojFWRlGfnR6743/wF2Ocp0aqGDqUAAAAASUVORK5CYII=",
+              "WhenOpened": "2023-01-03T17:18:39.381Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Administrador.cs",
+              "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Administrador.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Administrador.cs",
+              "ToolTip": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Administrador.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Administrador.cs",
+              "ViewState": "AQIAADUAAAAAAAAAAAA1wEAAAAAQAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALNSURBVDhP7ZNNSBRhGMf/7zuz66gzuequXwgKm\u002BtHkIibdEgEDe1QCCEEKaKXhE75QXnIUjwJ5uIhkAiDEDvkQVTELQ8aHlTm4iorrhqLlrq6m7vtau7OzE6nERU8RTd/pwee//Pjgfd9gCv\u002BFUYrVjwrfMWjimRdsU6QbkuCsdwo5N/PF0pqSvTOcecfAPD7/Yl8GZ/ouu7SB2YC4ba2NtNWwdY15aaCg9mDCABQTRg5jjSBgSjrZZGlrChHZZFQIrIMa9MyChQbS1mRYzlbKBQyhqPhKR10YpgJN2kZAgAOt6PDvmGvW9pZsnAMh4LUAvAxPOSojLAcnmgsbqxXoNj65/rvzW7OproP3R6O5RxFmUWl6wfr3OHxoYsSOrTxaqObAsD8j/lbbp/boqoqqixVocKMwjdFGUVdOcacrjQ\u002B7VNCQoIUVaPL6UJ6wMSbQAgJxOnjHHmmPEmIEQCCHQCb2paoeV8z9vjDY7VrossTDAY/\u002Bv3\u002BpNPmGXy/fWM9X3pUc7d5fD\u002B0n\u002B4L\u002BH42DDWo5m5zp5ahALDmXYOe1cMQZ1gUBKHeYDD8OitSVZUGg8EUb8jLHUWOABXcwNxAiifoYSJKBASEz3ydmXQqlBUZAMBS9qznFO0B\u002Br71lY44RiBFpTuD84P22uFao7gtQokqTziWs0ETZidm40Q\u002BgWPPcdEFAIiPjw9AxYvqG9WOMnMZWMouW0yW5\u002B3l7YFcUy4ooROEkLcAwAJAZV4lnHtOuPZdlubPzZ2VeZXg9Ty8IS92g7suSukwgK8\u002Bv8\u002B4tLOUS0Fd9qf2Ma/fa5pcnRRAMLP\u002Bcn0R2rdZ\u002BL7QMeWcqlvxrFiS4pKQn5KPWF0spKiEiByZaLnb8uDC0pdCtGJ6dbrV7XO3ji6PYjuwDYYyMCebkZWYNd37sLf\u002B/NjlnF4KB\u002B4dACuVqZUSalVV1cqojFWRlGfnR6743/wF2Ocp0aqGDqUAAAAASUVORK5CYII=",
+              "WhenOpened": "2022-12-29T23:06:06.169Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Agente.cs",
+              "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Agente.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Agente.cs",
+              "ToolTip": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Agente.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Agente.cs",
+              "ViewState": "AQIAABcAAAAAAAAAAAAjwCoAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALNSURBVDhP7ZNNSBRhGMf/7zuz66gzuequXwgKm\u002BtHkIibdEgEDe1QCCEEKaKXhE75QXnIUjwJ5uIhkAiDEDvkQVTELQ8aHlTm4iorrhqLlrq6m7vtau7OzE6nERU8RTd/pwee//Pjgfd9gCv\u002BFUYrVjwrfMWjimRdsU6QbkuCsdwo5N/PF0pqSvTOcecfAPD7/Yl8GZ/ouu7SB2YC4ba2NtNWwdY15aaCg9mDCABQTRg5jjSBgSjrZZGlrChHZZFQIrIMa9MyChQbS1mRYzlbKBQyhqPhKR10YpgJN2kZAgAOt6PDvmGvW9pZsnAMh4LUAvAxPOSojLAcnmgsbqxXoNj65/rvzW7OproP3R6O5RxFmUWl6wfr3OHxoYsSOrTxaqObAsD8j/lbbp/boqoqqixVocKMwjdFGUVdOcacrjQ\u002B7VNCQoIUVaPL6UJ6wMSbQAgJxOnjHHmmPEmIEQCCHQCb2paoeV8z9vjDY7VrossTDAY/\u002Bv3\u002BpNPmGXy/fWM9X3pUc7d5fD\u002B0n\u002B4L\u002BH42DDWo5m5zp5ahALDmXYOe1cMQZ1gUBKHeYDD8OitSVZUGg8EUb8jLHUWOABXcwNxAiifoYSJKBASEz3ydmXQqlBUZAMBS9qznFO0B\u002Br71lY44RiBFpTuD84P22uFao7gtQokqTziWs0ETZidm40Q\u002BgWPPcdEFAIiPjw9AxYvqG9WOMnMZWMouW0yW5\u002B3l7YFcUy4ooROEkLcAwAJAZV4lnHtOuPZdlubPzZ2VeZXg9Ty8IS92g7suSukwgK8\u002Bv8\u002B4tLOUS0Fd9qf2Ma/fa5pcnRRAMLP\u002Bcn0R2rdZ\u002BL7QMeWcqlvxrFiS4pKQn5KPWF0spKiEiByZaLnb8uDC0pdCtGJ6dbrV7XO3ji6PYjuwDYYyMCebkZWYNd37sLf\u002B/NjlnF4KB\u002B4dACuVqZUSalVV1cqojFWRlGfnR6743/wF2Ocp0aqGDqUAAAAASUVORK5CYII=",
+              "WhenOpened": "2022-11-26T22:32:14.808Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Particula.cs",
+              "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Particula.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Particula.cs",
+              "ToolTip": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Particula.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Particula.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAqwBAAAAAHAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALNSURBVDhP7ZNNSBRhGMf/7zuz66gzuequXwgKm\u002BtHkIibdEgEDe1QCCEEKaKXhE75QXnIUjwJ5uIhkAiDEDvkQVTELQ8aHlTm4iorrhqLlrq6m7vtau7OzE6nERU8RTd/pwee//Pjgfd9gCv\u002BFUYrVjwrfMWjimRdsU6QbkuCsdwo5N/PF0pqSvTOcecfAPD7/Yl8GZ/ouu7SB2YC4ba2NtNWwdY15aaCg9mDCABQTRg5jjSBgSjrZZGlrChHZZFQIrIMa9MyChQbS1mRYzlbKBQyhqPhKR10YpgJN2kZAgAOt6PDvmGvW9pZsnAMh4LUAvAxPOSojLAcnmgsbqxXoNj65/rvzW7OproP3R6O5RxFmUWl6wfr3OHxoYsSOrTxaqObAsD8j/lbbp/boqoqqixVocKMwjdFGUVdOcacrjQ\u002B7VNCQoIUVaPL6UJ6wMSbQAgJxOnjHHmmPEmIEQCCHQCb2paoeV8z9vjDY7VrossTDAY/\u002Bv3\u002BpNPmGXy/fWM9X3pUc7d5fD\u002B0n\u002B4L\u002BH42DDWo5m5zp5ahALDmXYOe1cMQZ1gUBKHeYDD8OitSVZUGg8EUb8jLHUWOABXcwNxAiifoYSJKBASEz3ydmXQqlBUZAMBS9qznFO0B\u002Br71lY44RiBFpTuD84P22uFao7gtQokqTziWs0ETZidm40Q\u002BgWPPcdEFAIiPjw9AxYvqG9WOMnMZWMouW0yW5\u002B3l7YFcUy4ooROEkLcAwAJAZV4lnHtOuPZdlubPzZ2VeZXg9Ty8IS92g7suSukwgK8\u002Bv8\u002B4tLOUS0Fd9qf2Ma/fa5pcnRRAMLP\u002Bcn0R2rdZ\u002BL7QMeWcqlvxrFiS4pKQn5KPWF0spKiEiByZaLnb8uDC0pdCtGJ6dbrV7XO3ji6PYjuwDYYyMCebkZWYNd37sLf\u002B/NjlnF4KB\u002B4dACuVqZUSalVV1cqojFWRlGfnR6743/wF2Ocp0aqGDqUAAAAASUVORK5CYII=",
+              "WhenOpened": "2022-11-13T17:36:50.631Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Camino.cs",
+              "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Camino.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Camino.cs",
+              "ToolTip": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Camino.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Camino.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2022-10-28T01:10:55.945Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

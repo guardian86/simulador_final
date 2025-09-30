@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.Progress;
 
 public class Camino : MonoBehaviour
 {
@@ -38,8 +34,12 @@ public class Camino : MonoBehaviour
 
     private void InvocarRptAgentes()
     {
-        administrador = new Administrador();
-        administrador.ObtenerReporteAgentes();
+        if (administrador == null)
+            administrador = FindObjectOfType<Administrador>();
+        if (administrador != null)
+            administrador.ObtenerReporteAgentes();
+        else
+            Debug.LogWarning("Administrador no encontrado en la escena para generar reporte");
     }
 
     void SalirCentroComercial()
@@ -57,9 +57,9 @@ public class Camino : MonoBehaviour
         Vector3 v = listaSalidas[salidaEscogida].transform.position;
         this.GetComponent<NavMeshAgent>().SetDestination(v);
 
+        // Opción: generar un reporte una sola vez, cuando empiece a salir gente
         if (Globales.generaRpt)
         {
-            GameObject[] listaAgentes = GameObject.FindGameObjectsWithTag("tagPersonas");
             InvocarRptAgentes();
             Globales.generaRpt = false;
         }
