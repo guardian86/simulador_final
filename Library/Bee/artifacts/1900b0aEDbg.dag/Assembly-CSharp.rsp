@@ -354,10 +354,14 @@
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEngine.UI.ref.dll"
 "Assets/Scripts/Administrador.cs"
 "Assets/Scripts/Agente.cs"
+"Assets/Scripts/Bootstrap/EscenaBootstrap.cs"
 "Assets/Scripts/Camino.cs"
 "Assets/Scripts/Constantes.cs"
 "Assets/Scripts/Globales.cs"
 "Assets/Scripts/Particula.cs"
+"Assets/Scripts/SimuladorConfig.cs"
+"Assets/Scripts/UI/SimuladorUI.cs"
+"Assets/Scripts/UI/UIBootstrap.cs"
 -langversion:9.0
 
 /deterministic

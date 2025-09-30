@@ -59,9 +59,13 @@
     <Compile Include="Assets\Scripts\Agente.cs" />
     <Compile Include="Assets\Scripts\Particula.cs" />
     <Compile Include="Assets\Scripts\Globales.cs" />
+    <Compile Include="Assets\Scripts\UI\UIBootstrap.cs" />
     <Compile Include="Assets\Scripts\Constantes.cs" />
     <Compile Include="Assets\Scripts\Administrador.cs" />
     <Compile Include="Assets\Scripts\Camino.cs" />
+    <Compile Include="Assets\Scripts\UI\SimuladorUI.cs" />
+    <Compile Include="Assets\Scripts\SimuladorConfig.cs" />
+    <Compile Include="Assets\Scripts\Bootstrap\EscenaBootstrap.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -32,25 +32,31 @@ public class Particula : MonoBehaviour
             return;
         }
 
-        // Intento de contagio por proximidad entre personas
-    if (other.gameObject.tag != "tagPersonas") return;
+    // Intento de contagio por proximidad entre personas (chequear tag en el root por si el collider es hijo)
+    var rootOtro = other.transform.root;
+    bool esPersona = (other.gameObject.tag == "tagPersonas") || (rootOtro != null && rootOtro.gameObject.tag == "tagPersonas");
+    if (!esPersona) return;
 
-        // Evitar auto-colisión del mismo agente
-        if (other.transform.root == raizPropia) return;
+    // Evitar auto-colisión del mismo agente
+    if (rootOtro == raizPropia) return;
 
         // Solo contagia si el dueño actual está infectado (emitiendo)
         if (!EstaInfectadoPropio()) return;
 
         // Buscar el sistema de partículas del otro agente
-        var psOtro = other.GetComponentInChildren<ParticleSystem>();
+    var psOtro = rootOtro != null ? rootOtro.GetComponentInChildren<ParticleSystem>() : other.GetComponentInChildren<ParticleSystem>();
         if (psOtro == null) return;
 
         // Si ya está infectado, no hacemos nada
         if (psOtro.isEmitting) return;
 
         // Enfriamiento por-agente para este otro específico (opcional, basado en un flag temporal)
-        var marcador = other.GetComponent<UltimoContacto>();
-        if (marcador == null) marcador = other.gameObject.AddComponent<UltimoContacto>();
+        var marcador = rootOtro != null ? rootOtro.GetComponent<UltimoContacto>() : other.GetComponent<UltimoContacto>();
+        if (marcador == null)
+        {
+            var host = rootOtro != null ? rootOtro.gameObject : other.gameObject;
+            marcador = host.AddComponent<UltimoContacto>();
+        }
         if (Time.time - marcador.ultimoContactoTime < cooldownRecontagioSeg) return;
         marcador.ultimoContactoTime = Time.time;
 
@@ -59,13 +65,6 @@ public class Particula : MonoBehaviour
         if (rnd <= probContagio)
         {
             psOtro.Play(true); // Contagiado!
-
-            // Registrar en memoria global (simple)
-            Globales.agenteCovid19.Add(new Agente.AgentesContagiados
-            {
-                tieneCovid = true,
-                cantidadContagiados = 1
-            });
 
             Debug.Log($"Contagio: {raizPropia.name} -> {other.transform.root.name} (p={probContagio:P0})");
         }
