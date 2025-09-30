@@ -2037,6 +2037,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33534f2cc246d25439586a4d8fa5c618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  probContagio: 0.25
+  cooldownRecontagioSeg: 3
 --- !u!1 &492449762
 GameObject:
   m_ObjectHideFlags: 0
@@ -3572,6 +3574,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33534f2cc246d25439586a4d8fa5c618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  probContagio: 0.25
+  cooldownRecontagioSeg: 3
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -16076,6 +16080,11 @@ MonoBehaviour:
   persona: {fileID: 492449762}
   puntoInicio: {fileID: 1015456374}
   AforoMaximo: 5
+  intervaloSpawn: 2
+  autoSpawn: 1
+  probContagioDefault: 0.25
+  usarRutaPortable: 1
+  config: {fileID: 0}
 --- !u!4 &1816586676
 Transform:
   m_ObjectHideFlags: 0
@@ -16421,6 +16430,65 @@ Transform:
   - {fileID: 356348199}
   m_Father: {fileID: 0}
   m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1998271684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1998271687}
+  - component: {fileID: 1998271686}
+  - component: {fileID: 1998271685}
+  m_Layer: 0
+  m_Name: Bootstrap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1998271685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998271684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21213e3167669b2479d5328589bf38f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1998271686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998271684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9be0992702ac8d4a83ffeef3be76e53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crearPuntosMeta: 1
+  cantidadMetas: 3
+--- !u!4 &1998271687
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998271684}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.6458867, y: -2.154267, z: 34.99557}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2031386557
 GameObject:
