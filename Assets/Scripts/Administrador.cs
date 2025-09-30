@@ -25,17 +25,29 @@ public class Administrador : MonoBehaviour
     [Tooltip("Segundos entre spawns")] public float intervaloSpawn = 2f;
     [Tooltip("Si está activo, el administrador seguirá creando agentes hasta el aforo máximo")] public bool autoSpawn = true;
     [Range(0f,1f)] public float probContagioDefault = 0.25f;
+    [Tooltip("Usar Application.persistentDataPath para guardar reportes")] public bool usarRutaPortable = true;
+    [Header("Config (opcional)")] public SimuladorConfig config;
     #endregion
 
     #region "Variables Privadas"
     int contadorAgentes = 0;
     private GameObject clon;
+    private readonly Queue<GameObject> pool = new Queue<GameObject>();
     #endregion
 
 
     // Update is called once per frame
     private void Start()
     {
+        // Cargar parámetros desde config si está asignada
+        if (config != null)
+        {
+            AforoMaximo = config.aforoMaximo;
+            intervaloSpawn = config.intervaloSpawn;
+            probContagioDefault = config.probContagio;
+            autoSpawn = config.autoSpawn;
+            usarRutaPortable = config.usarRutaPortable;
+        }
         if (autoSpawn)
             Invoke(nameof(CrearAgente), Mathf.Max(0.1f, intervaloSpawn));
     }
@@ -55,12 +67,28 @@ public class Administrador : MonoBehaviour
 
                 var pos = puntoInicio != null ? puntoInicio.transform.position : Vector3.zero;
                 var rot = puntoInicio != null ? puntoInicio.transform.rotation : Quaternion.identity;
-                clon = Instantiate(persona, pos, rot);
-                clon.GetComponentInChildren<Camino>().enabled = true;
-                clon.GetComponentInChildren<Particula>().enabled = true;
-                var p = clon.GetComponentInChildren<Particula>();
-                if (p != null) p.probContagio = probContagioDefault;
-                clon.gameObject.SetActive(true);
+
+                if (pool.Count > 0)
+                {
+                    clon = pool.Dequeue();
+                    clon.transform.SetPositionAndRotation(pos, rot);
+                    clon.SetActive(true);
+                    var camino = clon.GetComponentInChildren<Camino>();
+                    if (camino != null) camino.ReiniciarRuta();
+                }
+                else
+                {
+                    clon = Instantiate(persona, pos, rot);
+                    var camino = clon.GetComponentInChildren<Camino>();
+                    if (camino != null) camino.enabled = true;
+                    var part = clon.GetComponentInChildren<Particula>();
+                    if (part != null)
+                    {
+                        part.enabled = true;
+                        part.probContagio = probContagioDefault;
+                    }
+                    clon.gameObject.SetActive(true);
+                }
                 
                 var probCovid = UnityEngine.Random.Range(0, 100);
 
@@ -132,10 +160,17 @@ public class Administrador : MonoBehaviour
         {
             
             var json = JsonConvert.SerializeObject(rptAgent, Formatting.Indented);
-            if (!Directory.Exists(Constantes.folderPath))
-                Directory.CreateDirectory(Constantes.folderPath);
-            
-            File.WriteAllText(String.Concat(Constantes.path, $"-{DateTime.Now.ToString("ddMMyyyyhhmmss")}.json"), json);
+
+            string baseFolder = usarRutaPortable 
+                ? Path.Combine(Application.persistentDataPath, "ReporteAgentes")
+                : Constantes.folderPath;
+            string baseFile = usarRutaPortable 
+                ? Path.Combine(baseFolder, "RptAgentes")
+                : Constantes.path;
+            if (!Directory.Exists(baseFolder))
+                Directory.CreateDirectory(baseFolder);
+
+            File.WriteAllText(string.Concat(baseFile, $"-{DateTime.Now:ddMMyyyyHHmmss}.json"), json);
 
         }
         catch (Exception ex)
@@ -179,7 +214,7 @@ public class Administrador : MonoBehaviour
         var agentes = GameObject.FindGameObjectsWithTag("tagPersonas");
         foreach (var a in agentes)
         {
-            Destroy(a);
+            ReleaseAgente(a);
         }
         contadorAgentes = 0;
         Globales.agenteCovid19.Clear();
@@ -248,6 +283,20 @@ public class Administrador : MonoBehaviour
         p.probContagio = probContagioDefault;
 
         return go;
+    }
+
+    // Libera el agente (pool) en vez de destruir
+    public void ReleaseAgente(GameObject agenteRoot)
+    {
+        if (agenteRoot == null) return;
+        // Apaga partículas y resetea
+        var ps = agenteRoot.GetComponentInChildren<ParticleSystem>();
+        if (ps != null) ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        var nav = agenteRoot.GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (nav != null) nav.ResetPath();
+
+        agenteRoot.SetActive(false);
+        pool.Enqueue(agenteRoot);
     }
 
 }

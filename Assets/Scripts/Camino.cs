@@ -12,13 +12,7 @@ public class Camino : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        this.GetComponent<NavMeshAgent>().speed = Random.Range(velocidadInit, velocidadInit + veloMax);
-        GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("meta");
-        int salidaEscogida = Random.Range(0, listaSalidas.Length);
-
-        Vector3 v = listaSalidas[salidaEscogida].transform.position;
-        this.GetComponent<NavMeshAgent>().SetDestination(v);
+        ReiniciarRuta();
 
     }
 
@@ -77,7 +71,15 @@ public class Camino : MonoBehaviour
             //Debug.Log(other.gameObject);
             if (other.gameObject)
             {
-                Destroy(this.transform.parent.gameObject);
+                var admin = FindObjectOfType<Administrador>();
+                if (admin != null)
+                {
+                    admin.ReleaseAgente(this.transform.root.gameObject);
+                }
+                else
+                {
+                    Destroy(this.transform.root.gameObject);
+                }
             }
         }
         if (other.gameObject.tag.Equals("meta"))
@@ -86,6 +88,18 @@ public class Camino : MonoBehaviour
             //Debug.Log(other.gameObject);
             Invoke("SalirCentroComercial", Random.Range(7f, 15f));
         }
+    }
+
+    public void ReiniciarRuta()
+    {
+        var nav = this.GetComponent<NavMeshAgent>();
+        if (nav == null) return;
+        nav.speed = Random.Range(velocidadInit, velocidadInit + veloMax);
+        GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("meta");
+        if (listaSalidas == null || listaSalidas.Length == 0) return;
+        int salidaEscogida = Random.Range(0, listaSalidas.Length);
+        Vector3 v = listaSalidas[salidaEscogida].transform.position;
+        nav.SetDestination(v);
     }
 
 

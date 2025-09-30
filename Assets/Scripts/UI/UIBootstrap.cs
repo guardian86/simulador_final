@@ -8,6 +8,14 @@ public class UIBootstrap : MonoBehaviour
     {
         if (FindObjectOfType<SimuladorUI>() != null) return;
 
+        // EventSystem
+        if (FindObjectOfType<UnityEngine.EventSystems.EventSystem>() == null)
+        {
+            var es = new GameObject("EventSystem");
+            es.AddComponent<UnityEngine.EventSystems.EventSystem>();
+            es.AddComponent<UnityEngine.EventSystems.StandaloneInputModule>();
+        }
+
         // Canvas
         var canvasGO = new GameObject("Canvas");
         var canvas = canvasGO.AddComponent<Canvas>();
@@ -42,6 +50,7 @@ public class UIBootstrap : MonoBehaviour
             var txtGO = new GameObject("Text");
             txtGO.transform.SetParent(go.transform);
             var txt = txtGO.AddComponent<Text>();
+            txt.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
             txt.text = texto; txt.alignment = TextAnchor.MiddleCenter; txt.color = Color.black;
             var txtrt = txtGO.GetComponent<RectTransform>(); txtrt.anchorMin = Vector2.zero; txtrt.anchorMax = Vector2.one; txtrt.offsetMin = Vector2.zero; txtrt.offsetMax = Vector2.zero;
             return btn;
