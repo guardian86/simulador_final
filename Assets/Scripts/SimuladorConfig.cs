@@ -8,8 +8,15 @@ public class SimuladorConfig : ScriptableObject
     public float intervaloSpawn = 2f;
     public bool autoSpawn = true;
 
-    [Header("Contagio")]
-    [Range(0f,1f)] public float probContagio = 0.25f;
+    [Header("Modelo aerosol")]
+    [Range(0f,1f)] public float probabilidadIngresoInfectado = 0.2f;
+    public float umbralContagioAerosolBase = 1.2f;
+
+    [Header("Lotes")]
+    public int cantidadSimulacionesLote = 5;
+    public float duracionSimulacionSegundos = 45f;
+    public int aforoMinimoPorSimulacion = 20;
+    public int aforoMaximoPorSimulacion = 60;
 
     [Header("Reportes")]
     public bool usarRutaPortable = true;

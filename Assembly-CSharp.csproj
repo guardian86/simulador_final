@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{DD84916F-4769-FE7A-7796-101B1FC2F003}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -57,6 +58,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Agente.cs" />
+    <Compile Include="Assets\Scripts\AnimacionPersonaSimple.cs" />
+    <Compile Include="Assets\Scripts\AspectoAgente.cs" />
+    <Compile Include="Assets\Scripts\ControlCamaraSimulacion.cs" />
+    <Compile Include="Assets\Scripts\EstadoSaludAgente.cs" />
+    <Compile Include="Assets\Scripts\FabricaPersonaSimple.cs" />
     <Compile Include="Assets\Scripts\Particula.cs" />
     <Compile Include="Assets\Scripts\Globales.cs" />
     <Compile Include="Assets\Scripts\UI\UIBootstrap.cs" />
