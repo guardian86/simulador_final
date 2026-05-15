@@ -28,12 +28,14 @@ public class Administrador : MonoBehaviour
     [Header("Modelo aerosol")]
     [Range(0f,1f)] public float probabilidadIngresoInfectado = 0.2f;
     public float umbralContagioAerosolBase = 1.2f;
+    [Range(0f,12f)] public float nivelVentilacionACH = 6f;
+    [Range(0f,100f)] public float eficaciaMascarillaPorcentaje = 0f;
     [Header("Simulaciones múltiples")]
     public int cantidadSimulacionesLote = 5;
     public float duracionSimulacionSegundos = 45f;
     public int aforoMinimoPorSimulacion = 20;
     public int aforoMaximoPorSimulacion = 60;
-    [Tooltip("Usar Application.persistentDataPath para guardar reportes")] public bool usarRutaPortable = true;
+    [Tooltip("Usar la carpeta Resultados_Simulador_Quintero del Escritorio para guardar reportes")] public bool usarRutaPortable = true;
     [Tooltip("Ruta personalizada de salida para los reportes JSON")]
     public string rutaSalidaPersonalizada = string.Empty;
     [Tooltip("Nombre base del archivo exportado")]
@@ -48,6 +50,13 @@ public class Administrador : MonoBehaviour
     private Coroutine rutinaLote;
     private bool simulacionEnCurso;
     private float tiempoSimulacionActual;
+    private int aforoObjetivoContextoActual;
+    private float intervaloSpawnContextoActual;
+    private float umbralContagioAerosolBaseContextoActual;
+    private float nivelVentilacionACHContextoActual;
+    private float eficaciaMascarillaPorcentajeContextoActual;
+    private int semillaAleatoriaContextoActual;
+    private int semillaAleatoriaLoteActual;
     #endregion
 
     public string UltimaRutaExportada { get; private set; }
@@ -73,6 +82,8 @@ public class Administrador : MonoBehaviour
             aforoMaximoPorSimulacion = config.aforoMaximoPorSimulacion;
             probabilidadIngresoInfectado = config.probabilidadIngresoInfectado;
             umbralContagioAerosolBase = config.umbralContagioAerosolBase;
+            nivelVentilacionACH = config.nivelVentilacionACH;
+            eficaciaMascarillaPorcentaje = config.eficaciaMascarillaPorcentaje;
         }
 
         if (string.IsNullOrWhiteSpace(rutaSalidaPersonalizada) && usarRutaPortable)
@@ -80,6 +91,7 @@ public class Administrador : MonoBehaviour
 
         if (autoSpawn)
         {
+            AplicarSemillaSimulacion(GenerarSemillaAleatoria());
             IniciarRelojSimulacion();
             Invoke(nameof(CrearAgente), Mathf.Max(0.1f, intervaloSpawn));
         }
@@ -162,7 +174,7 @@ public class Administrador : MonoBehaviour
         try
         {
             float duracionActual = tiempoSimulacionActual > 0.1f ? tiempoSimulacionActual : duracionSimulacionSegundos;
-            var estadisticas = ConstruirReporteSimulacionActual(1, AforoMaximo, duracionActual);
+            var estadisticas = ConstruirReporteSimulacionActual(1, ObtenerAforoObjetivoParaReporte(), duracionActual);
             UltimaRutaExportada = GuardarJson(estadisticas, nombreBaseArchivo);
             ResumenVisualActual = ConstruirResumenVisual(estadisticas);
             return UltimaRutaExportada;
@@ -215,6 +227,11 @@ public class Administrador : MonoBehaviour
         public int numeroSimulacion { get; set; }
         public int aforoObjetivo { get; set; }
         public float duracionSimulacionSegundos { get; set; }
+        public float intervaloSpawn { get; set; }
+        public float umbralContagioAerosolBase { get; set; }
+        [JsonProperty("NivelVentilacionACH")] public float nivelVentilacionACH { get; set; }
+        [JsonProperty("EficaciaMascarillaPorcentaje")] public float eficaciaMascarillaPorcentaje { get; set; }
+        public int semillaAleatoria { get; set; }
         public int infectadosIniciales { get; set; }
         public int infectadosFinales { get; set; }
         public int contagiosSecundarios { get; set; }
@@ -228,6 +245,10 @@ public class Administrador : MonoBehaviour
     {
         public int cantidadSimulaciones { get; set; }
         public float intervaloSpawn { get; set; }
+        public float umbralContagioAerosolBase { get; set; }
+        [JsonProperty("NivelVentilacionACH")] public float nivelVentilacionACH { get; set; }
+        [JsonProperty("EficaciaMascarillaPorcentaje")] public float eficaciaMascarillaPorcentaje { get; set; }
+        public int semillaAleatoria { get; set; }
         public string rutaCarpetaSalida { get; set; }
         public List<estadisticacontagiocovid> simulaciones { get; set; }
         public float promedioPorcentajeContagioSecundario { get; set; }
@@ -264,6 +285,7 @@ public class Administrador : MonoBehaviour
     {
         autoSpawn = true;
         CancelInvoke(nameof(CrearAgente));
+        AplicarSemillaSimulacion(GenerarSemillaAleatoria());
         IniciarRelojSimulacion();
         Invoke(nameof(CrearAgente), Mathf.Max(0.1f, intervaloSpawn));
         EstadoLoteActual = "Simulación en ejecución";
@@ -307,6 +329,32 @@ public class Administrador : MonoBehaviour
         duracionSimulacionSegundos = Mathf.Clamp(nuevaDuracion, 5f, 600f);
     }
 
+    public void EstablecerNivelVentilacion(float nuevoNivelACH)
+    {
+        nivelVentilacionACH = Mathf.Clamp(nuevoNivelACH, 0f, 12f);
+    }
+
+    public void EstablecerEficaciaMascarilla(float nuevaEficaciaPorcentaje)
+    {
+        eficaciaMascarillaPorcentaje = Mathf.Clamp(nuevaEficaciaPorcentaje, 0f, 100f);
+    }
+
+    public float ObtenerFactorMascarillaAerosoles()
+    {
+        return 1f - Mathf.Clamp01(eficaciaMascarillaPorcentaje / 100f);
+    }
+
+    public float ObtenerFactorVentilacionAerosoles()
+    {
+        // La ventilacion se modela como una dilucion exponencial de aerosoles acumulados.
+        return Mathf.Exp(-0.22f * Mathf.Clamp(nivelVentilacionACH, 0f, 12f));
+    }
+
+    public float ObtenerMultiplicadorMitigacionAerosoles()
+    {
+        return Mathf.Clamp01(ObtenerFactorMascarillaAerosoles() * ObtenerFactorVentilacionAerosoles());
+    }
+
     public void EstablecerRangoAforoSimulacion(int minimo, int maximo)
     {
         aforoMinimoPorSimulacion = Mathf.Max(1, minimo);
@@ -325,10 +373,7 @@ public class Administrador : MonoBehaviour
         if (!string.IsNullOrWhiteSpace(rutaSalidaPersonalizada))
             return rutaSalidaPersonalizada;
 
-        if (usarRutaPortable)
-            return ObtenerCarpetaPortablePorDefecto();
-
-        return Constantes.folderPath;
+        return ObtenerCarpetaPortablePorDefecto();
     }
 
     public int ObtenerCantidadAgentesActivos()
@@ -445,12 +490,22 @@ public class Administrador : MonoBehaviour
         int infectadosFinales = estados.Count(estado => estado.estaInfectado);
         int contagiosSecundarios = estados.Count(estado => estado.fueContagioSecundario);
         int susceptiblesIniciales = Mathf.Max(0, estados.Count - infectadosIniciales);
+        float intervaloSpawnReporte = ObtenerIntervaloSpawnParaReporte();
+        float umbralContagioReporte = ObtenerUmbralContagioParaReporte();
+        float nivelVentilacionReporte = ObtenerNivelVentilacionParaReporte();
+        float eficaciaMascarillaReporte = ObtenerEficaciaMascarillaParaReporte();
+        int semillaReporte = ObtenerSemillaParaReporte();
 
         var reporte = new estadisticacontagiocovid
         {
             numeroSimulacion = numeroSimulacion,
             aforoObjetivo = aforoObjetivo,
             duracionSimulacionSegundos = duracion,
+            intervaloSpawn = intervaloSpawnReporte,
+            umbralContagioAerosolBase = umbralContagioReporte,
+            nivelVentilacionACH = nivelVentilacionReporte,
+            eficaciaMascarillaPorcentaje = eficaciaMascarillaReporte,
+            semillaAleatoria = semillaReporte,
             infectadosIniciales = infectadosIniciales,
             infectadosFinales = infectadosFinales,
             contagiosSecundarios = contagiosSecundarios,
@@ -484,9 +539,11 @@ public class Administrador : MonoBehaviour
         EstadoLoteActual = "Preparando lote";
         bool autoSpawnOriginal = autoSpawn;
         var resultados = new List<estadisticacontagiocovid>();
+        semillaAleatoriaLoteActual = GenerarSemillaAleatoria();
 
         for (int indice = 1; indice <= cantidadSimulacionesLote; indice++)
         {
+            AplicarSemillaSimulacion(DerivarSemillaLote(indice));
             int aforoSimulacion = UnityEngine.Random.Range(aforoMinimoPorSimulacion, aforoMaximoPorSimulacion + 1);
             EstablecerAforoMaximo(aforoSimulacion);
             ResetSimulacionInterna(false);
@@ -514,6 +571,10 @@ public class Administrador : MonoBehaviour
         {
             cantidadSimulaciones = resultados.Count,
             intervaloSpawn = intervaloSpawn,
+            umbralContagioAerosolBase = umbralContagioAerosolBase,
+            nivelVentilacionACH = nivelVentilacionACH,
+            eficaciaMascarillaPorcentaje = eficaciaMascarillaPorcentaje,
+            semillaAleatoria = semillaAleatoriaLoteActual,
             rutaCarpetaSalida = ObtenerCarpetaSalida(),
             simulaciones = resultados,
             promedioPorcentajeContagioSecundario = resultados.Count > 0 ? resultados.Average(item => item.porcentajeContagioSecundario) : 0f,
@@ -528,23 +589,92 @@ public class Administrador : MonoBehaviour
 
     private void IniciarRelojSimulacion()
     {
+        CapturarContextoSimulacionActual();
         tiempoSimulacionActual = 0f;
         simulacionEnCurso = true;
     }
 
     private string ConstruirResumenVisual(estadisticacontagiocovid reporte)
     {
-        return $"Simulación {reporte.numeroSimulacion} | Aforo {reporte.aforoObjetivo} | Iniciales {reporte.infectadosIniciales} | Secundarios {reporte.contagiosSecundarios} | Final {reporte.promedioTotalContagio:0.0}%";
+        return $"Simulación {reporte.numeroSimulacion} | Semilla {reporte.semillaAleatoria} | ACH {reporte.nivelVentilacionACH:0.#} | Mascarilla {reporte.eficaciaMascarillaPorcentaje:0}% | Final {reporte.promedioTotalContagio:0.0}%";
     }
 
     private string ConstruirResumenVisualLote(ResumenLoteSimulaciones resumen)
     {
-        return $"Lote {resumen.cantidadSimulaciones} corridas | Prevalencia promedio {resumen.promedioPrevalenciaFinal:0.0}% | Secundario promedio {resumen.promedioPorcentajeContagioSecundario:0.0}%";
+        return $"Lote {resumen.cantidadSimulaciones} corridas | Semilla base {resumen.semillaAleatoria} | ACH {resumen.nivelVentilacionACH:0.#} | Mascarilla {resumen.eficaciaMascarillaPorcentaje:0}% | Prevalencia promedio {resumen.promedioPrevalenciaFinal:0.0}%";
+    }
+
+    private void CapturarContextoSimulacionActual()
+    {
+        aforoObjetivoContextoActual = AforoMaximo;
+        intervaloSpawnContextoActual = intervaloSpawn;
+        umbralContagioAerosolBaseContextoActual = umbralContagioAerosolBase;
+        nivelVentilacionACHContextoActual = nivelVentilacionACH;
+        eficaciaMascarillaPorcentajeContextoActual = eficaciaMascarillaPorcentaje;
+    }
+
+    private void AplicarSemillaSimulacion(int semilla)
+    {
+        semillaAleatoriaContextoActual = semilla;
+        UnityEngine.Random.InitState(semillaAleatoriaContextoActual);
+    }
+
+    private int GenerarSemillaAleatoria()
+    {
+        return unchecked((int)(DateTime.UtcNow.Ticks & 0x7FFFFFFF));
+    }
+
+    private int DerivarSemillaLote(int indiceSimulacion)
+    {
+        return unchecked(semillaAleatoriaLoteActual + (indiceSimulacion * 7919));
+    }
+
+    private int ObtenerAforoObjetivoParaReporte()
+    {
+        return simulacionEnCurso || tiempoSimulacionActual > 0.1f
+            ? aforoObjetivoContextoActual
+            : AforoMaximo;
+    }
+
+    private float ObtenerIntervaloSpawnParaReporte()
+    {
+        return simulacionEnCurso || tiempoSimulacionActual > 0.1f
+            ? intervaloSpawnContextoActual
+            : intervaloSpawn;
+    }
+
+    private float ObtenerUmbralContagioParaReporte()
+    {
+        return simulacionEnCurso || tiempoSimulacionActual > 0.1f
+            ? umbralContagioAerosolBaseContextoActual
+            : umbralContagioAerosolBase;
+    }
+
+    private float ObtenerNivelVentilacionParaReporte()
+    {
+        return simulacionEnCurso || tiempoSimulacionActual > 0.1f
+            ? nivelVentilacionACHContextoActual
+            : nivelVentilacionACH;
+    }
+
+    private float ObtenerEficaciaMascarillaParaReporte()
+    {
+        return simulacionEnCurso || tiempoSimulacionActual > 0.1f
+            ? eficaciaMascarillaPorcentajeContextoActual
+            : eficaciaMascarillaPorcentaje;
+    }
+
+    private int ObtenerSemillaParaReporte()
+    {
+        return semillaAleatoriaContextoActual != 0 ? semillaAleatoriaContextoActual : GenerarSemillaAleatoria();
     }
 
     private string ObtenerCarpetaPortablePorDefecto()
     {
-        return Path.Combine(Application.persistentDataPath, "ReporteAgentes");
+        string escritorioUsuario = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string carpetaResultados = Path.Combine(escritorioUsuario, "Resultados_Simulador_Quintero");
+        Directory.CreateDirectory(carpetaResultados);
+        return carpetaResultados;
     }
 
     private string GuardarJson(object contenido, string nombreBase)

@@ -3,15 +3,19 @@
   "WorkspaceRootPath": "D:\\ProjectsUnity\\simulador_final\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|D:\\ProjectsUnity\\simulador_final\\assets\\scripts\\administrador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|d:\\projectsunity\\simulador_final\\library\\bee\\fullprofile.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|solutionrelative:library\\bee\\fullprofile.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|d:\\projectsunity\\simulador_final\\assets\\scripts\\administrador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\administrador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|d:\\projectsunity\\simulador_final\\assets\\scripts\\estadosaludagente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|D:\\ProjectsUnity\\simulador_final\\assets\\scripts\\estadosaludagente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\estadosaludagente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|d:\\projectsunity\\simulador_final\\assets\\scripts\\particula.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|D:\\ProjectsUnity\\simulador_final\\assets\\scripts\\particula.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DD84916F-4769-FE7A-7796-101B1FC2F003}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\particula.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -38,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -70,7 +74,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "fullprofile.json",
+              "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Library\\Bee\\fullprofile.json",
+              "RelativeDocumentMoniker": "Library\\Bee\\fullprofile.json",
+              "ToolTip": "D:\\ProjectsUnity\\simulador_final\\Library\\Bee\\fullprofile.json",
+              "RelativeToolTip": "Library\\Bee\\fullprofile.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-11T22:13:00.54Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "EstadoSaludAgente.cs",
               "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\EstadoSaludAgente.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\EstadoSaludAgente.cs",
@@ -78,12 +95,11 @@
               "RelativeToolTip": "Assets\\Scripts\\EstadoSaludAgente.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-11T21:43:41.152Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-11T21:43:41.152Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Globales.cs",
               "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Globales.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Globales.cs",
@@ -95,7 +111,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Constantes.cs",
               "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Constantes.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Constantes.cs",
@@ -107,20 +123,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Administrador.cs",
               "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Administrador.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Administrador.cs",
               "ToolTip": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Administrador.cs",
               "RelativeToolTip": "Assets\\Scripts\\Administrador.cs",
-              "ViewState": "AgIAAGQBAAAAAAAAAAA7wHwBAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAEsBAAAAAAAAAAAuwFABAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-08T19:48:17.978Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Agente.cs",
               "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Agente.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Agente.cs",
@@ -133,7 +149,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Particula.cs",
               "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Particula.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Particula.cs",
@@ -141,12 +157,11 @@
               "RelativeToolTip": "Assets\\Scripts\\Particula.cs",
               "ViewState": "AgIAABUAAAAAAAAAAAAYwC4AAABeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-08T19:48:17.982Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-08T19:48:17.982Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Camino.cs",
               "DocumentMoniker": "D:\\ProjectsUnity\\simulador_final\\Assets\\Scripts\\Camino.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Camino.cs",

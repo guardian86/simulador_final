@@ -11,6 +11,8 @@ public class SimuladorConfig : ScriptableObject
     [Header("Modelo aerosol")]
     [Range(0f,1f)] public float probabilidadIngresoInfectado = 0.2f;
     public float umbralContagioAerosolBase = 1.2f;
+    [Range(0f,12f)] public float nivelVentilacionACH = 6f;
+    [Range(0f,100f)] public float eficaciaMascarillaPorcentaje = 0f;
 
     [Header("Lotes")]
     public int cantidadSimulacionesLote = 5;

@@ -50,7 +50,7 @@ public class UIBootstrap : MonoBehaviour
         panelRT.anchorMax = new Vector2(0, 1);
         panelRT.pivot = new Vector2(0, 1);
         panelRT.anchoredPosition = new Vector2(22, -22);
-        panelRT.sizeDelta = new Vector2(660, 630);
+        panelRT.sizeDelta = new Vector2(660, 734);
 
         Text CrearTexto(string nombre, Transform padre, string texto, int tamano, Color color, TextAnchor alineacion)
         {
@@ -89,6 +89,18 @@ public class UIBootstrap : MonoBehaviour
             var rt = txt.GetComponent<RectTransform>();
             rt.sizeDelta = new Vector2(580, 24);
             rt.anchorMin = new Vector2(0,1); rt.anchorMax = new Vector2(0,1); rt.pivot = new Vector2(0,1);
+            rt.anchoredPosition = pos;
+            return txt;
+        }
+
+        Text CrearValorSlider(string nombre, Vector2 pos, string texto)
+        {
+            var txt = CrearTexto(nombre, panelGO.transform, texto, 16, colorTextoClaro, TextAnchor.MiddleRight);
+            var rt = txt.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(108, 24);
+            rt.anchorMin = new Vector2(0, 1);
+            rt.anchorMax = new Vector2(0, 1);
+            rt.pivot = new Vector2(0, 1);
             rt.anchoredPosition = pos;
             return txt;
         }
@@ -177,7 +189,7 @@ public class UIBootstrap : MonoBehaviour
         tituloRT.anchoredPosition = new Vector2(22, -18);
         tituloRT.sizeDelta = new Vector2(460, 30);
 
-        var subtitulo = CrearTexto("Subtitulo", panelGO.transform, "Parámetros de simulación y exportación", 15, colorTextoSecundario, TextAnchor.MiddleLeft);
+        var subtitulo = CrearTexto("Subtitulo", panelGO.transform, "Parámetros de simulación, mitigación y exportación", 15, colorTextoSecundario, TextAnchor.MiddleLeft);
         var subtituloRT = subtitulo.GetComponent<RectTransform>();
         subtituloRT.anchorMin = new Vector2(0, 1);
         subtituloRT.anchorMax = new Vector2(0, 1);
@@ -186,7 +198,9 @@ public class UIBootstrap : MonoBehaviour
         subtituloRT.sizeDelta = new Vector2(430, 22);
 
         // Crear UI elements
-        var lblResumen = CrearLabel("lblResumen", new Vector2(22, -82), "Activos: 0 | Infectados: 0 | Contagio: 0%");
+        var lblResumen = CrearLabel("lblResumen", new Vector2(22, -82), "Contagiados: 0% | Ventilación: 6 ACH | Mascarillas: 0% | I: 0/0");
+        lblResumen.horizontalOverflow = HorizontalWrapMode.Overflow;
+        lblResumen.GetComponent<RectTransform>().sizeDelta = new Vector2(620, 24);
 
         var lblAforo = CrearLabel("lblAforo", new Vector2(22, -126), "Aforo objetivo: 30");
         var inpAforo = CrearCampoEntrada("inpAforo", new Vector2(190, -122), "30");
@@ -198,35 +212,46 @@ public class UIBootstrap : MonoBehaviour
         inpIntervalo.contentType = InputField.ContentType.DecimalNumber;
         var sldIntervalo = CrearSlider("sldIntervalo", new Vector2(312, -173), 0.1f, 10f);
 
-        var lblLote = CrearLabel("lblLote", new Vector2(22, -226), "Lote: 5 simulaciones | 45 s por corrida");
-        var inpCantidadSimulaciones = CrearCampoEntrada("inpCantidadSimulaciones", new Vector2(22, -258), "5");
+        CrearLabel("lblVentilacionTitulo", new Vector2(22, -226), "Ventilación ambiental");
+        var txtVentilacionValor = CrearValorSlider("txtVentilacionValor", new Vector2(190, -222), "6 ACH");
+        var sldVentilacion = CrearSlider("sldVentilacion", new Vector2(312, -223), 0f, 12f);
+        sldVentilacion.value = 6f;
+
+        CrearLabel("lblMascarillaTitulo", new Vector2(22, -276), "Eficacia de mascarilla");
+        var txtEficaciaMascarillaValor = CrearValorSlider("txtEficaciaMascarillaValor", new Vector2(190, -272), "0 %");
+        var sldEficaciaMascarilla = CrearSlider("sldEficaciaMascarilla", new Vector2(312, -273), 0f, 100f);
+        sldEficaciaMascarilla.wholeNumbers = true;
+        sldEficaciaMascarilla.value = 0f;
+
+        var lblLote = CrearLabel("lblLote", new Vector2(22, -326), "Lote: 5 simulaciones | 45 s por corrida");
+        var inpCantidadSimulaciones = CrearCampoEntrada("inpCantidadSimulaciones", new Vector2(22, -358), "5");
         inpCantidadSimulaciones.contentType = InputField.ContentType.IntegerNumber;
-        var inpDuracion = CrearCampoEntrada("inpDuracionSimulacion", new Vector2(144, -258), "45");
+        var inpDuracion = CrearCampoEntrada("inpDuracionSimulacion", new Vector2(144, -358), "45");
         inpDuracion.contentType = InputField.ContentType.DecimalNumber;
 
-        var lblAforoLote = CrearLabel("lblAforoLote", new Vector2(22, -304), "Aforo por corrida: 20 a 60");
-        var inpAforoMinimo = CrearCampoEntrada("inpAforoMinimoLote", new Vector2(22, -336), "20");
+        var lblAforoLote = CrearLabel("lblAforoLote", new Vector2(22, -404), "Aforo por corrida: 20 a 60");
+        var inpAforoMinimo = CrearCampoEntrada("inpAforoMinimoLote", new Vector2(22, -436), "20");
         inpAforoMinimo.contentType = InputField.ContentType.IntegerNumber;
-        var inpAforoMaximo = CrearCampoEntrada("inpAforoMaximoLote", new Vector2(144, -336), "60");
+        var inpAforoMaximo = CrearCampoEntrada("inpAforoMaximoLote", new Vector2(144, -436), "60");
         inpAforoMaximo.contentType = InputField.ContentType.IntegerNumber;
 
-        var lblRuta = CrearLabel("lblRutaSalida", new Vector2(22, -384), "Salida JSON: ");
-        var inpRuta = CrearCampoEntrada("inpRutaSalida", new Vector2(22, -418), "C:/MisReportes");
+        var lblRuta = CrearLabel("lblRutaSalida", new Vector2(22, -484), "Salida JSON: ");
+        var inpRuta = CrearCampoEntrada("inpRutaSalida", new Vector2(22, -518), "C:/MisReportes");
         inpRuta.GetComponent<RectTransform>().sizeDelta = new Vector2(580, 38);
 
-        var btnAplicar = CrearBoton("btnAplicar", new Vector2(22, -470), "Aplicar");
-        var btnRutaPortable = CrearBoton("btnRutaPortable", new Vector2(168, -470), "Ruta portable");
-        var btnAbrirCarpeta = CrearBoton("btnAbrirCarpeta", new Vector2(314, -470), "Abrir carpeta");
+        var btnAplicar = CrearBoton("btnAplicar", new Vector2(22, -570), "Aplicar");
+        var btnRutaPortable = CrearBoton("btnRutaPortable", new Vector2(168, -570), "Ruta escritorio");
+        var btnAbrirCarpeta = CrearBoton("btnAbrirCarpeta", new Vector2(314, -570), "Abrir carpeta");
         btnAbrirCarpeta.GetComponent<RectTransform>().sizeDelta = new Vector2(162, 40);
 
-        var btnIniciar = CrearBoton("btnIniciar", new Vector2(22, -522), "Iniciar");
-        var btnLote = CrearBoton("btnEjecutarLote", new Vector2(168, -522), "Lote");
-        var btnDetener = CrearBoton("btnDetener", new Vector2(314, -522), "Detener");
-        var btnReset = CrearBoton("btnReset", new Vector2(460, -522), "Reset");
-        var btnExportar = CrearBoton("btnExportar", new Vector2(22, -570), "Exportar actual");
+        var btnIniciar = CrearBoton("btnIniciar", new Vector2(22, -622), "Iniciar");
+        var btnLote = CrearBoton("btnEjecutarLote", new Vector2(168, -622), "Lote");
+        var btnDetener = CrearBoton("btnDetener", new Vector2(314, -622), "Detener");
+        var btnReset = CrearBoton("btnReset", new Vector2(460, -622), "Reset");
+        var btnExportar = CrearBoton("btnExportar", new Vector2(22, -670), "Exportar actual");
         btnExportar.GetComponent<RectTransform>().sizeDelta = new Vector2(170, 40);
 
-        var lblEstado = CrearLabel("lblEstado", new Vector2(206, -578), "Listo para ejecutar.");
+        var lblEstado = CrearLabel("lblEstado", new Vector2(206, -678), "Listo para ejecutar.");
         lblEstado.color = colorTextoSecundario;
         lblEstado.GetComponent<RectTransform>().sizeDelta = new Vector2(390, 24);
 
@@ -279,6 +304,8 @@ public class UIBootstrap : MonoBehaviour
         ui.btnAbrirCarpeta = btnAbrirCarpeta;
         ui.sldAforo = sldAforo;
         ui.sldIntervalo = sldIntervalo;
+        ui.sldVentilacion = sldVentilacion;
+        ui.sldEficaciaMascarilla = sldEficaciaMascarilla;
         ui.inpAforo = inpAforo;
         ui.inpIntervalo = inpIntervalo;
         ui.inpCantidadSimulaciones = inpCantidadSimulaciones;
@@ -296,5 +323,7 @@ public class UIBootstrap : MonoBehaviour
         ui.lblTiempo = lblTiempo;
         ui.lblCasos = lblCasos;
         ui.lblResumenFinal = lblResumenFinal;
+        ui.txtVentilacionValor = txtVentilacionValor;
+        ui.txtEficaciaMascarillaValor = txtEficaciaMascarillaValor;
     }
 }

@@ -10,12 +10,22 @@ public class Particula : MonoBehaviour
     private ParticleSystem miParticula;
     private Transform raizPropia; // agente dueño
     private EstadoSaludAgente estadoPropio;
+    private Administrador admin;
 
     private void Awake()
     {
         miParticula = GetComponentInChildren<ParticleSystem>();
         raizPropia = transform.root;
         estadoPropio = raizPropia.GetComponent<EstadoSaludAgente>();
+        admin = FindObjectOfType<Administrador>();
+    }
+
+    private Administrador ObtenerAdministrador()
+    {
+        if (admin == null)
+            admin = FindObjectOfType<Administrador>();
+
+        return admin;
     }
 
     private bool EstaInfectadoPropio()
@@ -52,8 +62,17 @@ public class Particula : MonoBehaviour
         if (distancia > radioInfluenciaAerosol)
             return;
 
+        var administrador = ObtenerAdministrador();
         float factorDistancia = Mathf.Clamp01(1f - (distancia / Mathf.Max(0.1f, radioInfluenciaAerosol)));
-        float dosis = tasaEmisionAerosol * factorDistancia * Mathf.Max(0.3f, factorAtenuacionAmbiente) * Time.deltaTime;
+        float factorMascarilla = administrador != null ? administrador.ObtenerFactorMascarillaAerosoles() : 1f;
+        float factorVentilacion = administrador != null ? administrador.ObtenerFactorVentilacionAerosoles() : 1f;
+        float dosis = tasaEmisionAerosol
+            * factorDistancia
+            * Mathf.Max(0.3f, factorAtenuacionAmbiente)
+            * factorMascarilla
+            * factorVentilacion
+            * Time.deltaTime;
+
         estadoOtro.RegistrarExposicionAerosol(dosis, Time.deltaTime);
     }
 }
