@@ -6,7 +6,13 @@ public class Camino : MonoBehaviour
     int velocidadInit = 4;
     public int veloMax;
     Administrador administrador;
+    private NavMeshAgent agenteNavMesh;
     //bool generarRpe = true;
+
+    private void Awake()
+    {
+        agenteNavMesh = GetComponent<NavMeshAgent>();
+    }
 
 
     // Start is called before the first frame update
@@ -38,18 +44,23 @@ public class Camino : MonoBehaviour
 
     void SalirCentroComercial()
     {
+        if (!PrepararAgenteNavMesh())
+            return;
 
         bool irNuevoLocal = false;
-        this.GetComponent<NavMeshAgent>().speed = Random.Range(velocidadInit, velocidadInit + veloMax);
+        agenteNavMesh.speed = Random.Range(velocidadInit, velocidadInit + veloMax);
 
         irNuevoLocal = Random.Range(0, 3) > 1 ? true : false;
         if (irNuevoLocal) Invoke(nameof(ReiniciarRuta), 1f);
 
         GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("salida_cc");
+        if (listaSalidas == null || listaSalidas.Length == 0)
+            return;
+
         int salidaEscogida = Random.Range(0, listaSalidas.Length);
 
         Vector3 v = listaSalidas[salidaEscogida].transform.position;
-        this.GetComponent<NavMeshAgent>().SetDestination(v);
+        agenteNavMesh.SetDestination(v);
 
         // Opción: generar un reporte una sola vez, cuando empiece a salir gente
         if (Globales.generaRpt)
@@ -93,14 +104,36 @@ public class Camino : MonoBehaviour
 
     public void ReiniciarRuta()
     {
-        var nav = this.GetComponent<NavMeshAgent>();
-        if (nav == null) return;
-        nav.speed = Random.Range(velocidadInit, velocidadInit + veloMax);
+        if (!PrepararAgenteNavMesh())
+            return;
+
+        agenteNavMesh.speed = Random.Range(velocidadInit, velocidadInit + veloMax);
         GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("meta");
         if (listaSalidas == null || listaSalidas.Length == 0) return;
         int salidaEscogida = Random.Range(0, listaSalidas.Length);
         Vector3 v = listaSalidas[salidaEscogida].transform.position;
-        nav.SetDestination(v);
+        agenteNavMesh.SetDestination(v);
+    }
+
+    private bool PrepararAgenteNavMesh()
+    {
+        if (agenteNavMesh == null)
+            agenteNavMesh = GetComponent<NavMeshAgent>();
+
+        if (agenteNavMesh == null || !agenteNavMesh.enabled || !gameObject.activeInHierarchy)
+            return false;
+
+        if (agenteNavMesh.isOnNavMesh)
+            return true;
+
+        if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 3f, NavMesh.AllAreas))
+        {
+            agenteNavMesh.Warp(hit.position);
+            return agenteNavMesh.isOnNavMesh;
+        }
+
+        Debug.LogWarning($"No se encontró NavMesh cercano para {name}; se omite SetDestination.");
+        return false;
     }
 
 

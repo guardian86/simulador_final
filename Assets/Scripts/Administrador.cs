@@ -710,21 +710,46 @@ public class Administrador : MonoBehaviour
         if (agente == null)
             return;
 
-        if (agente.GetComponent<AspectoAgente>() != null)
+        var visualPersona = agente.transform.Find("VisualPersona");
+        if (visualPersona != null)
+        {
+            visualPersona.gameObject.SetActive(true);
+            foreach (var render in visualPersona.GetComponentsInChildren<Renderer>(true))
+                render.enabled = true;
             return;
+        }
 
         var renders = agente.GetComponentsInChildren<MeshRenderer>(true)
             .Where(render => render.GetComponentInParent<ParticleSystem>() == null)
             .ToArray();
 
+        if (agente.GetComponent<AspectoAgente>() != null)
+        {
+            foreach (var render in renders)
+                render.enabled = true;
+            return;
+        }
+
         bool esPrefabBasico = renders.Length <= 2;
         if (!esPrefabBasico)
+        {
+            foreach (var render in renders)
+                render.enabled = true;
             return;
+        }
 
         foreach (var render in renders)
             render.enabled = false;
 
-        FabricaPersonaSimple.ConstruirPersona(agente);
+        var aspecto = FabricaPersonaSimple.ConstruirPersona(agente);
+        if (aspecto != null)
+        {
+            foreach (var render in agente.GetComponentsInChildren<Renderer>(true)
+                .Where(render => render.GetComponentInParent<ParticleSystem>() == null))
+            {
+                render.enabled = true;
+            }
+        }
     }
 
 }

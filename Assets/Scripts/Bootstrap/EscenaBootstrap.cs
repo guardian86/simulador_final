@@ -76,8 +76,44 @@ public class EscenaBootstrap : MonoBehaviour
             if (col) col.isTrigger = true;
         }
 
+        AlinearObjetosClaveConNavMesh(admin);
+
         ConfigurarIluminacion();
         ConfigurarCamara(piso.transform.position);
+    }
+
+    private void AlinearObjetosClaveConNavMesh(Administrador admin)
+    {
+        if (!HayNavMeshCercano(Vector3.zero, Mathf.Max(semianchoEscenario, semilargoEscenario) + 8f))
+            return;
+
+        if (admin != null && admin.puntoInicio != null)
+            AjustarTransformAlNavMesh(admin.puntoInicio.transform, 4f, false);
+
+        foreach (var meta in GameObject.FindGameObjectsWithTag("meta"))
+            AjustarTransformAlNavMesh(meta.transform, 6f, true);
+
+        var salida = GameObject.FindGameObjectWithTag("salida_cc");
+        if (salida != null)
+            AjustarTransformAlNavMesh(salida.transform, 6f, true);
+    }
+
+    private bool HayNavMeshCercano(Vector3 centro, float radio)
+    {
+        return NavMesh.SamplePosition(centro, out _, radio, NavMesh.AllAreas);
+    }
+
+    private void AjustarTransformAlNavMesh(Transform objetivo, float radioBusqueda, bool conservarAltura)
+    {
+        if (objetivo == null)
+            return;
+
+        if (!NavMesh.SamplePosition(objetivo.position, out NavMeshHit hit, radioBusqueda, NavMesh.AllAreas))
+            return;
+
+        objetivo.position = conservarAltura
+            ? new Vector3(hit.position.x, objetivo.position.y, hit.position.z)
+            : hit.position;
     }
 
     private GameObject ObtenerOCrearPiso()
