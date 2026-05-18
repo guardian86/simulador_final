@@ -57,7 +57,10 @@ public class EscenaBootstrap : MonoBehaviour
                     m.transform.position = new Vector3(Random.Range(-semianchoEscenario + 4f, semianchoEscenario - 4f), 0.1f, Random.Range(-semilargoEscenario + 4f, semilargoEscenario - 4f));
                     m.GetComponent<Renderer>().material.color = new Color(0.22f, 0.75f, 0.45f);
                     var col = m.GetComponent<Collider>();
-                    if (col) { col.isTrigger = true; }
+                    if (col) 
+                    { 
+                        col.isTrigger = true; 
+                    }
                 }
             }
         }
@@ -73,7 +76,10 @@ public class EscenaBootstrap : MonoBehaviour
             s.transform.position = new Vector3(0f, 1.1f, -semilargoEscenario);
             s.GetComponent<Renderer>().material.color = new Color(0.93f, 0.57f, 0.15f);
             var col = s.GetComponent<Collider>();
-            if (col) col.isTrigger = true;
+            if (col) 
+            { 
+                col.isTrigger = true; 
+            }
         }
 
         AlinearObjetosClaveConNavMesh(admin);

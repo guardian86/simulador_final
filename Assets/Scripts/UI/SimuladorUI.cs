@@ -517,8 +517,22 @@ public class SimuladorUI : MonoBehaviour
         if (fondo == null)
             fondo = panel.gameObject.AddComponent<Image>();
 
-        if (fondo.color.a <= 0.01f)
-            fondo.color = new Color(0.08f, 0.1f, 0.14f, 0.82f);
+        fondo.color = new Color(0.08f, 0.1f, 0.14f, 0.78f);
+        fondo.raycastTarget = false;
+
+        var outline = panel.GetComponent<Outline>();
+        if (outline == null)
+            outline = panel.gameObject.AddComponent<Outline>();
+
+        outline.effectColor = new Color(0.2f, 0.24f, 0.3f, 0.9f);
+        outline.effectDistance = new Vector2(1f, -1f);
+
+        var sombra = panel.GetComponent<Shadow>();
+        if (sombra == null)
+            sombra = panel.gameObject.AddComponent<Shadow>();
+
+        sombra.effectColor = new Color(0f, 0f, 0f, 0.18f);
+        sombra.effectDistance = new Vector2(0f, -2f);
     }
 
     private void ConstruirLeyenda(RectTransform panel, string titulo, LeyendaItem[] items)

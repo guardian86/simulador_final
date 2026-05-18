@@ -50,17 +50,17 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1586}
+      Script: {instanceID: 1588}
     - Class: 114
-      Script: {instanceID: 1788}
+      Script: {instanceID: 1790}
     - Class: 114
-      Script: {instanceID: 2868}
+      Script: {instanceID: 2870}
     - Class: 114
-      Script: {instanceID: 3770}
+      Script: {instanceID: 3772}
     - Class: 114
-      Script: {instanceID: 4744}
+      Script: {instanceID: 4746}
     - Class: 114
-      Script: {instanceID: 6178}
+      Script: {instanceID: 6180}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 135
@@ -402,7 +402,7 @@ ScriptsOnlyBuild:
     className: UnityOnCollisionExit2DMessageListener
   - hash:
       serializedVersion: 2
-      Hash: e294ca1c39ecf65e03841be8ee486989
+      Hash: 90a02ff73faa4a94b9da05558c149a70
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Administrador
@@ -546,7 +546,7 @@ ScriptsOnlyBuild:
     className: GridLayoutGroup
   - hash:
       serializedVersion: 2
-      Hash: 2460473ecce9b66c007b8361716682f5
+      Hash: de534491f9b67b9c1b8a9a984e061464
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SimuladorUI
@@ -660,7 +660,7 @@ ScriptsOnlyBuild:
     className: StateGraphAsset
   - hash:
       serializedVersion: 2
-      Hash: d19281fe641f32d1bd4bceafa1e7e038
+      Hash: cde0779acfe775e3532b87a938d47bcf
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SimuladorConfig
