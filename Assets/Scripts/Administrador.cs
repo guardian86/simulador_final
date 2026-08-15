@@ -144,8 +144,8 @@ public class Administrador : MonoBehaviour
                     }
                     clon.gameObject.SetActive(true);
                 }
-                
-                var estadoSalud = clon.GetComponent<EstadoSaludAgente>();
+
+                var estadoSalud = clon.GetComponentInChildren<EstadoSaludAgente>();
                 if (estadoSalud != null)
                 {
                     bool infectadoInicial = UnityEngine.Random.value <= probabilidadIngresoInfectado;
@@ -153,13 +153,21 @@ public class Administrador : MonoBehaviour
                 }
 
                 cantidadAgentesActivos++;
-                if (autoSpawn)
-                    Invoke(nameof(CrearAgente), Mathf.Max(0.1f, intervaloSpawn));
             }
         }
         catch (System.Exception ex)
         {
             Debug.Log(ex.Message.ToString());
+        }
+        finally
+        {
+            // Reprograma la próxima verificación de spawn siempre que el auto-spawn esté activo,
+            // incluso si el aforo ya estaba lleno en este tick. Antes, el reintento solo se
+            // programaba dentro del bloque "if" de creación, así que al llegar al aforo máximo
+            // la cadena de Invoke se detenía para siempre y, aunque luego un agente saliera y
+            // liberara cupo, nunca se volvía a intentar crear un reemplazo.
+            if (autoSpawn)
+                Invoke(nameof(CrearAgente), Mathf.Max(0.1f, intervaloSpawn));
         }
     }
 

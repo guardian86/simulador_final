@@ -5,6 +5,7 @@ ScriptsOnlyBuild:
     - Agente
     - Camino
     - EscenaBootstrap
+    - EstadoSaludAgente
     - Particula
     - UIBootstrap
     Unity.Rider.Editor.dll:
@@ -50,17 +51,19 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1588}
+      Script: {instanceID: 1586}
     - Class: 114
-      Script: {instanceID: 1790}
+      Script: {instanceID: 1788}
     - Class: 114
-      Script: {instanceID: 2870}
+      Script: {instanceID: 2868}
     - Class: 114
-      Script: {instanceID: 3772}
+      Script: {instanceID: 3770}
     - Class: 114
-      Script: {instanceID: 4746}
+      Script: {instanceID: 4744}
     - Class: 114
-      Script: {instanceID: 6180}
+      Script: {instanceID: 6178}
+    - Class: 114
+      Script: {instanceID: 7200}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 135

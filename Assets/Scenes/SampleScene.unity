@@ -2037,8 +2037,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33534f2cc246d25439586a4d8fa5c618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  probContagio: 0.25
-  cooldownRecontagioSeg: 3
+  radioInfluenciaAerosol: 2.5
+  tasaEmisionAerosol: 0.45
+  factorAtenuacionAmbiente: 0.9
 --- !u!1 &492449762
 GameObject:
   m_ObjectHideFlags: 0
@@ -2050,7 +2051,7 @@ GameObject:
   - component: {fileID: 492449763}
   m_Layer: 0
   m_Name: Personaje (1)
-  m_TagString: Agentes
+  m_TagString: tagPersonas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3411,6 +3412,7 @@ GameObject:
   - component: {fileID: 954292960}
   - component: {fileID: 954292968}
   - component: {fileID: 954292969}
+  - component: {fileID: 954292970}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: tagPersonas
@@ -3574,8 +3576,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33534f2cc246d25439586a4d8fa5c618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  probContagio: 0.25
-  cooldownRecontagioSeg: 3
+  radioInfluenciaAerosol: 2.5
+  tasaEmisionAerosol: 0.45
+  factorAtenuacionAmbiente: 0.9
+--- !u!114 &954292970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954292958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f055b406cc08142a299db71f2f877a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -3830,7 +3845,7 @@ GameObject:
   - component: {fileID: 1015456375}
   m_Layer: 0
   m_Name: Personaje
-  m_TagString: Agentes
+  m_TagString: tagPersonas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16082,8 +16097,17 @@ MonoBehaviour:
   AforoMaximo: 5
   intervaloSpawn: 2
   autoSpawn: 1
-  probContagioDefault: 0.25
+  probabilidadIngresoInfectado: 0.2
+  umbralContagioAerosolBase: 1.2
+  nivelVentilacionACH: 6
+  eficaciaMascarillaPorcentaje: 0
+  cantidadSimulacionesLote: 5
+  duracionSimulacionSegundos: 45
+  aforoMinimoPorSimulacion: 20
+  aforoMaximoPorSimulacion: 60
   usarRutaPortable: 1
+  rutaSalidaPersonalizada: 
+  nombreBaseArchivo: RptAgentes
   config: {fileID: 0}
 --- !u!4 &1816586676
 Transform:
@@ -16475,6 +16499,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crearPuntosMeta: 1
   cantidadMetas: 3
+  crearMurosPerimetrales: 1
+  crearLocalesDecorativos: 1
+  crearDetallesPasillo: 1
+  semianchoEscenario: 22
+  semilargoEscenario: 22
 --- !u!4 &1998271687
 Transform:
   m_ObjectHideFlags: 0
