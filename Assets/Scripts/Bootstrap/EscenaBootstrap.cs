@@ -82,7 +82,13 @@ public class EscenaBootstrap : MonoBehaviour
             }
         }
 
-        AlinearObjetosClaveConNavMesh(admin);
+        // DIAGNÓSTICO: se desactivó temporalmente porque reubicaba el punto de spawn
+        // y la salida sobre el NavMesh en cada Play, pudiendo acercarlos entre sí sin
+        // que quedara reflejado en la escena guardada (causaba que agentes recién
+        // creados cayeran de inmediato en el trigger de salida). Si hace falta el
+        // realineado automático, conviene separar más los radios de búsqueda (4f/6f)
+        // o revisar manualmente que el NavMesh horneado cubra bien ambas zonas.
+        // AlinearObjetosClaveConNavMesh(admin);
 
         ConfigurarIluminacion();
         ConfigurarCamara(piso.transform.position);

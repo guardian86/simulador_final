@@ -15,8 +15,13 @@ public class Particula : MonoBehaviour
     private void Awake()
     {
         miParticula = GetComponentInChildren<ParticleSystem>();
-        raizPropia = transform.root;
-        estadoPropio = raizPropia.GetComponent<EstadoSaludAgente>();
+        // FIX: antes se usaba transform.root, que en este prefab es el objeto
+        // contenedor ("Personaje (1)") que NUNCA se mueve — el NavMeshAgent real
+        // mueve al hijo ("Capsule"), donde también vive este mismo script y
+        // EstadoSaludAgente. Usar GetComponentInParent es robusto sin importar
+        // en qué nivel de la jerarquía quede el script de salud.
+        estadoPropio = GetComponentInParent<EstadoSaludAgente>();
+        raizPropia = estadoPropio != null ? estadoPropio.transform : transform.root;
         admin = FindObjectOfType<Administrador>();
     }
 
@@ -49,15 +54,14 @@ public class Particula : MonoBehaviour
         if (!EstaInfectadoPropio())
             return;
 
-        var rootOtro = other.transform.root;
-        bool esPersona = (other.gameObject.tag == "tagPersonas") || (rootOtro != null && rootOtro.gameObject.tag == "tagPersonas");
-        if (!esPersona || rootOtro == raizPropia)
+        // FIX: mismo problema que en Awake — buscar el EstadoSaludAgente del OTRO
+        // agente por jerarquía (GetComponentInParent) en vez de asumir que vive en
+        // transform.root, y comparar por componente en vez de por Transform raíz.
+        var estadoOtro = other.GetComponentInParent<EstadoSaludAgente>();
+        if (estadoOtro == null || estadoOtro == estadoPropio || estadoOtro.estaInfectado)
             return;
 
-        var estadoOtro = rootOtro != null ? rootOtro.GetComponent<EstadoSaludAgente>() : null;
-        if (estadoOtro == null || estadoOtro.estaInfectado)
-            return;
-
+        Transform rootOtro = estadoOtro.transform;
         float distancia = Vector3.Distance(raizPropia.position, rootOtro.position);
         if (distancia > radioInfluenciaAerosol)
             return;

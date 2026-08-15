@@ -121,7 +121,28 @@ public class Administrador : MonoBehaviour
                 {
                     clon = pool.Dequeue();
                     clon.transform.SetPositionAndRotation(pos, rot);
+
+                    // FIX: el NavMeshAgent vive en el hijo ("Capsule"), no en este
+                    // objeto raíz, así que durante su vida anterior el hijo pudo
+                    // haberse alejado mucho (offset local grande) mientras el padre
+                    // se quedaba quieto. Si no se reinicia ese offset, al reciclar
+                    // el agente del pool reaparece "teletransportado" lejos del
+                    // punto de spawn real en vez de justo ahí.
+                    foreach (Transform hijo in clon.transform)
+                    {
+                        hijo.localPosition = Vector3.zero;
+                        hijo.localRotation = Quaternion.identity;
+                    }
+
                     clon.SetActive(true);
+
+                    foreach (Transform hijo in clon.transform)
+                    {
+                        var navAgenteHijo = hijo.GetComponent<UnityEngine.AI.NavMeshAgent>();
+                        if (navAgenteHijo != null && navAgenteHijo.isOnNavMesh)
+                            navAgenteHijo.Warp(pos);
+                    }
+
                     AsegurarVisualPersona(clon);
                     var camino = clon.GetComponentInChildren<Camino>();
                     if (camino != null) camino.ReiniciarRuta();
