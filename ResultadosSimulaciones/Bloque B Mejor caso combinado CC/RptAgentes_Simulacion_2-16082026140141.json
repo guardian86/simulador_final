@@ -1,0 +1,27 @@
+{
+  "numeroSimulacion": 2,
+  "aforoObjetivo": 23,
+  "duracionSimulacionSegundos": 600.009766,
+  "intervaloSpawn": 2.0,
+  "umbralContagioAerosolBase": 1.2,
+  "NivelVentilacionACH": 9.00917,
+  "EficaciaMascarillaPorcentaje": 70.0,
+  "semillaAleatoria": 40499522,
+  "infectadosIniciales": 1,
+  "infectadosFinales": 1,
+  "contagiosSecundarios": 0,
+  "porcentajeContagioSecundario": 0.0,
+  "reporteAgentes": [
+    {
+      "agenteContagiadoCovid": true,
+      "casoInicial": true,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 1.0,
+      "promedioContagiados": 100.0,
+      "cantidadSimulaciones": 2.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    }
+  ],
+  "promedioTotalContagio": 100.0
+}
