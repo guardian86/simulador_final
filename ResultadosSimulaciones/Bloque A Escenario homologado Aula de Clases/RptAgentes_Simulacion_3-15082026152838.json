@@ -1,0 +1,247 @@
+{
+  "numeroSimulacion": 3,
+  "aforoObjetivo": 25,
+  "duracionSimulacionSegundos": 600.0033,
+  "intervaloSpawn": 2.0,
+  "umbralContagioAerosolBase": 1.2,
+  "NivelVentilacionACH": 0.331563115,
+  "EficaciaMascarillaPorcentaje": 0.0,
+  "semillaAleatoria": 399784906,
+  "infectadosIniciales": 1,
+  "infectadosFinales": 2,
+  "contagiosSecundarios": 1,
+  "porcentajeContagioSecundario": 4.5454545,
+  "reporteAgentes": [
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 1.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 2.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": true,
+      "casoInicial": true,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 3.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 4.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 5.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 6.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 7.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 8.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 9.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 10.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 11.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 12.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 13.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 14.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 15.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 16.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 17.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 18.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": true,
+      "casoInicial": false,
+      "contagioSecundario": true,
+      "cantidadAgenteSimulacion": 19.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 1.22741449,
+      "tiempoExposicionSegundos": 6.479995
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 20.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 21.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 22.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    },
+    {
+      "agenteContagiadoCovid": false,
+      "casoInicial": false,
+      "contagioSecundario": false,
+      "cantidadAgenteSimulacion": 23.0,
+      "promedioContagiados": 8.695652,
+      "cantidadSimulaciones": 3.0,
+      "dosisAcumulada": 0.0,
+      "tiempoExposicionSegundos": 0.0
+    }
+  ],
+  "promedioTotalContagio": 8.695652
+}

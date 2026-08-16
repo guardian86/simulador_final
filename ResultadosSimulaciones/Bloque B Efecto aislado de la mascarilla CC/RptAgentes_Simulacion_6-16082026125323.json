@@ -1,0 +1,16 @@
+{
+  "numeroSimulacion": 6,
+  "aforoObjetivo": 20,
+  "duracionSimulacionSegundos": 600.001038,
+  "intervaloSpawn": 2.0,
+  "umbralContagioAerosolBase": 1.2,
+  "NivelVentilacionACH": 2.01110244,
+  "EficaciaMascarillaPorcentaje": 70.0,
+  "semillaAleatoria": 1633854053,
+  "infectadosIniciales": 0,
+  "infectadosFinales": 0,
+  "contagiosSecundarios": 0,
+  "porcentajeContagioSecundario": 0.0,
+  "reporteAgentes": [],
+  "promedioTotalContagio": 0.0
+}
