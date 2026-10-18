@@ -61,18 +61,25 @@ public class Particula : MonoBehaviour
         if (estadoOtro == null || estadoOtro == estadoPropio || estadoOtro.estaInfectado)
             return;
 
+        var administrador = ObtenerAdministrador();
+
+        // Perfil de virus: si hay Administrador, sus valores (editables desde el Inspector o
+        // SimuladorConfig) reemplazan a los valores por defecto de este componente.
+        float radio = administrador != null ? administrador.radioInfluenciaAerosol : radioInfluenciaAerosol;
+        float tasaEmision = administrador != null ? administrador.tasaEmisionAerosol : tasaEmisionAerosol;
+        float atenuacion = administrador != null ? administrador.factorAtenuacionAmbiente : factorAtenuacionAmbiente;
+
         Transform rootOtro = estadoOtro.transform;
         float distancia = Vector3.Distance(raizPropia.position, rootOtro.position);
-        if (distancia > radioInfluenciaAerosol)
+        if (distancia > radio)
             return;
 
-        var administrador = ObtenerAdministrador();
-        float factorDistancia = Mathf.Clamp01(1f - (distancia / Mathf.Max(0.1f, radioInfluenciaAerosol)));
+        float factorDistancia = Mathf.Clamp01(1f - (distancia / Mathf.Max(0.1f, radio)));
         float factorMascarilla = administrador != null ? administrador.ObtenerFactorMascarillaAerosoles() : 1f;
         float factorVentilacion = administrador != null ? administrador.ObtenerFactorVentilacionAerosoles() : 1f;
-        float dosis = tasaEmisionAerosol
+        float dosis = tasaEmision
             * factorDistancia
-            * Mathf.Max(0.3f, factorAtenuacionAmbiente)
+            * Mathf.Max(0.3f, atenuacion)
             * factorMascarilla
             * factorVentilacion
             * Time.deltaTime;

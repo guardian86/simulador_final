@@ -940,4 +940,4 @@ ScriptsOnlyBuild:
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: D:/ProjectsUnity/simulador_final_ejecutables/EXE/My project.exe
+  playerPath: D:/ProjectsUnity/simulador_final_ejecutable/EXE/My project.exe

@@ -30,6 +30,12 @@ public class Administrador : MonoBehaviour
     public float umbralContagioAerosolBase = 1.2f;
     [Range(0f,12f)] public float nivelVentilacionACH = 6f;
     [Range(0f,100f)] public float eficaciaMascarillaPorcentaje = 0f;
+
+    [Header("Perfil de virus (por defecto: SARS-CoV-2)")]
+    [Tooltip("Nombre del virus que representa el perfil (solo informativo, se registra en el reporte JSON)")] public string nombreVirus = "SARS-CoV-2 (COVID-19)";
+    [Tooltip("Tasa de emisión de aerosoles del agente infeccioso (unidad del modelo). Se asocia a la carga viral y a la emisión")] public float tasaEmisionAerosol = 0.45f;
+    [Tooltip("Radio de influencia del aerosol en metros. Se asocia al tamaño de partícula")] public float radioInfluenciaAerosol = 2.5f;
+    [Tooltip("Factor de atenuación ambiental (0.3 a 1). Se asocia a la vida útil del virus en aerosol")] [Range(0.3f,1f)] public float factorAtenuacionAmbiente = 0.9f;
     [Header("Simulaciones múltiples")]
     public int cantidadSimulacionesLote = 5;
     public float duracionSimulacionSegundos = 45f;
@@ -84,6 +90,10 @@ public class Administrador : MonoBehaviour
             umbralContagioAerosolBase = config.umbralContagioAerosolBase;
             nivelVentilacionACH = config.nivelVentilacionACH;
             eficaciaMascarillaPorcentaje = config.eficaciaMascarillaPorcentaje;
+            nombreVirus = config.nombreVirus;
+            tasaEmisionAerosol = config.tasaEmisionAerosol;
+            radioInfluenciaAerosol = config.radioInfluenciaAerosol;
+            factorAtenuacionAmbiente = config.factorAtenuacionAmbiente;
         }
 
         if (string.IsNullOrWhiteSpace(rutaSalidaPersonalizada) && usarRutaPortable)
@@ -258,6 +268,10 @@ public class Administrador : MonoBehaviour
         public float duracionSimulacionSegundos { get; set; }
         public float intervaloSpawn { get; set; }
         public float umbralContagioAerosolBase { get; set; }
+        public string nombreVirus { get; set; }
+        public float tasaEmisionAerosol { get; set; }
+        public float radioInfluenciaAerosol { get; set; }
+        public float factorAtenuacionAmbiente { get; set; }
         [JsonProperty("NivelVentilacionACH")] public float nivelVentilacionACH { get; set; }
         [JsonProperty("EficaciaMascarillaPorcentaje")] public float eficaciaMascarillaPorcentaje { get; set; }
         public int semillaAleatoria { get; set; }
@@ -275,6 +289,10 @@ public class Administrador : MonoBehaviour
         public int cantidadSimulaciones { get; set; }
         public float intervaloSpawn { get; set; }
         public float umbralContagioAerosolBase { get; set; }
+        public string nombreVirus { get; set; }
+        public float tasaEmisionAerosol { get; set; }
+        public float radioInfluenciaAerosol { get; set; }
+        public float factorAtenuacionAmbiente { get; set; }
         [JsonProperty("NivelVentilacionACH")] public float nivelVentilacionACH { get; set; }
         [JsonProperty("EficaciaMascarillaPorcentaje")] public float eficaciaMascarillaPorcentaje { get; set; }
         public int semillaAleatoria { get; set; }
@@ -532,6 +550,10 @@ public class Administrador : MonoBehaviour
             duracionSimulacionSegundos = duracion,
             intervaloSpawn = intervaloSpawnReporte,
             umbralContagioAerosolBase = umbralContagioReporte,
+            nombreVirus = nombreVirus,
+            tasaEmisionAerosol = tasaEmisionAerosol,
+            radioInfluenciaAerosol = radioInfluenciaAerosol,
+            factorAtenuacionAmbiente = factorAtenuacionAmbiente,
             nivelVentilacionACH = nivelVentilacionReporte,
             eficaciaMascarillaPorcentaje = eficaciaMascarillaReporte,
             semillaAleatoria = semillaReporte,
@@ -601,6 +623,10 @@ public class Administrador : MonoBehaviour
             cantidadSimulaciones = resultados.Count,
             intervaloSpawn = intervaloSpawn,
             umbralContagioAerosolBase = umbralContagioAerosolBase,
+            nombreVirus = nombreVirus,
+            tasaEmisionAerosol = tasaEmisionAerosol,
+            radioInfluenciaAerosol = radioInfluenciaAerosol,
+            factorAtenuacionAmbiente = factorAtenuacionAmbiente,
             nivelVentilacionACH = nivelVentilacionACH,
             eficaciaMascarillaPorcentaje = eficaciaMascarillaPorcentaje,
             semillaAleatoria = semillaAleatoriaLoteActual,
