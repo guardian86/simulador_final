@@ -11,7 +11,7 @@ public class Camino : MonoBehaviour
     // En grupo cerrado: true mientras el agente camina hacia la salida, para que los destinos
     // que cruza en el camino no lo desvíen de nuevo hacia la zona de inicio.
     private bool caminoASalida;
-    // Grupo cerrado: evita que el temblor físico del agente sobre el destino (entra/sale del trigger
+    // Evita que el temblor físico del agente sobre el destino (entra/sale del trigger
     // decenas de veces por segundo) reinicie una y otra vez el temporizador de espera.
     private GameObject ultimaMeta;
     private bool salidaPendiente;
@@ -116,17 +116,15 @@ public class Camino : MonoBehaviour
         {
             diagEntradasMeta++;
 
-            if (administrador == null)
-                administrador = FindObjectOfType<Administrador>();
-            if (administrador != null && administrador.modoGrupoFijo)
-            {
-                if (caminoASalida)
-                    return;
-                if (salidaPendiente && ultimaMeta == other.gameObject)
-                    return;
-                ultimaMeta = other.gameObject;
-                salidaPendiente = true;
-            }
+            // Aplica en todos los modos: la espera de 7-15 s se programa una sola vez por destino
+            // (el roce físico con el borde del destino ya no la reinicia) y los destinos que el
+            // agente cruza mientras camina a la salida no lo detienen.
+            if (caminoASalida)
+                return;
+            if (salidaPendiente && ultimaMeta == other.gameObject)
+                return;
+            ultimaMeta = other.gameObject;
+            salidaPendiente = true;
             //Debug.Log(other.gameObject);
             CancelInvoke(nameof(SalirCentroComercial));
             Invoke(nameof(SalirCentroComercial), Random.Range(7f, 15f));
