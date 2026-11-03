@@ -70,6 +70,9 @@ public class Administrador : MonoBehaviour
     private int semillaAleatoriaContextoActual;
     private int semillaAleatoriaLoteActual;
     private int casosInicialesCreados;
+    private int diagCreados, diagLiberados, diagPerdidos, diagInactivos, diagSinEstado, diagEnCaminoSalida, diagDetenidosEnSalida;
+    private readonly HashSet<GameObject> agentesRegistrados = new HashSet<GameObject>();
+    private readonly List<GameObject> agentesCreadosCorrida = new List<GameObject>();
     // Agentes que ya salieron del recinto durante la corrida (hacen parte del flujo y del resultado).
     private readonly List<ReporteAgentes> agentesSalidos = new List<ReporteAgentes>();
     private float proximoRegistroTemporal = float.MaxValue;
@@ -201,8 +204,8 @@ public class Administrador : MonoBehaviour
                     if (casosInicialesFijos > 0)
                     {
                         // Se mantiene el número de casos índice presentes en el recinto: si uno sale, el siguiente en ingresar lo reemplaza.
-                        int indicesPresentes = GameObject.FindGameObjectsWithTag("tagPersonas")
-                            .Count(g => g.activeInHierarchy && g.transform.root != clon.transform.root && g.GetComponentInChildren<EstadoSaludAgente>() != null && g.GetComponentInChildren<EstadoSaludAgente>().fueCasoInicial);
+                        int indicesPresentes = agentesCreadosCorrida
+                            .Count(g => g != null && g.activeInHierarchy && g.transform.root != clon.transform.root && g.GetComponentInChildren<EstadoSaludAgente>() != null && g.GetComponentInChildren<EstadoSaludAgente>().fueCasoInicial);
                         infectadoInicial = indicesPresentes < casosInicialesFijos;
                         if (infectadoInicial) casosInicialesCreados++;
                     }
@@ -214,6 +217,10 @@ public class Administrador : MonoBehaviour
                 }
 
                 cantidadAgentesActivos++;
+                diagCreados++;
+                if (!agentesCreadosCorrida.Contains(clon)) agentesCreadosCorrida.Add(clon);
+                // Agente reutilizado del pool: es una persona nueva, su salida anterior ya quedó registrada.
+                agentesRegistrados.Remove(clon);
             }
         }
         catch (System.Exception ex)
@@ -321,6 +328,17 @@ public class Administrador : MonoBehaviour
         public int casosInicialesFijos { get; set; }
         public float aceleracionTiempo { get; set; }
         public int cantidadMetasZona { get; set; }
+        public int diagAgentesCreados { get; set; }
+        public int diagAgentesLiberados { get; set; }
+        public int diagAgentesPerdidos { get; set; }
+        public int diagAgentesInactivos { get; set; }
+        public int diagAgentesSinEstado { get; set; }
+        public int diagAgentesEnCaminoASalida { get; set; }
+        public int diagLlamadasSalir { get; set; }
+        public int diagEntradasMeta { get; set; }
+        public int diagEntradasSalida { get; set; }
+        public int diagDesvios { get; set; }
+        public int diagAgentesDetenidosEnCaminoASalida { get; set; }
         public int agentesTotalesQuePasaron { get; set; }
         public int agentesQueSalieron { get; set; }
         public int agentesAlFinalizar { get; set; }
@@ -375,6 +393,10 @@ public class Administrador : MonoBehaviour
         }
         cantidadAgentesActivos = 0;
         casosInicialesCreados = 0;
+        diagCreados = 0; diagLiberados = 0;
+        Camino.diagSalirLlamadas = 0; Camino.diagEntradasMeta = 0; Camino.diagSalidaTrigger = 0; Camino.diagDesvios = 0;
+        agentesRegistrados.Clear();
+        agentesCreadosCorrida.Clear();
         agentesSalidos.Clear();
         Globales.agenteCovid19.Clear();
         Globales.generaRpt = true;
@@ -486,11 +508,7 @@ public class Administrador : MonoBehaviour
 
     private void RegistrarPuntoTemporal()
     {
-        var estados = GameObject.FindGameObjectsWithTag("tagPersonas")
-            .Where(agente => agente.activeInHierarchy)
-            .Select(agente => agente.GetComponent<EstadoSaludAgente>())
-            .Where(estado => estado != null)
-            .ToList();
+        var estados = ObtenerEstadosPresentes();
 
         int totalPasaron = estados.Count + agentesSalidos.Count;
         int iniciales = estados.Count(estado => estado.fueCasoInicial) + agentesSalidos.Count(a => a.casoInicial);
@@ -620,16 +638,41 @@ public class Administrador : MonoBehaviour
         var nav = agenteRoot.GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (nav != null) nav.ResetPath();
 
-        if (simulacionEnCurso) RegistrarSalida(agenteRoot);
+        if (simulacionEnCurso) { RegistrarSalida(agenteRoot); diagLiberados++; }
         agenteRoot.SetActive(false);
         cantidadAgentesActivos = Mathf.Max(0, cantidadAgentesActivos - 1);
         pool.Enqueue(agenteRoot);
     }
 
+    // Agentes presentes según el propio simulador (no depende del tag de la escena).
+    private List<EstadoSaludAgente> ObtenerEstadosPresentes()
+    {
+        var lista = new List<EstadoSaludAgente>();
+        int perdidos = 0, inactivos = 0, sinEstado = 0;
+        foreach (var g in agentesCreadosCorrida)
+        {
+            if (g == null) { perdidos++; continue; }
+            if (!g.activeInHierarchy) { inactivos++; RegistrarSalida(g); continue; }
+            var e = g.GetComponentInChildren<EstadoSaludAgente>();
+            if (e == null) { sinEstado++; continue; }
+            lista.Add(e);
+        }
+        diagPerdidos = perdidos; diagInactivos = inactivos; diagSinEstado = sinEstado;
+        int enSalida = 0, detenidos = 0;
+        foreach (var g in agentesCreadosCorrida)
+        {
+            if (g == null || !g.activeInHierarchy) continue;
+            var c = g.GetComponentInChildren<Camino>();
+            if (c != null && c.CaminoASalida) { enSalida++; if (c.EstaDetenido) detenidos++; }
+        }
+        diagEnCaminoSalida = enSalida; diagDetenidosEnSalida = detenidos;
+        return lista;
+    }
+
     private void RegistrarSalida(GameObject agenteRoot)
     {
-        var estado = agenteRoot.GetComponentInChildren<EstadoSaludAgente>();
-        if (estado == null) return;
+        var estado = agenteRoot.GetComponentInChildren<EstadoSaludAgente>(true);
+        if (estado == null || !agentesRegistrados.Add(agenteRoot)) return;
         agentesSalidos.Add(new ReporteAgentes
         {
             agenteContagiadoCovid = estado.estaInfectado,
@@ -643,11 +686,7 @@ public class Administrador : MonoBehaviour
 
     private estadisticacontagiocovid ConstruirReporteSimulacionActual(int numeroSimulacion, int aforoObjetivo, float duracion)
     {
-        var estados = GameObject.FindGameObjectsWithTag("tagPersonas")
-            .Where(agente => agente.activeInHierarchy)
-            .Select(agente => agente.GetComponent<EstadoSaludAgente>())
-            .Where(estado => estado != null)
-            .ToList();
+        var estados = ObtenerEstadosPresentes();
 
         // Se cuentan todos los agentes del flujo: los que salieron y los que permanecen al finalizar.
         int totalAgentes = estados.Count + agentesSalidos.Count;
@@ -679,6 +718,17 @@ public class Administrador : MonoBehaviour
             casosInicialesFijos = casosInicialesFijos,
             aceleracionTiempo = aceleracionTiempo,
             cantidadMetasZona = cantidadMetasZona,
+            diagAgentesCreados = diagCreados,
+            diagAgentesLiberados = diagLiberados,
+            diagAgentesPerdidos = diagPerdidos,
+            diagAgentesInactivos = diagInactivos,
+            diagAgentesSinEstado = diagSinEstado,
+            diagAgentesEnCaminoASalida = diagEnCaminoSalida,
+            diagLlamadasSalir = Camino.diagSalirLlamadas,
+            diagEntradasMeta = Camino.diagEntradasMeta,
+            diagEntradasSalida = Camino.diagSalidaTrigger,
+            diagDesvios = Camino.diagDesvios,
+            diagAgentesDetenidosEnCaminoASalida = diagDetenidosEnSalida,
             agentesTotalesQuePasaron = totalAgentes,
             agentesQueSalieron = agentesSalidos.Count,
             agentesAlFinalizar = estados.Count,
@@ -791,6 +841,10 @@ public class Administrador : MonoBehaviour
         CapturarContextoSimulacionActual();
         tiempoSimulacionActual = 0f;
         casosInicialesCreados = 0;
+        diagCreados = 0; diagLiberados = 0;
+        Camino.diagSalirLlamadas = 0; Camino.diagEntradasMeta = 0; Camino.diagSalidaTrigger = 0; Camino.diagDesvios = 0;
+        agentesRegistrados.Clear();
+        agentesCreadosCorrida.Clear();
         agentesSalidos.Clear();
         serieTemporal.Clear();
         proximoRegistroTemporal = intervaloRegistroSegundos > 0f ? intervaloRegistroSegundos : float.MaxValue;

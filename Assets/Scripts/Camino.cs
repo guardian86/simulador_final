@@ -11,6 +11,13 @@ public class Camino : MonoBehaviour
     // En grupo cerrado: true mientras el agente camina hacia la salida, para que los destinos
     // que cruza en el camino no lo desvíen de nuevo hacia la zona de inicio.
     private bool caminoASalida;
+    // Grupo cerrado: evita que el temblor físico del agente sobre el destino (entra/sale del trigger
+    // decenas de veces por segundo) reinicie una y otra vez el temporizador de espera.
+    private GameObject ultimaMeta;
+    private bool salidaPendiente;
+    public static int diagSalirLlamadas, diagEntradasMeta, diagSalidaTrigger, diagDesvios;
+    public bool CaminoASalida { get { return caminoASalida; } }
+    public bool EstaDetenido { get { return agenteNavMesh != null && agenteNavMesh.enabled && agenteNavMesh.isOnNavMesh && agenteNavMesh.velocity.sqrMagnitude < 0.01f; } }
     //bool generarRpe = true;
 
     private void Awake()
@@ -54,11 +61,14 @@ public class Camino : MonoBehaviour
         if (!PrepararAgenteNavMesh())
             return;
 
+        diagSalirLlamadas++;
+        salidaPendiente = false;
+        ultimaMeta = null;
         bool irNuevoLocal = false;
         agenteNavMesh.speed = Random.Range(velocidadInit, velocidadInit + veloMax);
 
         irNuevoLocal = Random.Range(0, 3) > 1 ? true : false;
-        if (irNuevoLocal) Invoke(nameof(ReiniciarRuta), 1f);
+        if (irNuevoLocal) { Invoke(nameof(ReiniciarRuta), 1f); diagDesvios++; }
 
         GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("salida_cc");
         if (listaSalidas == null || listaSalidas.Length == 0)
@@ -87,6 +97,7 @@ public class Camino : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("salida_cc"))
         {
+            diagSalidaTrigger++;
             //Debug.Log(other.gameObject);
             if (other.gameObject)
             {
@@ -103,9 +114,19 @@ public class Camino : MonoBehaviour
         }
         if (other.gameObject.tag.Equals("meta"))
         {
+            diagEntradasMeta++;
 
-            if (caminoASalida && administrador != null && administrador.modoGrupoFijo)
-                return;
+            if (administrador == null)
+                administrador = FindObjectOfType<Administrador>();
+            if (administrador != null && administrador.modoGrupoFijo)
+            {
+                if (caminoASalida)
+                    return;
+                if (salidaPendiente && ultimaMeta == other.gameObject)
+                    return;
+                ultimaMeta = other.gameObject;
+                salidaPendiente = true;
+            }
             //Debug.Log(other.gameObject);
             CancelInvoke(nameof(SalirCentroComercial));
             Invoke(nameof(SalirCentroComercial), Random.Range(7f, 15f));
@@ -118,6 +139,8 @@ public class Camino : MonoBehaviour
             return;
 
         caminoASalida = false;
+        salidaPendiente = false;
+        ultimaMeta = null;
         agenteNavMesh.speed = Random.Range(velocidadInit, velocidadInit + veloMax);
         GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("meta");
         if (listaSalidas == null || listaSalidas.Length == 0) return;
