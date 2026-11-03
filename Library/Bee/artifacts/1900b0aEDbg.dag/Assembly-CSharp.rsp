@@ -365,6 +365,8 @@
 "Assets/Scripts/Globales.cs"
 "Assets/Scripts/Particula.cs"
 "Assets/Scripts/SimuladorConfig.cs"
+"Assets/Scripts/UI/PanelHomologacionUI.cs"
+"Assets/Scripts/UI/PanelVirusUI.cs"
 "Assets/Scripts/UI/SimuladorUI.cs"
 "Assets/Scripts/UI/UIBootstrap.cs"
 -langversion:9.0

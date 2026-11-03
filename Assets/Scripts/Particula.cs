@@ -43,8 +43,9 @@ public class Particula : MonoBehaviour
         // Colisión con muros (para depurar)
         if (other.gameObject.tag == "muros")
         {
-            if (EstaInfectadoPropio())
-                Debug.Log($"Partícula de {raizPropia.name} choca con muro {other.gameObject.name}");
+            // Mensaje de depuración desactivado: en corridas largas llenaba la consola y hacía más lenta la ejecución.
+            // if (EstaInfectadoPropio())
+            //     Debug.Log($"Partícula de {raizPropia.name} choca con muro {other.gameObject.name}");
             return;
         }
     }

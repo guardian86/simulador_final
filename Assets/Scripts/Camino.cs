@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -44,6 +45,16 @@ public class Camino : MonoBehaviour
 
     void SalirCentroComercial()
     {
+        // Grupo cerrado (homologación con el Aula): el agente no abandona el recinto,
+        // elige otro destino y sigue circulando.
+        if (administrador == null)
+            administrador = FindObjectOfType<Administrador>();
+        if (administrador != null && administrador.modoGrupoFijo)
+        {
+            ReiniciarRuta();
+            return;
+        }
+
         if (!PrepararAgenteNavMesh())
             return;
 
@@ -110,9 +121,28 @@ public class Camino : MonoBehaviour
         agenteNavMesh.speed = Random.Range(velocidadInit, velocidadInit + veloMax);
         GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("meta");
         if (listaSalidas == null || listaSalidas.Length == 0) return;
+        listaSalidas = ElegirMetasCandidatas(listaSalidas);
         int salidaEscogida = Random.Range(0, listaSalidas.Length);
         Vector3 v = listaSalidas[salidaEscogida].transform.position;
         agenteNavMesh.SetDestination(v);
+    }
+
+    // En grupo cerrado se limita la zona de destinos y se evita elegir el destino donde el agente ya está.
+    private GameObject[] ElegirMetasCandidatas(GameObject[] metas)
+    {
+        if (administrador == null)
+            administrador = FindObjectOfType<Administrador>();
+        if (administrador == null || !administrador.modoGrupoFijo)
+            return metas;
+
+        var zona = administrador.ObtenerMetasZona(metas);
+        if (zona.Length > 1)
+        {
+            var otras = zona.Where(m => Vector3.Distance(m.transform.position, transform.position) > 2f).ToArray();
+            if (otras.Length > 0)
+                return otras;
+        }
+        return zona;
     }
 
     private bool PrepararAgenteNavMesh()

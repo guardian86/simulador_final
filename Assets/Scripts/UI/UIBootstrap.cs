@@ -325,5 +325,9 @@ public class UIBootstrap : MonoBehaviour
         ui.lblResumenFinal = lblResumenFinal;
         ui.txtVentilacionValor = txtVentilacionValor;
         ui.txtEficaciaMascarillaValor = txtEficaciaMascarillaValor;
+
+        // Panel de perfil de virus (por defecto SARS-CoV-2)
+        PanelVirusUI.Crear(canvasGO.transform, fuente);
+        PanelHomologacionUI.Crear(canvasGO.transform, fuente);
     }
 }

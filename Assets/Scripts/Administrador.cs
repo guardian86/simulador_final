@@ -41,6 +41,12 @@ public class Administrador : MonoBehaviour
     public float duracionSimulacionSegundos = 45f;
     public int aforoMinimoPorSimulacion = 20;
     public int aforoMaximoPorSimulacion = 60;
+    [Header("Homologación con la referencia (grupo cerrado, como el Aula de Lelieveld et al.)")]
+    [Tooltip("Si está activo, los agentes no salen del recinto: circulan entre los locales todo el tiempo")] public bool modoGrupoFijo = false;
+    [Tooltip("Casos iniciales exactos por corrida (0 = usar la probabilidad de ingreso infectado)")] public int casosInicialesFijos = 0;
+    [Tooltip("Aceleración del tiempo simulado (1 = tiempo real). La duración de la corrida se mide en tiempo simulado")] [Range(1f,20f)] public float aceleracionTiempo = 1f;
+    [Tooltip("Con grupo cerrado, número de destinos (los más cercanos al punto de inicio) entre los que circulan los agentes. 0 = todo el entorno")] public int cantidadMetasZona = 0;
+    [Tooltip("Cada cuántos segundos simulados se registra el avance del contagio en el JSON (0 = no registrar)")] public float intervaloRegistroSegundos = 600f;
     [Tooltip("Usar la carpeta Resultados_Simulador_Quintero del Escritorio para guardar reportes")] public bool usarRutaPortable = true;
     [Tooltip("Ruta personalizada de salida para los reportes JSON")]
     public string rutaSalidaPersonalizada = string.Empty;
@@ -63,6 +69,9 @@ public class Administrador : MonoBehaviour
     private float eficaciaMascarillaPorcentajeContextoActual;
     private int semillaAleatoriaContextoActual;
     private int semillaAleatoriaLoteActual;
+    private int casosInicialesCreados;
+    private float proximoRegistroTemporal = float.MaxValue;
+    private readonly List<RegistroTemporal> serieTemporal = new List<RegistroTemporal>();
     #endregion
 
     public string UltimaRutaExportada { get; private set; }
@@ -110,7 +119,14 @@ public class Administrador : MonoBehaviour
     void Update()
     {
         if (simulacionEnCurso)
+        {
             tiempoSimulacionActual += Time.deltaTime;
+            if (intervaloRegistroSegundos > 0f && tiempoSimulacionActual >= proximoRegistroTemporal)
+            {
+                RegistrarPuntoTemporal();
+                proximoRegistroTemporal += intervaloRegistroSegundos;
+            }
+        }
     }
 
     void CrearAgente()
@@ -179,7 +195,16 @@ public class Administrador : MonoBehaviour
                 var estadoSalud = clon.GetComponentInChildren<EstadoSaludAgente>();
                 if (estadoSalud != null)
                 {
-                    bool infectadoInicial = UnityEngine.Random.value <= probabilidadIngresoInfectado;
+                    bool infectadoInicial;
+                    if (casosInicialesFijos > 0)
+                    {
+                        infectadoInicial = casosInicialesCreados < casosInicialesFijos;
+                        if (infectadoInicial) casosInicialesCreados++;
+                    }
+                    else
+                    {
+                        infectadoInicial = UnityEngine.Random.value <= probabilidadIngresoInfectado;
+                    }
                     estadoSalud.ConfigurarEstadoInicial(infectadoInicial, umbralContagioAerosolBase);
                 }
 
@@ -261,6 +286,16 @@ public class Administrador : MonoBehaviour
     }
 
     [Serializable]
+    public class RegistroTemporal
+    {
+        public float tiempoSegundos { get; set; }
+        public float tiempoHoras { get; set; }
+        public int agentesActivos { get; set; }
+        public int contagiosSecundarios { get; set; }
+        public float porcentajeContagioSecundario { get; set; }
+    }
+
+    [Serializable]
     public class estadisticacontagiocovid
     {
         public int numeroSimulacion { get; set; }
@@ -275,11 +310,16 @@ public class Administrador : MonoBehaviour
         [JsonProperty("NivelVentilacionACH")] public float nivelVentilacionACH { get; set; }
         [JsonProperty("EficaciaMascarillaPorcentaje")] public float eficaciaMascarillaPorcentaje { get; set; }
         public int semillaAleatoria { get; set; }
+        public bool modoGrupoFijo { get; set; }
+        public int casosInicialesFijos { get; set; }
+        public float aceleracionTiempo { get; set; }
+        public int cantidadMetasZona { get; set; }
         public int infectadosIniciales { get; set; }
         public int infectadosFinales { get; set; }
         public int contagiosSecundarios { get; set; }
         public float porcentajeContagioSecundario { get; set; }
         public List<ReporteAgentes> reporteAgentes { get; set; }
+        public List<RegistroTemporal> serieTemporal { get; set; }
         public float promedioTotalContagio { get; set; }
     }
 
@@ -296,6 +336,11 @@ public class Administrador : MonoBehaviour
         [JsonProperty("NivelVentilacionACH")] public float nivelVentilacionACH { get; set; }
         [JsonProperty("EficaciaMascarillaPorcentaje")] public float eficaciaMascarillaPorcentaje { get; set; }
         public int semillaAleatoria { get; set; }
+        public float duracionSimulacionSegundos { get; set; }
+        public bool modoGrupoFijo { get; set; }
+        public int casosInicialesFijos { get; set; }
+        public float aceleracionTiempo { get; set; }
+        public int cantidadMetasZona { get; set; }
         public string rutaCarpetaSalida { get; set; }
         public List<estadisticacontagiocovid> simulaciones { get; set; }
         public float promedioPorcentajeContagioSecundario { get; set; }
@@ -317,6 +362,7 @@ public class Administrador : MonoBehaviour
             ReleaseAgente(a);
         }
         cantidadAgentesActivos = 0;
+        casosInicialesCreados = 0;
         Globales.agenteCovid19.Clear();
         Globales.generaRpt = true;
         tiempoSimulacionActual = 0f;
@@ -343,6 +389,7 @@ public class Administrador : MonoBehaviour
         autoSpawn = false;
         CancelInvoke(nameof(CrearAgente));
         simulacionEnCurso = false;
+        Time.timeScale = 1f;
         if (rutinaLote != null)
         {
             StopCoroutine(rutinaLote);
@@ -373,7 +420,7 @@ public class Administrador : MonoBehaviour
 
     public void EstablecerDuracionSimulacion(float nuevaDuracion)
     {
-        duracionSimulacionSegundos = Mathf.Clamp(nuevaDuracion, 5f, 600f);
+        duracionSimulacionSegundos = Mathf.Clamp(nuevaDuracion, 5f, 43200f);
     }
 
     public void EstablecerNivelVentilacion(float nuevoNivelACH)
@@ -406,6 +453,43 @@ public class Administrador : MonoBehaviour
     {
         aforoMinimoPorSimulacion = Mathf.Max(1, minimo);
         aforoMaximoPorSimulacion = Mathf.Max(aforoMinimoPorSimulacion, maximo);
+    }
+
+    public void EstablecerAceleracionTiempo(float nuevaAceleracion)
+    {
+        aceleracionTiempo = Mathf.Clamp(nuevaAceleracion, 1f, 20f);
+    }
+
+    // Destinos entre los que circulan los agentes cuando el grupo es cerrado.
+    public GameObject[] ObtenerMetasZona(GameObject[] metas)
+    {
+        if (!modoGrupoFijo || cantidadMetasZona <= 0 || metas == null || cantidadMetasZona >= metas.Length)
+            return metas;
+
+        Vector3 origen = puntoInicio != null ? puntoInicio.transform.position : Vector3.zero;
+        return metas.OrderBy(m => Vector3.Distance(m.transform.position, origen)).Take(cantidadMetasZona).ToArray();
+    }
+
+    private void RegistrarPuntoTemporal()
+    {
+        var estados = GameObject.FindGameObjectsWithTag("tagPersonas")
+            .Where(agente => agente.activeInHierarchy)
+            .Select(agente => agente.GetComponent<EstadoSaludAgente>())
+            .Where(estado => estado != null)
+            .ToList();
+
+        int iniciales = estados.Count(estado => estado.fueCasoInicial);
+        int secundarios = estados.Count(estado => estado.fueContagioSecundario);
+        int susceptibles = Mathf.Max(0, estados.Count - iniciales);
+
+        serieTemporal.Add(new RegistroTemporal
+        {
+            tiempoSegundos = tiempoSimulacionActual,
+            tiempoHoras = tiempoSimulacionActual / 3600f,
+            agentesActivos = estados.Count,
+            contagiosSecundarios = secundarios,
+            porcentajeContagioSecundario = susceptibles > 0 ? (secundarios * 100f) / susceptibles : 0f
+        });
     }
 
     public void EstablecerRutaSalida(string nuevaRuta)
@@ -557,12 +641,17 @@ public class Administrador : MonoBehaviour
             nivelVentilacionACH = nivelVentilacionReporte,
             eficaciaMascarillaPorcentaje = eficaciaMascarillaReporte,
             semillaAleatoria = semillaReporte,
+            modoGrupoFijo = modoGrupoFijo,
+            casosInicialesFijos = casosInicialesFijos,
+            aceleracionTiempo = aceleracionTiempo,
+            cantidadMetasZona = cantidadMetasZona,
             infectadosIniciales = infectadosIniciales,
             infectadosFinales = infectadosFinales,
             contagiosSecundarios = contagiosSecundarios,
             porcentajeContagioSecundario = susceptiblesIniciales > 0 ? (contagiosSecundarios * 100f) / susceptiblesIniciales : 0f,
             promedioTotalContagio = estados.Count > 0 ? (infectadosFinales * 100f) / estados.Count : 0f,
-            reporteAgentes = new List<ReporteAgentes>()
+            reporteAgentes = new List<ReporteAgentes>(),
+            serieTemporal = new List<RegistroTemporal>(serieTemporal)
         };
 
         int indice = 1;
@@ -602,7 +691,10 @@ public class Administrador : MonoBehaviour
             IniciarRelojSimulacion();
             EstadoLoteActual = $"Simulación {indice}/{cantidadSimulacionesLote} en ejecución";
             Invoke(nameof(CrearAgente), Mathf.Max(0.1f, intervaloSpawn));
+            // La duración se mide en tiempo simulado: con aceleración, WaitForSeconds usa el tiempo escalado.
+            Time.timeScale = Mathf.Clamp(aceleracionTiempo, 1f, 20f);
             yield return new WaitForSeconds(duracionSimulacionSegundos);
+            Time.timeScale = 1f;
             CancelInvoke(nameof(CrearAgente));
             autoSpawn = false;
             simulacionEnCurso = false;
@@ -617,6 +709,7 @@ public class Administrador : MonoBehaviour
         }
 
         autoSpawn = autoSpawnOriginal;
+        Time.timeScale = 1f;
 
         var resumen = new ResumenLoteSimulaciones
         {
@@ -630,6 +723,11 @@ public class Administrador : MonoBehaviour
             nivelVentilacionACH = nivelVentilacionACH,
             eficaciaMascarillaPorcentaje = eficaciaMascarillaPorcentaje,
             semillaAleatoria = semillaAleatoriaLoteActual,
+            duracionSimulacionSegundos = duracionSimulacionSegundos,
+            modoGrupoFijo = modoGrupoFijo,
+            casosInicialesFijos = casosInicialesFijos,
+            aceleracionTiempo = aceleracionTiempo,
+            cantidadMetasZona = cantidadMetasZona,
             rutaCarpetaSalida = ObtenerCarpetaSalida(),
             simulaciones = resultados,
             promedioPorcentajeContagioSecundario = resultados.Count > 0 ? resultados.Average(item => item.porcentajeContagioSecundario) : 0f,
@@ -646,6 +744,9 @@ public class Administrador : MonoBehaviour
     {
         CapturarContextoSimulacionActual();
         tiempoSimulacionActual = 0f;
+        casosInicialesCreados = 0;
+        serieTemporal.Clear();
+        proximoRegistroTemporal = intervaloRegistroSegundos > 0f ? intervaloRegistroSegundos : float.MaxValue;
         simulacionEnCurso = true;
     }
 
