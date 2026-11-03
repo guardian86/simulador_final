@@ -8,6 +8,9 @@ public class Camino : MonoBehaviour
     public int veloMax;
     Administrador administrador;
     private NavMeshAgent agenteNavMesh;
+    // En grupo cerrado: true mientras el agente camina hacia la salida, para que los destinos
+    // que cruza en el camino no lo desvíen de nuevo hacia la zona de inicio.
+    private bool caminoASalida;
     //bool generarRpe = true;
 
     private void Awake()
@@ -65,6 +68,7 @@ public class Camino : MonoBehaviour
 
         Vector3 v = listaSalidas[salidaEscogida].transform.position;
         agenteNavMesh.SetDestination(v);
+        caminoASalida = true;
 
         // Opción: generar un reporte una sola vez, cuando empiece a salir gente
         if (Globales.generaRpt && !(administrador != null && administrador.modoGrupoFijo))
@@ -100,6 +104,8 @@ public class Camino : MonoBehaviour
         if (other.gameObject.tag.Equals("meta"))
         {
 
+            if (caminoASalida && administrador != null && administrador.modoGrupoFijo)
+                return;
             //Debug.Log(other.gameObject);
             CancelInvoke(nameof(SalirCentroComercial));
             Invoke(nameof(SalirCentroComercial), Random.Range(7f, 15f));
@@ -111,6 +117,7 @@ public class Camino : MonoBehaviour
         if (!PrepararAgenteNavMesh())
             return;
 
+        caminoASalida = false;
         agenteNavMesh.speed = Random.Range(velocidadInit, velocidadInit + veloMax);
         GameObject[] listaSalidas = GameObject.FindGameObjectsWithTag("meta");
         if (listaSalidas == null || listaSalidas.Length == 0) return;
