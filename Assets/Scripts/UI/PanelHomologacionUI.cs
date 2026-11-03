@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // Panel "Homologación": controles para replicar un escenario de referencia de grupo cerrado
-// (por ejemplo el Aula de Lelieveld et al.): grupo cerrado sin salidas, casos iniciales exactos,
+// (por ejemplo el Aula de Lelieveld et al.): flujo normal de entrada y salida, caso índice presente de forma continua,
 // aceleración del tiempo simulado y zona de destinos. Los valores se guardan en el Administrador
 // y quedan registrados en el reporte JSON de cada ejecución.
 public class PanelHomologacionUI : MonoBehaviour
@@ -56,7 +56,7 @@ public class PanelHomologacionUI : MonoBehaviour
     void RefrescarTextos()
     {
         if (admin == null) return;
-        txtGrupo.text = admin.modoGrupoFijo ? "Grupo cerrado: SÍ" : "Grupo cerrado: NO";
+        txtGrupo.text = admin.modoGrupoFijo ? "Modo homologación: SÍ" : "Modo homologación: NO";
         txtCasos.text = admin.casosInicialesFijos <= 0 ? "Aleatorio" : admin.casosInicialesFijos.ToString();
         txtAceleracion.text = "x" + Mathf.RoundToInt(admin.aceleracionTiempo);
         txtZona.text = admin.cantidadMetasZona <= 0 ? "Todo" : admin.cantidadMetasZona.ToString();
@@ -138,7 +138,7 @@ public class PanelHomologacionUI : MonoBehaviour
         btnRT.anchorMin = new Vector2(0, 1); btnRT.anchorMax = new Vector2(0, 1); btnRT.pivot = new Vector2(0, 1);
         btnRT.anchoredPosition = new Vector2(22, -44f); btnRT.sizeDelta = new Vector2(250f, 32f);
         ui.btnGrupo = btnGO.AddComponent<Button>();
-        ui.txtGrupo = Texto("Text", Vector2.zero, Vector2.zero, "Grupo cerrado: NO", 15, oscuro, TextAnchor.MiddleCenter);
+        ui.txtGrupo = Texto("Text", Vector2.zero, Vector2.zero, "Modo homologación: NO", 15, oscuro, TextAnchor.MiddleCenter);
         ui.txtGrupo.transform.SetParent(btnGO.transform, false);
         var btnTxtRT = ui.txtGrupo.GetComponent<RectTransform>();
         btnTxtRT.anchorMin = Vector2.zero; btnTxtRT.anchorMax = Vector2.one;
@@ -155,7 +155,7 @@ public class PanelHomologacionUI : MonoBehaviour
         ui.sldAceleracion = Deslizador("sldAceleracion", new Vector2(22, y - 24), 1f, 20f);
 
         y -= 50f;
-        Texto("lblZona", new Vector2(22, y), new Vector2(290, 22), "Destinos de la zona (grupo cerrado)", 15, claro, TextAnchor.MiddleLeft);
+        Texto("lblZona", new Vector2(22, y), new Vector2(290, 22), "Destinos de la zona", 15, claro, TextAnchor.MiddleLeft);
         ui.txtZona = Texto("valZona", new Vector2(310, y), new Vector2(98, 22), "Todo", 15, claro, TextAnchor.MiddleRight);
         ui.sldZona = Deslizador("sldZona", new Vector2(22, y - 24), 0f, 16f);
     }
