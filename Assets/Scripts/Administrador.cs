@@ -148,9 +148,17 @@ public class Administrador : MonoBehaviour
                 var pos = puntoInicio != null ? puntoInicio.transform.position : Vector3.zero;
                 var rot = puntoInicio != null ? puntoInicio.transform.rotation : Quaternion.identity;
 
-                if (pool.Count > 0)
+                GameObject reutilizable = null;
+                while (pool.Count > 0 && reutilizable == null)
                 {
-                    clon = pool.Dequeue();
+                    var candidato = pool.Dequeue();
+                    if (candidato != null && candidato.transform.parent == null && !candidato.activeSelf)
+                        reutilizable = candidato;
+                }
+
+                if (reutilizable != null)
+                {
+                    clon = reutilizable;
                     clon.transform.SetPositionAndRotation(pos, rot);
 
                     // FIX: el NavMeshAgent vive en el hijo ("Capsule"), no en este
@@ -386,7 +394,13 @@ public class Administrador : MonoBehaviour
     {
         CancelInvoke(nameof(CrearAgente));
         simulacionEnCurso = false;
-        var agentes = GameObject.FindGameObjectsWithTag("tagPersonas");
+        // FIX: el tag "tagPersonas" está tanto en la raíz ("Personaje") como en su hijo "Capsule".
+        // Antes se liberaban ambos por separado: el hijo quedaba en el pool y al reutilizarse se
+        // activaba dentro de una raíz apagada (agente invisible que ocupaba cupo de aforo).
+        var agentes = GameObject.FindGameObjectsWithTag("tagPersonas")
+            .Select(a => a.transform.root.gameObject)
+            .Distinct()
+            .ToList();
         foreach (var a in agentes)
         {
             ReleaseAgente(a);
@@ -543,7 +557,7 @@ public class Administrador : MonoBehaviour
 
     public int ObtenerCantidadAgentesActivos()
     {
-        return GameObject.FindGameObjectsWithTag("tagPersonas").Count(agente => agente.activeInHierarchy);
+        return GameObject.FindGameObjectsWithTag("tagPersonas").Count(agente => agente.activeInHierarchy && agente.GetComponent<EstadoSaludAgente>() != null);
     }
 
     public int ObtenerCantidadAgentesInfectados()
@@ -630,6 +644,7 @@ public class Administrador : MonoBehaviour
     public void ReleaseAgente(GameObject agenteRoot)
     {
         if (agenteRoot == null) return;
+        agenteRoot = agenteRoot.transform.root.gameObject;
         if (!agenteRoot.activeInHierarchy) return;
 
         // Apaga partículas y resetea
