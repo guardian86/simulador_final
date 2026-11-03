@@ -75,11 +75,12 @@ public class PanelHomologacionUI : MonoBehaviour
         panelGO.transform.SetParent(canvas, false);
         panelGO.AddComponent<Image>().color = colorPanel;
         var panelRT = panelGO.GetComponent<RectTransform>();
-        panelRT.anchorMin = new Vector2(1f, 1f);
-        panelRT.anchorMax = new Vector2(1f, 1f);
-        panelRT.pivot = new Vector2(1f, 1f);
-        panelRT.anchoredPosition = new Vector2(-22f, -736f);
-        panelRT.sizeDelta = new Vector2(430f, 290f);
+        // Esquina superior izquierda, debajo del panel de control (a la derecha ya hay otros paneles y leyendas).
+        panelRT.anchorMin = new Vector2(0f, 1f);
+        panelRT.anchorMax = new Vector2(0f, 1f);
+        panelRT.pivot = new Vector2(0f, 1f);
+        panelRT.anchoredPosition = new Vector2(10f, -790f);
+        panelRT.sizeDelta = new Vector2(430f, 250f);
 
         Text Texto(string nombre, Vector2 pos, Vector2 tam, string texto, int tamano, Color color, TextAnchor ancla)
         {
@@ -126,7 +127,7 @@ public class PanelHomologacionUI : MonoBehaviour
             return s;
         }
 
-        Texto("Titulo", new Vector2(22, -14), new Vector2(380, 30), "Homologación con la referencia", 20, claro, TextAnchor.MiddleLeft);
+        Texto("Titulo", new Vector2(22, -10), new Vector2(380, 30), "Homologación con la referencia", 20, claro, TextAnchor.MiddleLeft);
 
         var ui = panelGO.AddComponent<PanelHomologacionUI>();
 
@@ -135,7 +136,7 @@ public class PanelHomologacionUI : MonoBehaviour
         btnGO.AddComponent<Image>().color = boton;
         var btnRT = btnGO.GetComponent<RectTransform>();
         btnRT.anchorMin = new Vector2(0, 1); btnRT.anchorMax = new Vector2(0, 1); btnRT.pivot = new Vector2(0, 1);
-        btnRT.anchoredPosition = new Vector2(22, -48f); btnRT.sizeDelta = new Vector2(250f, 32f);
+        btnRT.anchoredPosition = new Vector2(22, -44f); btnRT.sizeDelta = new Vector2(250f, 32f);
         ui.btnGrupo = btnGO.AddComponent<Button>();
         ui.txtGrupo = Texto("Text", Vector2.zero, Vector2.zero, "Grupo cerrado: NO", 15, oscuro, TextAnchor.MiddleCenter);
         ui.txtGrupo.transform.SetParent(btnGO.transform, false);
@@ -143,17 +144,17 @@ public class PanelHomologacionUI : MonoBehaviour
         btnTxtRT.anchorMin = Vector2.zero; btnTxtRT.anchorMax = Vector2.one;
         btnTxtRT.offsetMin = Vector2.zero; btnTxtRT.offsetMax = Vector2.zero;
 
-        float y = -92f;
+        float y = -84f;
         Texto("lblCasos", new Vector2(22, y), new Vector2(290, 22), "Casos iniciales por corrida", 15, claro, TextAnchor.MiddleLeft);
         ui.txtCasos = Texto("valCasos", new Vector2(310, y), new Vector2(98, 22), "Aleatorio", 15, claro, TextAnchor.MiddleRight);
         ui.sldCasos = Deslizador("sldCasos", new Vector2(22, y - 24), 0f, 5f);
 
-        y -= 56f;
+        y -= 50f;
         Texto("lblAceleracion", new Vector2(22, y), new Vector2(290, 22), "Aceleración del tiempo", 15, claro, TextAnchor.MiddleLeft);
         ui.txtAceleracion = Texto("valAceleracion", new Vector2(310, y), new Vector2(98, 22), "x1", 15, claro, TextAnchor.MiddleRight);
         ui.sldAceleracion = Deslizador("sldAceleracion", new Vector2(22, y - 24), 1f, 20f);
 
-        y -= 56f;
+        y -= 50f;
         Texto("lblZona", new Vector2(22, y), new Vector2(290, 22), "Destinos de la zona (grupo cerrado)", 15, claro, TextAnchor.MiddleLeft);
         ui.txtZona = Texto("valZona", new Vector2(310, y), new Vector2(98, 22), "Todo", 15, claro, TextAnchor.MiddleRight);
         ui.sldZona = Deslizador("sldZona", new Vector2(22, y - 24), 0f, 16f);
