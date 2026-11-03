@@ -982,6 +982,13 @@ public class Administrador : MonoBehaviour
         if (agente == null)
             return;
 
+        // FIX: la figura de persona debe colgar del objeto que se mueve (el hijo "Capsule", que tiene
+        // el NavMeshAgent y el estado de salud), no de la raíz "Personaje", que permanece quieta.
+        // Antes solo funcionaba por accidente cuando el pool devolvía el hijo en vez de la raíz.
+        var navMovil = agente.GetComponentInChildren<UnityEngine.AI.NavMeshAgent>(true);
+        if (navMovil != null)
+            agente = navMovil.gameObject;
+
         var visualPersona = agente.transform.Find("VisualPersona");
         if (visualPersona != null)
         {
