@@ -38,7 +38,13 @@ public class AspectoAgente : MonoBehaviour
         new Color(0.08f, 0.08f, 0.1f)
     };
 
+    // Colores de la leyenda de agentes (verde = sano, rojo = infectado) aplicados a la ropa.
+    public Color colorSanoLeyenda = new Color(0.21f, 0.7f, 0.36f);
+    public Color colorInfectadoLeyenda = new Color(0.88f, 0.22f, 0.22f);
+
     private ParticleSystem particulas;
+    private EstadoSaludAgente estadoSalud;
+    private bool? ultimoEstado;
     private Color colorRopaPrincipalSano;
     private Color colorRopaSecundariaSano;
     private Color colorCabelloSano;
@@ -46,12 +52,14 @@ public class AspectoAgente : MonoBehaviour
     private void Awake()
     {
         particulas = GetComponentInChildren<ParticleSystem>();
+        estadoSalud = GetComponentInChildren<EstadoSaludAgente>();
         InicializarColoresBase();
         AplicarColores(false);
     }
 
     private void OnEnable()
     {
+        ultimoEstado = null;
         CancelInvoke(nameof(ActualizarAspecto));
         InvokeRepeating(nameof(ActualizarAspecto), 0f, 0.3f);
     }
@@ -63,19 +71,23 @@ public class AspectoAgente : MonoBehaviour
 
     private void ActualizarAspecto()
     {
-        bool infectado = particulas != null && particulas.isEmitting;
+        if (estadoSalud == null) estadoSalud = GetComponentInChildren<EstadoSaludAgente>();
+        bool infectado = estadoSalud != null ? estadoSalud.estaInfectado : (particulas != null && particulas.isEmitting);
+        if (ultimoEstado.HasValue && ultimoEstado.Value == infectado) return;
+        ultimoEstado = infectado;
         AplicarColores(infectado);
     }
 
     private void AplicarColores(bool infectado)
     {
+        var colorEstado = infectado ? colorInfectadoLeyenda : colorSanoLeyenda;
         AplicarColor(rendersPiel, infectado ? colorPielInfectado : colorPielSano);
-        AplicarColor(rendersRopaPrincipal, infectado ? Mezclar(colorRopaPrincipalSano, colorRopaInfectado, 0.45f) : colorRopaPrincipalSano);
-        AplicarColor(rendersRopaSecundaria, infectado ? Mezclar(colorRopaSecundariaSano, colorRopaInfectado, 0.35f) : colorRopaSecundariaSano);
+        AplicarColor(rendersRopaPrincipal, colorEstado);
+        AplicarColor(rendersRopaSecundaria, colorEstado);
         AplicarColor(rendersCabello, colorCabelloSano);
 
         if (renderCuerpo != null)
-            renderCuerpo.material.color = infectado ? Mezclar(colorRopaPrincipalSano, colorRopaInfectado, 0.45f) : colorRopaPrincipalSano;
+            renderCuerpo.material.color = colorEstado;
 
         if (renderCabeza != null)
             renderCabeza.material.color = infectado ? colorPielInfectado : colorPielSano;

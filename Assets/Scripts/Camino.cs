@@ -45,15 +45,8 @@ public class Camino : MonoBehaviour
 
     void SalirCentroComercial()
     {
-        // Grupo cerrado (homologación con el Aula): el agente no abandona el recinto,
-        // elige otro destino y sigue circulando.
         if (administrador == null)
             administrador = FindObjectOfType<Administrador>();
-        if (administrador != null && administrador.modoGrupoFijo)
-        {
-            ReiniciarRuta();
-            return;
-        }
 
         if (!PrepararAgenteNavMesh())
             return;
@@ -74,7 +67,7 @@ public class Camino : MonoBehaviour
         agenteNavMesh.SetDestination(v);
 
         // Opción: generar un reporte una sola vez, cuando empiece a salir gente
-        if (Globales.generaRpt)
+        if (Globales.generaRpt && !(administrador != null && administrador.modoGrupoFijo))
         {
             InvocarRptAgentes();
             Globales.generaRpt = false;
@@ -90,10 +83,6 @@ public class Camino : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("salida_cc"))
         {
-            // Grupo cerrado: nadie sale del recinto (evita perder al caso índice).
-            var adminGrupo = FindObjectOfType<Administrador>();
-            if (adminGrupo != null && adminGrupo.modoGrupoFijo)
-                return;
             //Debug.Log(other.gameObject);
             if (other.gameObject)
             {

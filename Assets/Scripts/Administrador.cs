@@ -70,6 +70,8 @@ public class Administrador : MonoBehaviour
     private int semillaAleatoriaContextoActual;
     private int semillaAleatoriaLoteActual;
     private int casosInicialesCreados;
+    // Agentes que ya salieron del recinto durante la corrida (hacen parte del flujo y del resultado).
+    private readonly List<ReporteAgentes> agentesSalidos = new List<ReporteAgentes>();
     private float proximoRegistroTemporal = float.MaxValue;
     private readonly List<RegistroTemporal> serieTemporal = new List<RegistroTemporal>();
     #endregion
@@ -198,7 +200,10 @@ public class Administrador : MonoBehaviour
                     bool infectadoInicial;
                     if (casosInicialesFijos > 0)
                     {
-                        infectadoInicial = casosInicialesCreados < casosInicialesFijos;
+                        // Se mantiene el número de casos índice presentes en el recinto: si uno sale, el siguiente en ingresar lo reemplaza.
+                        int indicesPresentes = GameObject.FindGameObjectsWithTag("tagPersonas")
+                            .Count(g => g.activeInHierarchy && g.transform.root != clon.transform.root && g.GetComponentInChildren<EstadoSaludAgente>() != null && g.GetComponentInChildren<EstadoSaludAgente>().fueCasoInicial);
+                        infectadoInicial = indicesPresentes < casosInicialesFijos;
                         if (infectadoInicial) casosInicialesCreados++;
                     }
                     else
@@ -283,6 +288,7 @@ public class Administrador : MonoBehaviour
         public float cantidadSimulaciones { get; set; }
         public float dosisAcumulada { get; set; }
         public float tiempoExposicionSegundos { get; set; }
+        public bool salioDelRecinto { get; set; }
     }
 
     [Serializable]
@@ -291,6 +297,7 @@ public class Administrador : MonoBehaviour
         public float tiempoSegundos { get; set; }
         public float tiempoHoras { get; set; }
         public int agentesActivos { get; set; }
+        public int agentesTotalesQuePasaron { get; set; }
         public int contagiosSecundarios { get; set; }
         public float porcentajeContagioSecundario { get; set; }
     }
@@ -314,6 +321,10 @@ public class Administrador : MonoBehaviour
         public int casosInicialesFijos { get; set; }
         public float aceleracionTiempo { get; set; }
         public int cantidadMetasZona { get; set; }
+        public int agentesTotalesQuePasaron { get; set; }
+        public int agentesQueSalieron { get; set; }
+        public int agentesAlFinalizar { get; set; }
+        public int susceptiblesTotales { get; set; }
         public int infectadosIniciales { get; set; }
         public int infectadosFinales { get; set; }
         public int contagiosSecundarios { get; set; }
@@ -356,6 +367,7 @@ public class Administrador : MonoBehaviour
     private void ResetSimulacionInterna(bool reiniciarLuego)
     {
         CancelInvoke(nameof(CrearAgente));
+        simulacionEnCurso = false;
         var agentes = GameObject.FindGameObjectsWithTag("tagPersonas");
         foreach (var a in agentes)
         {
@@ -363,6 +375,7 @@ public class Administrador : MonoBehaviour
         }
         cantidadAgentesActivos = 0;
         casosInicialesCreados = 0;
+        agentesSalidos.Clear();
         Globales.agenteCovid19.Clear();
         Globales.generaRpt = true;
         tiempoSimulacionActual = 0f;
@@ -467,7 +480,8 @@ public class Administrador : MonoBehaviour
             return metas;
 
         Vector3 origen = puntoInicio != null ? puntoInicio.transform.position : Vector3.zero;
-        return metas.OrderBy(m => Vector3.Distance(m.transform.position, origen)).Take(cantidadMetasZona).ToArray();
+        // Mínimo 2 destinos: con uno solo todos los agentes convergen y se quedan quietos.
+        return metas.OrderBy(m => Vector3.Distance(m.transform.position, origen)).Take(Mathf.Max(2, cantidadMetasZona)).ToArray();
     }
 
     private void RegistrarPuntoTemporal()
@@ -478,15 +492,17 @@ public class Administrador : MonoBehaviour
             .Where(estado => estado != null)
             .ToList();
 
-        int iniciales = estados.Count(estado => estado.fueCasoInicial);
-        int secundarios = estados.Count(estado => estado.fueContagioSecundario);
-        int susceptibles = Mathf.Max(0, estados.Count - iniciales);
+        int totalPasaron = estados.Count + agentesSalidos.Count;
+        int iniciales = estados.Count(estado => estado.fueCasoInicial) + agentesSalidos.Count(a => a.casoInicial);
+        int secundarios = estados.Count(estado => estado.fueContagioSecundario) + agentesSalidos.Count(a => a.contagioSecundario);
+        int susceptibles = Mathf.Max(0, totalPasaron - iniciales);
 
         serieTemporal.Add(new RegistroTemporal
         {
             tiempoSegundos = tiempoSimulacionActual,
             tiempoHoras = tiempoSimulacionActual / 3600f,
             agentesActivos = estados.Count,
+            agentesTotalesQuePasaron = totalPasaron,
             contagiosSecundarios = secundarios,
             porcentajeContagioSecundario = susceptibles > 0 ? (secundarios * 100f) / susceptibles : 0f
         });
@@ -604,9 +620,25 @@ public class Administrador : MonoBehaviour
         var nav = agenteRoot.GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (nav != null) nav.ResetPath();
 
+        if (simulacionEnCurso) RegistrarSalida(agenteRoot);
         agenteRoot.SetActive(false);
         cantidadAgentesActivos = Mathf.Max(0, cantidadAgentesActivos - 1);
         pool.Enqueue(agenteRoot);
+    }
+
+    private void RegistrarSalida(GameObject agenteRoot)
+    {
+        var estado = agenteRoot.GetComponentInChildren<EstadoSaludAgente>();
+        if (estado == null) return;
+        agentesSalidos.Add(new ReporteAgentes
+        {
+            agenteContagiadoCovid = estado.estaInfectado,
+            casoInicial = estado.fueCasoInicial,
+            contagioSecundario = estado.fueContagioSecundario,
+            dosisAcumulada = estado.dosisAcumulada,
+            tiempoExposicionSegundos = estado.tiempoExposicionAcumulado,
+            salioDelRecinto = true
+        });
     }
 
     private estadisticacontagiocovid ConstruirReporteSimulacionActual(int numeroSimulacion, int aforoObjetivo, float duracion)
@@ -617,10 +649,12 @@ public class Administrador : MonoBehaviour
             .Where(estado => estado != null)
             .ToList();
 
-        int infectadosIniciales = estados.Count(estado => estado.fueCasoInicial);
-        int infectadosFinales = estados.Count(estado => estado.estaInfectado);
-        int contagiosSecundarios = estados.Count(estado => estado.fueContagioSecundario);
-        int susceptiblesIniciales = Mathf.Max(0, estados.Count - infectadosIniciales);
+        // Se cuentan todos los agentes del flujo: los que salieron y los que permanecen al finalizar.
+        int totalAgentes = estados.Count + agentesSalidos.Count;
+        int infectadosIniciales = estados.Count(estado => estado.fueCasoInicial) + agentesSalidos.Count(a => a.casoInicial);
+        int infectadosFinales = estados.Count(estado => estado.estaInfectado) + agentesSalidos.Count(a => a.agenteContagiadoCovid);
+        int contagiosSecundarios = estados.Count(estado => estado.fueContagioSecundario) + agentesSalidos.Count(a => a.contagioSecundario);
+        int susceptiblesIniciales = Mathf.Max(0, totalAgentes - infectadosIniciales);
         float intervaloSpawnReporte = ObtenerIntervaloSpawnParaReporte();
         float umbralContagioReporte = ObtenerUmbralContagioParaReporte();
         float nivelVentilacionReporte = ObtenerNivelVentilacionParaReporte();
@@ -645,16 +679,28 @@ public class Administrador : MonoBehaviour
             casosInicialesFijos = casosInicialesFijos,
             aceleracionTiempo = aceleracionTiempo,
             cantidadMetasZona = cantidadMetasZona,
+            agentesTotalesQuePasaron = totalAgentes,
+            agentesQueSalieron = agentesSalidos.Count,
+            agentesAlFinalizar = estados.Count,
+            susceptiblesTotales = susceptiblesIniciales,
             infectadosIniciales = infectadosIniciales,
             infectadosFinales = infectadosFinales,
             contagiosSecundarios = contagiosSecundarios,
             porcentajeContagioSecundario = susceptiblesIniciales > 0 ? (contagiosSecundarios * 100f) / susceptiblesIniciales : 0f,
-            promedioTotalContagio = estados.Count > 0 ? (infectadosFinales * 100f) / estados.Count : 0f,
+            promedioTotalContagio = totalAgentes > 0 ? (infectadosFinales * 100f) / totalAgentes : 0f,
             reporteAgentes = new List<ReporteAgentes>(),
             serieTemporal = new List<RegistroTemporal>(serieTemporal)
         };
 
         int indice = 1;
+        foreach (var salido in agentesSalidos)
+        {
+            salido.cantidadAgenteSimulacion = indice;
+            salido.cantidadSimulaciones = numeroSimulacion;
+            salido.promedioContagiados = reporte.promedioTotalContagio;
+            reporte.reporteAgentes.Add(salido);
+            indice++;
+        }
         foreach (var estado in estados)
         {
             reporte.reporteAgentes.Add(new ReporteAgentes
@@ -745,6 +791,7 @@ public class Administrador : MonoBehaviour
         CapturarContextoSimulacionActual();
         tiempoSimulacionActual = 0f;
         casosInicialesCreados = 0;
+        agentesSalidos.Clear();
         serieTemporal.Clear();
         proximoRegistroTemporal = intervaloRegistroSegundos > 0f ? intervaloRegistroSegundos : float.MaxValue;
         simulacionEnCurso = true;
