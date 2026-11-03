@@ -90,6 +90,10 @@ public class Camino : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("salida_cc"))
         {
+            // Grupo cerrado: nadie sale del recinto (evita perder al caso índice).
+            var adminGrupo = FindObjectOfType<Administrador>();
+            if (adminGrupo != null && adminGrupo.modoGrupoFijo)
+                return;
             //Debug.Log(other.gameObject);
             if (other.gameObject)
             {
