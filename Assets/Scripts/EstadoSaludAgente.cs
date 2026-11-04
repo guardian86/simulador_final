@@ -54,7 +54,10 @@ public class EstadoSaludAgente : MonoBehaviour
         estaInfectado = true;
         fueContagioSecundario = true;
 
-        if (particulas != null)
+        // El contagio secundario cambia a rojo (AspectoAgente) pero no emite la nube de aerosol:
+        // está en período de latencia. Solo los casos índice muestran partículas.
+        var admin = FindObjectOfType<Administrador>();
+        if (particulas != null && admin != null && admin.secundariosContagian)
             particulas.Play(true);
     }
 }

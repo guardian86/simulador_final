@@ -29,6 +29,8 @@ public class Administrador : MonoBehaviour
     [Range(0f,1f)] public float probabilidadIngresoInfectado = 0.2f;
     [Tooltip("Calcula la dosis por distancia en cada cuadro (independiente de la física y de la aceleración).")]
     public bool usarDosisPorDistancia = true;
+    [Tooltip("Si es falso, solo los casos índice emiten aerosol: un contagiado durante la visita está en período de latencia y no contagia en la misma simulación (supuesto de Lelieveld et al., 2020).")]
+    public bool secundariosContagian = false;
     public float umbralContagioAerosolBase = 1.2f;
     [Range(0f,12f)] public float nivelVentilacionACH = 6f;
     [Range(0f,100f)] public float eficaciaMascarillaPorcentaje = 0f;
@@ -158,7 +160,7 @@ public class Administrador : MonoBehaviour
 
         var infectados = new List<Vector3>();
         foreach (var e in estados)
-            if (e.estaInfectado) infectados.Add(e.transform.position);
+            if (e.estaInfectado && (secundariosContagian || e.fueCasoInicial)) infectados.Add(e.transform.position);
         if (infectados.Count == 0) return;
 
         foreach (var e in estados)

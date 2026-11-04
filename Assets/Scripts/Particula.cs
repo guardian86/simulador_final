@@ -35,7 +35,7 @@ public class Particula : MonoBehaviour
 
     private bool EstaInfectadoPropio()
     {
-        return estadoPropio != null ? estadoPropio.estaInfectado : miParticula != null && miParticula.isEmitting;
+        return estadoPropio != null ? (estadoPropio.estaInfectado && estadoPropio.fueCasoInicial) : miParticula != null && miParticula.isEmitting;
     }
 
     private void OnTriggerEnter(Collider other)
