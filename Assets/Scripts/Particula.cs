@@ -55,6 +55,12 @@ public class Particula : MonoBehaviour
         if (!EstaInfectadoPropio())
             return;
 
+        // La dosis la calcula el Administrador por distancia en cada cuadro; este cálculo por
+        // física queda solo como respaldo si esa opción se desactiva.
+        var adminDosis = ObtenerAdministrador();
+        if (adminDosis != null && adminDosis.usarDosisPorDistancia)
+            return;
+
         // FIX: mismo problema que en Awake — buscar el EstadoSaludAgente del OTRO
         // agente por jerarquía (GetComponentInParent) en vez de asumir que vive en
         // transform.root, y comparar por componente en vez de por Transform raíz.

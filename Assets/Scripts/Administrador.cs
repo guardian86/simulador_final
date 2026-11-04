@@ -27,6 +27,8 @@ public class Administrador : MonoBehaviour
     [Tooltip("Si está activo, el administrador seguirá creando agentes hasta el aforo máximo")] public bool autoSpawn = true;
     [Header("Modelo aerosol")]
     [Range(0f,1f)] public float probabilidadIngresoInfectado = 0.2f;
+    [Tooltip("Calcula la dosis por distancia en cada cuadro (independiente de la física y de la aceleración).")]
+    public bool usarDosisPorDistancia = true;
     public float umbralContagioAerosolBase = 1.2f;
     [Range(0f,12f)] public float nivelVentilacionACH = 6f;
     [Range(0f,100f)] public float eficaciaMascarillaPorcentaje = 0f;
@@ -126,11 +128,52 @@ public class Administrador : MonoBehaviour
         if (simulacionEnCurso)
         {
             tiempoSimulacionActual += Time.deltaTime;
+            if (usarDosisPorDistancia)
+                AcumularDosisPorDistancia(Time.deltaTime);
             if (intervaloRegistroSegundos > 0f && tiempoSimulacionActual >= proximoRegistroTemporal)
             {
                 RegistrarPuntoTemporal();
                 proximoRegistroTemporal += intervaloRegistroSegundos;
             }
+        }
+    }
+
+    // Dosis de aerosol calculada una vez por cuadro a partir de la distancia entre cada persona
+    // infectada y cada susceptible presente, con la misma fórmula del modelo:
+    // emisión x factorDistancia x max(0.3, atenuación) x mascarilla x ventilación x Δt.
+    // FIX: antes la dosis dependía de OnTriggerStay (física). Con el tiempo acelerado la física
+    // ejecuta muchos pasos por cuadro sin movimiento y los cuerpos se duermen, por lo que se
+    // perdían exposiciones (A0 a x20 daba ~5 veces menos contagio que A1 a x1).
+    private void AcumularDosisPorDistancia(float dt)
+    {
+        if (dt <= 0f) return;
+        var estados = ObtenerEstadosPresentes();
+        if (estados.Count < 2) return;
+
+        float radio = Mathf.Max(0.1f, radioInfluenciaAerosol);
+        float baseDosis = tasaEmisionAerosol
+            * Mathf.Max(0.3f, factorAtenuacionAmbiente)
+            * ObtenerFactorMascarillaAerosoles()
+            * ObtenerFactorVentilacionAerosoles();
+
+        var infectados = new List<Vector3>();
+        foreach (var e in estados)
+            if (e.estaInfectado) infectados.Add(e.transform.position);
+        if (infectados.Count == 0) return;
+
+        foreach (var e in estados)
+        {
+            if (e.estaInfectado) continue;
+            Vector3 p = e.transform.position;
+            float dosis = 0f;
+            foreach (var fuente in infectados)
+            {
+                float d = Vector3.Distance(p, fuente);
+                if (d <= radio)
+                    dosis += baseDosis * Mathf.Clamp01(1f - d / radio) * dt;
+            }
+            if (dosis > 0f)
+                e.RegistrarExposicionAerosol(dosis, dt);
         }
     }
 
