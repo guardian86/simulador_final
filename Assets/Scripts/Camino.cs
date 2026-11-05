@@ -40,6 +40,10 @@ public class Camino : MonoBehaviour
     // (A0 a x20 tenía ~227 visitantes por corrida frente a ~299 en A1 a x1).
     private const float distanciaLlegada = 1.5f;
     private GameObject destinoMeta;
+    // Si varios agentes se agolpan en el mismo destino, el que no logra acercarse a 1.5 m queda
+    // detenido; tras 2 s detenido cerca del destino se considera que ya llegó.
+    private const float radioAgolpamiento = 5f;
+    private float tiempoDetenido;
 
     void Update()
     {
@@ -49,8 +53,20 @@ public class Camino : MonoBehaviour
             return;
         if (agenteNavMesh == null || !agenteNavMesh.enabled || !agenteNavMesh.isOnNavMesh || agenteNavMesh.pathPending)
             return;
-        if (agenteNavMesh.remainingDistance > agenteNavMesh.stoppingDistance + distanciaLlegada)
+        float restante = agenteNavMesh.remainingDistance;
+        bool llego = restante <= agenteNavMesh.stoppingDistance + distanciaLlegada;
+        if (!llego && restante <= radioAgolpamiento && agenteNavMesh.velocity.sqrMagnitude < 0.04f)
+        {
+            tiempoDetenido += Time.deltaTime;
+            llego = tiempoDetenido >= 2f;
+        }
+        else
+        {
+            tiempoDetenido = 0f;
+        }
+        if (!llego)
             return;
+        tiempoDetenido = 0f;
 
         if (caminoASalida)
         {
@@ -66,6 +82,8 @@ public class Camino : MonoBehaviour
     private void LlegarADestino(GameObject meta)
     {
         diagEntradasMeta++;
+        var est = GetComponentInParent<EstadoSaludAgente>();
+        if (est != null) est.visitas++;
         ultimaMeta = meta;
         salidaPendiente = true;
         CancelInvoke(nameof(SalirCentroComercial));

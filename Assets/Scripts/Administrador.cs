@@ -33,6 +33,8 @@ public class Administrador : MonoBehaviour
     public bool secundariosContagian = false;
     [Tooltip("Detecta la llegada a destinos y salidas por la ruta del NavMeshAgent (independiente de la física y de la aceleración).")]
     public bool usarEventosPorDistancia = true;
+    [Tooltip("Contagio por dosis-respuesta exponencial 1 - e^(-dosis/k) como en Lelieveld et al. (2020); k = umbralContagioAerosolBase. Si es falso se usa el umbral fijo anterior.")]
+    public bool usarDosisRespuestaExponencial = true;
     public float umbralContagioAerosolBase = 1.2f;
     [Range(0f,12f)] public float nivelVentilacionACH = 6f;
     [Range(0f,100f)] public float eficaciaMascarillaPorcentaje = 0f;
@@ -76,6 +78,7 @@ public class Administrador : MonoBehaviour
     private int semillaAleatoriaContextoActual;
     private int semillaAleatoriaLoteActual;
     private int casosInicialesCreados;
+    private float segundosCasoIndice, dosisTotalSusceptibles;
     private int diagCreados, diagLiberados, diagPerdidos, diagInactivos, diagSinEstado, diagEnCaminoSalida, diagDetenidosEnSalida;
     private readonly HashSet<GameObject> agentesRegistrados = new HashSet<GameObject>();
     private readonly List<GameObject> agentesCreadosCorrida = new List<GameObject>();
@@ -164,10 +167,11 @@ public class Administrador : MonoBehaviour
         foreach (var e in estados)
             if (e.estaInfectado && (secundariosContagian || e.fueCasoInicial)) infectados.Add(e.transform.position);
         if (infectados.Count == 0) return;
+        segundosCasoIndice += infectados.Count * dt;
 
         foreach (var e in estados)
         {
-            if (e.estaInfectado) continue;
+            if (e.fueCasoInicial) continue;
             Vector3 p = e.transform.position;
             float dosis = 0f;
             foreach (var fuente in infectados)
@@ -177,7 +181,10 @@ public class Administrador : MonoBehaviour
                     dosis += baseDosis * Mathf.Clamp01(1f - d / radio) * dt;
             }
             if (dosis > 0f)
+            {
+                dosisTotalSusceptibles += dosis;
                 e.RegistrarExposicionAerosol(dosis, dt);
+            }
         }
     }
 
@@ -269,6 +276,8 @@ public class Administrador : MonoBehaviour
                         infectadoInicial = UnityEngine.Random.value <= probabilidadIngresoInfectado;
                     }
                     estadoSalud.ConfigurarEstadoInicial(infectadoInicial, umbralContagioAerosolBase);
+                    estadoSalud.dosisCaracteristica = umbralContagioAerosolBase;
+                    estadoSalud.usarDosisRespuesta = usarDosisRespuestaExponencial;
                 }
 
                 cantidadAgentesActivos++;
@@ -351,6 +360,9 @@ public class Administrador : MonoBehaviour
         public float dosisAcumulada { get; set; }
         public float tiempoExposicionSegundos { get; set; }
         public bool salioDelRecinto { get; set; }
+        public float permanenciaSegundos { get; set; }
+        public int visitas { get; set; }
+        public float riesgoEsperado { get; set; }
     }
 
     [Serializable]
@@ -383,6 +395,13 @@ public class Administrador : MonoBehaviour
         public int casosInicialesFijos { get; set; }
         public float aceleracionTiempo { get; set; }
         public int cantidadMetasZona { get; set; }
+        public float permanenciaPromedioSalidosSegundos { get; set; }
+        public bool dosisRespuestaExponencial { get; set; }
+        public float contagiosEsperados { get; set; }
+        public float riesgoIndividualEsperadoPorcentaje { get; set; }
+        public float horasCasoIndice { get; set; }
+        public float dosisTotalSusceptibles { get; set; }
+        public float dosisPorHoraCasoIndice { get; set; }
         public int diagAgentesCreados { get; set; }
         public int diagAgentesLiberados { get; set; }
         public int diagAgentesPerdidos { get; set; }
@@ -455,6 +474,7 @@ public class Administrador : MonoBehaviour
         cantidadAgentesActivos = 0;
         casosInicialesCreados = 0;
         diagCreados = 0; diagLiberados = 0;
+        segundosCasoIndice = 0f; dosisTotalSusceptibles = 0f;
         Camino.diagSalirLlamadas = 0; Camino.diagEntradasMeta = 0; Camino.diagSalidaTrigger = 0; Camino.diagDesvios = 0;
         agentesRegistrados.Clear();
         agentesCreadosCorrida.Clear();
@@ -742,7 +762,10 @@ public class Administrador : MonoBehaviour
             contagioSecundario = estado.fueContagioSecundario,
             dosisAcumulada = estado.dosisAcumulada,
             tiempoExposicionSegundos = estado.tiempoExposicionAcumulado,
-            salioDelRecinto = true
+            salioDelRecinto = true,
+            permanenciaSegundos = Time.time - estado.tiempoIngreso,
+            visitas = estado.visitas,
+            riesgoEsperado = estado.RiesgoEsperado()
         });
     }
 
@@ -780,6 +803,13 @@ public class Administrador : MonoBehaviour
             casosInicialesFijos = casosInicialesFijos,
             aceleracionTiempo = aceleracionTiempo,
             cantidadMetasZona = cantidadMetasZona,
+            permanenciaPromedioSalidosSegundos = agentesSalidos.Count > 0 ? agentesSalidos.Average(a => a.permanenciaSegundos) : 0f,
+            dosisRespuestaExponencial = usarDosisRespuestaExponencial,
+            contagiosEsperados = estados.Sum(e => e.RiesgoEsperado()) + agentesSalidos.Sum(a => a.riesgoEsperado),
+            riesgoIndividualEsperadoPorcentaje = susceptiblesIniciales > 0 ? 100f * (estados.Sum(e => e.RiesgoEsperado()) + agentesSalidos.Sum(a => a.riesgoEsperado)) / susceptiblesIniciales : 0f,
+            horasCasoIndice = segundosCasoIndice / 3600f,
+            dosisTotalSusceptibles = dosisTotalSusceptibles,
+            dosisPorHoraCasoIndice = segundosCasoIndice > 0f ? dosisTotalSusceptibles / (segundosCasoIndice / 3600f) : 0f,
             diagAgentesCreados = diagCreados,
             diagAgentesLiberados = diagLiberados,
             diagAgentesPerdidos = diagPerdidos,
@@ -824,7 +854,10 @@ public class Administrador : MonoBehaviour
                 cantidadSimulaciones = numeroSimulacion,
                 promedioContagiados = reporte.promedioTotalContagio,
                 dosisAcumulada = estado.dosisAcumulada,
-                tiempoExposicionSegundos = estado.tiempoExposicionAcumulado
+                tiempoExposicionSegundos = estado.tiempoExposicionAcumulado,
+                permanenciaSegundos = Time.time - estado.tiempoIngreso,
+                visitas = estado.visitas,
+                riesgoEsperado = estado.RiesgoEsperado()
             });
             indice++;
         }
@@ -904,6 +937,7 @@ public class Administrador : MonoBehaviour
         tiempoSimulacionActual = 0f;
         casosInicialesCreados = 0;
         diagCreados = 0; diagLiberados = 0;
+        segundosCasoIndice = 0f; dosisTotalSusceptibles = 0f;
         Camino.diagSalirLlamadas = 0; Camino.diagEntradasMeta = 0; Camino.diagSalidaTrigger = 0; Camino.diagDesvios = 0;
         agentesRegistrados.Clear();
         agentesCreadosCorrida.Clear();

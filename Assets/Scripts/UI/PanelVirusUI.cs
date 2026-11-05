@@ -91,7 +91,7 @@ public class PanelVirusUI : MonoBehaviour
         txtEmision.text = admin.tasaEmisionAerosol.ToString("0.00");
         txtRadio.text = admin.radioInfluenciaAerosol.ToString("0.0") + " m";
         txtAtenuacion.text = admin.factorAtenuacionAmbiente.ToString("0.00");
-        txtUmbral.text = admin.umbralContagioAerosolBase.ToString("0.00");
+        txtUmbral.text = admin.umbralContagioAerosolBase.ToString("0.0");
         txtNombre.text = "Virus: " + admin.nombreVirus;
     }
 
@@ -184,9 +184,9 @@ public class PanelVirusUI : MonoBehaviour
         ui.txtAtenuacion = val; ui.sldAtenuacion = Deslizador("sldAtenuacion", new Vector2(22, y - 24), 0.3f, 1f);
 
         y -= 56f;
-        Texto("lblUmbral", new Vector2(22, y), new Vector2(250, 22), "Umbral de contagio (dosis infecciosa)", 15, claro, TextAnchor.MiddleLeft);
+        Texto("lblUmbral", new Vector2(22, y), new Vector2(250, 22), "Dosis infecciosa característica (k)", 15, claro, TextAnchor.MiddleLeft);
         val = Texto("valUmbral", new Vector2(300, y), new Vector2(108, 22), "1.20", 15, claro, TextAnchor.MiddleRight);
-        ui.txtUmbral = val; ui.sldUmbral = Deslizador("sldUmbral", new Vector2(22, y - 24), 0.3f, 3f);
+        ui.txtUmbral = val; ui.sldUmbral = Deslizador("sldUmbral", new Vector2(22, y - 24), 0.3f, 60f);
 
         // Botón para volver al perfil por defecto
         var btnGO = new GameObject("btnRestablecerVirus");
