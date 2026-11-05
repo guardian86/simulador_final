@@ -193,6 +193,10 @@ public class SimuladorUI : MonoBehaviour
         if (sincronizandoUI || admin == null)
             return;
 
+        // Se redondea a pasos de 0.1 ACH para que los lotes comparables usen exactamente el mismo valor
+        // (antes "0.3" en pantalla podía ser 0.26 o 0.33 en el JSON).
+        valor = Mathf.Round(valor * 10f) / 10f;
+        sldVentilacion.SetValueWithoutNotify(valor);
         admin.EstablecerNivelVentilacion(valor);
         ActualizarTextosSlidersOpcionales();
     }

@@ -31,6 +31,8 @@ public class Administrador : MonoBehaviour
     public bool usarDosisPorDistancia = true;
     [Tooltip("Si es falso, solo los casos índice emiten aerosol: un contagiado durante la visita está en período de latencia y no contagia en la misma simulación (supuesto de Lelieveld et al., 2020).")]
     public bool secundariosContagian = false;
+    [Tooltip("Detecta la llegada a destinos y salidas por la ruta del NavMeshAgent (independiente de la física y de la aceleración).")]
+    public bool usarEventosPorDistancia = true;
     public float umbralContagioAerosolBase = 1.2f;
     [Range(0f,12f)] public float nivelVentilacionACH = 6f;
     [Range(0f,100f)] public float eficaciaMascarillaPorcentaje = 0f;

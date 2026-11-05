@@ -34,13 +34,42 @@ public class Camino : MonoBehaviour
     }
 
     // Update is called once per frame
+    // FIX: la llegada al destino y a la salida se detecta por la ruta del NavMeshAgent en cada
+    // cuadro y no por los triggers de la física. Con el tiempo acelerado los cuerpos físicos se
+    // duermen y los OnTriggerEnter se perdían: los agentes quedaban más tiempo en el recinto
+    // (A0 a x20 tenía ~227 visitantes por corrida frente a ~299 en A1 a x1).
+    private const float distanciaLlegada = 1.5f;
+    private GameObject destinoMeta;
+
     void Update()
     {
-        //if (generarRpe)
-        //{
-        //    Invoke("InvocarRptAgentes", 5f);
-        //    generarRpe= false;
-        //}
+        if (administrador == null)
+            administrador = FindObjectOfType<Administrador>();
+        if (administrador == null || !administrador.usarEventosPorDistancia)
+            return;
+        if (agenteNavMesh == null || !agenteNavMesh.enabled || !agenteNavMesh.isOnNavMesh || agenteNavMesh.pathPending)
+            return;
+        if (agenteNavMesh.remainingDistance > agenteNavMesh.stoppingDistance + distanciaLlegada)
+            return;
+
+        if (caminoASalida)
+        {
+            diagSalidaTrigger++;
+            administrador.ReleaseAgente(this.transform.root.gameObject);
+            return;
+        }
+
+        if (destinoMeta != null && !salidaPendiente)
+            LlegarADestino(destinoMeta);
+    }
+
+    private void LlegarADestino(GameObject meta)
+    {
+        diagEntradasMeta++;
+        ultimaMeta = meta;
+        salidaPendiente = true;
+        CancelInvoke(nameof(SalirCentroComercial));
+        Invoke(nameof(SalirCentroComercial), Random.Range(7f, 15f));
     }
 
     private void InvocarRptAgentes()
@@ -95,6 +124,10 @@ public class Camino : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
+        if (administrador == null)
+            administrador = FindObjectOfType<Administrador>();
+        if (administrador != null && administrador.usarEventosPorDistancia)
+            return; // Llegadas gestionadas en Update (independiente de la física)
         if (other.gameObject.tag.Equals("salida_cc"))
         {
             diagSalidaTrigger++;
@@ -136,6 +169,7 @@ public class Camino : MonoBehaviour
         if (!PrepararAgenteNavMesh())
             return;
 
+        CancelInvoke(nameof(SalirCentroComercial)); // evita temporizadores heredados de una visita anterior (pool)
         caminoASalida = false;
         salidaPendiente = false;
         ultimaMeta = null;
@@ -144,7 +178,8 @@ public class Camino : MonoBehaviour
         if (listaSalidas == null || listaSalidas.Length == 0) return;
         listaSalidas = ElegirMetasCandidatas(listaSalidas);
         int salidaEscogida = Random.Range(0, listaSalidas.Length);
-        Vector3 v = listaSalidas[salidaEscogida].transform.position;
+        destinoMeta = listaSalidas[salidaEscogida];
+        Vector3 v = destinoMeta.transform.position;
         agenteNavMesh.SetDestination(v);
     }
 
