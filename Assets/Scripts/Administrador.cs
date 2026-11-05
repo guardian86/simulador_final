@@ -119,6 +119,11 @@ public class Administrador : MonoBehaviour
             factorAtenuacionAmbiente = config.factorAtenuacionAmbiente;
         }
 
+        // Con dosis-respuesta exponencial, k debe estar en la escala calibrada (904). Si la escena o la
+        // configuración traen el umbral anterior (1.2), se reemplaza por el valor calibrado.
+        if (usarDosisRespuestaExponencial && umbralContagioAerosolBase < 50f)
+            umbralContagioAerosolBase = 904f;
+
         if (string.IsNullOrWhiteSpace(rutaSalidaPersonalizada) && usarRutaPortable)
             rutaSalidaPersonalizada = ObtenerCarpetaPortablePorDefecto();
 
@@ -551,13 +556,19 @@ public class Administrador : MonoBehaviour
 
     public float ObtenerFactorMascarillaAerosoles()
     {
-        return 1f - Mathf.Clamp01(eficaciaMascarillaPorcentaje / 100f);
+        // Uso universal de mascarilla, como en Lelieveld et al. (2020): reduce la emisión del caso
+        // índice y también la inhalación de la persona susceptible, por eso el factor se aplica dos veces.
+        float paso = 1f - Mathf.Clamp01(eficaciaMascarillaPorcentaje / 100f);
+        return paso * paso;
     }
 
     public float ObtenerFactorVentilacionAerosoles()
     {
-        // La ventilacion se modela como una dilucion exponencial de aerosoles acumulados.
-        return Mathf.Exp(-0.22f * Mathf.Clamp(nivelVentilacionACH, 0f, 12f));
+        // Remoción de aerosoles como en Lelieveld et al. (2020): la concentración en el aire es
+        // proporcional a 1 / (ACH + λv), donde λv = ln2 / 1.15 h es la tasa de pérdida del virus en
+        // aerosol (vida media de 1.1-1.2 h, Marco Teórico 7.6.4). Se normaliza para que sea 1 sin ventilación.
+        const float lambdaVirus = 0.6027f; // h^-1
+        return lambdaVirus / (Mathf.Clamp(nivelVentilacionACH, 0f, 12f) + lambdaVirus);
     }
 
     public float ObtenerMultiplicadorMitigacionAerosoles()

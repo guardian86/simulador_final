@@ -51,19 +51,19 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1586}
+      Script: {instanceID: 1592}
     - Class: 114
-      Script: {instanceID: 1788}
+      Script: {instanceID: 1794}
     - Class: 114
-      Script: {instanceID: 2868}
+      Script: {instanceID: 2874}
     - Class: 114
-      Script: {instanceID: 3770}
+      Script: {instanceID: 3776}
     - Class: 114
-      Script: {instanceID: 4744}
+      Script: {instanceID: 4752}
     - Class: 114
-      Script: {instanceID: 6178}
+      Script: {instanceID: 6186}
     - Class: 114
-      Script: {instanceID: 7200}
+      Script: {instanceID: 7208}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 135
@@ -405,7 +405,7 @@ ScriptsOnlyBuild:
     className: UnityOnCollisionExit2DMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 90a02ff73faa4a94b9da05558c149a70
+      Hash: 1cc34e4bc71819af2e2d0c39e39d7b3f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Administrador
@@ -415,6 +415,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.VisualScripting.Flow.dll
     namespaceName: Unity.VisualScripting
     className: ScriptGraphAsset
+  - hash:
+      serializedVersion: 2
+      Hash: f2a7be1d642d73ecfc5dc546d1fce335
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PanelHomologacionUI
   - hash:
       serializedVersion: 2
       Hash: a5781dc71a671b1ad2b38de19f24b71f
@@ -639,7 +645,7 @@ ScriptsOnlyBuild:
     className: GroupTrack
   - hash:
       serializedVersion: 2
-      Hash: f7c33ed9c472b535793c4b40c1e38864
+      Hash: 18bee9c3d71a69d44343f7479271e41f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: AspectoAgente
@@ -663,7 +669,7 @@ ScriptsOnlyBuild:
     className: StateGraphAsset
   - hash:
       serializedVersion: 2
-      Hash: cde0779acfe775e3532b87a938d47bcf
+      Hash: a8c0fd61050b34e9eda185fee112b88f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SimuladorConfig
@@ -907,6 +913,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_ScrollbarEventHandler
+  - hash:
+      serializedVersion: 2
+      Hash: 87c55d03d99f52a18f0ca56b81d9e5d1
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PanelVirusUI
   - hash:
       serializedVersion: 2
       Hash: 8220b46879dc5e37db1b940c938f5744

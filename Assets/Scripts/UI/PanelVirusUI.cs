@@ -12,7 +12,9 @@ public class PanelVirusUI : MonoBehaviour
     const float EmisionCovid = 0.45f;
     const float RadioCovid = 2.5f;
     const float AtenuacionCovid = 0.9f;
-    const float UmbralCovid = 1.2f;
+    // Dosis infecciosa característica calibrada contra el Aula de Lelieveld et al. (2020):
+    // 2.4 contagios secundarios esperados en 12 h con un caso índice y 25 personas (IC95 829-982).
+    const float UmbralCovid = 904f;
 
     public Slider sldEmision, sldRadio, sldAtenuacion, sldUmbral;
     public Text txtEmision, txtRadio, txtAtenuacion, txtUmbral, txtNombre;
@@ -91,7 +93,7 @@ public class PanelVirusUI : MonoBehaviour
         txtEmision.text = admin.tasaEmisionAerosol.ToString("0.00");
         txtRadio.text = admin.radioInfluenciaAerosol.ToString("0.0") + " m";
         txtAtenuacion.text = admin.factorAtenuacionAmbiente.ToString("0.00");
-        txtUmbral.text = admin.umbralContagioAerosolBase.ToString("0.0");
+        txtUmbral.text = admin.umbralContagioAerosolBase.ToString("0");
         txtNombre.text = "Virus: " + admin.nombreVirus;
     }
 
@@ -186,7 +188,7 @@ public class PanelVirusUI : MonoBehaviour
         y -= 56f;
         Texto("lblUmbral", new Vector2(22, y), new Vector2(250, 22), "Dosis infecciosa característica (k)", 15, claro, TextAnchor.MiddleLeft);
         val = Texto("valUmbral", new Vector2(300, y), new Vector2(108, 22), "1.20", 15, claro, TextAnchor.MiddleRight);
-        ui.txtUmbral = val; ui.sldUmbral = Deslizador("sldUmbral", new Vector2(22, y - 24), 0.3f, 60f);
+        ui.txtUmbral = val; ui.sldUmbral = Deslizador("sldUmbral", new Vector2(22, y - 24), 0.3f, 2000f);
 
         // Botón para volver al perfil por defecto
         var btnGO = new GameObject("btnRestablecerVirus");
